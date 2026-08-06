@@ -19,6 +19,8 @@ alerts:
     chat_id: ""               # @userinfobot 에게 아무 말이나 보내면 알려줌
   discord:
     webhook_url: ""
+  # simple = 살 종목과 팔 조건만. full = 근거·대체종목까지 전부.
+  style: simple
   notify_on:
     entry: true
     exit: true
