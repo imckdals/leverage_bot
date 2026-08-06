@@ -1,0 +1,930 @@
+{
+  "last_run": "2026-08-06T12:22:09+00:00",
+  "tickers": {
+    "005930.KS": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "000660.KS": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "QQQ": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "SPY": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "DIA": {
+      "status": "entry",
+      "last_alert_date": "2026-08-06",
+      "position": {
+        "opened": "2026-08-06",
+        "direction": "long",
+        "price": 542.8099975585938,
+        "products": [
+          {
+            "t": "UDOW",
+            "x": 3,
+            "side": "long",
+            "price": 77.55000305175781,
+            "change_pct": 1.2666508194176807,
+            "turnover": 115893950.83770752
+          },
+          {
+            "t": "DDM",
+            "x": 2,
+            "side": "long",
+            "price": 70.29000091552734,
+            "change_pct": 0.8609534410987552,
+            "turnover": 13161336.746292114
+          }
+        ],
+        "pick": {
+          "t": "UDOW",
+          "x": 3,
+          "price": 77.55000305175781,
+          "change_pct": 1.2666508194176807,
+          "turnover": 115893950.83770752,
+          "thin": false,
+          "no_price": false,
+          "why": "3배 · 감가 감당 가능 · 20일 기대 순이익 +6.3%"
+        },
+        "leverage": 3,
+        "plan": {
+          "leverage": 3,
+          "direction": "long",
+          "entry": 77.55000305175781,
+          "entry_note": "다음 거래일 시가 근처. 종가 판정이라 갭이 크면 건너뛰세요.",
+          "stop_pct": -0.11821767241786174,
+          "stop_price": 68.38222219498093,
+          "stop_basis": "기초자산 MA20 이탈 기준",
+          "u_stop": 521.4200860664197,
+          "target_pct": 0.23643534483572348,
+          "target_price": 95.88556476531159,
+          "target_r": 2.0,
+          "target_is_rule": false,
+          "proj_pct": 0.06263138564793796,
+          "proj_price": 82.40706719989122,
+          "time_stop_days": 20,
+          "rr": 2.0,
+          "risk_per_trade": 0.02,
+          "size_by_risk": 0.1691794432333804,
+          "size_cap": 0.09999999999999999,
+          "position_pct": 0.09999999999999999,
+          "capped": true,
+          "gap_risk": true
+        },
+        "atr_pct": 0.011671352496858413
+      }
+    },
+    "IWM": {
+      "status": "watch",
+      "last_alert_date": null,
+      "position": null
+    },
+    "MDY": {
+      "status": "watch",
+      "last_alert_date": null,
+      "position": null
+    },
+    "SPHB": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "SOXX": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "XLK": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "XLF": {
+      "status": "entry",
+      "last_alert_date": "2026-08-06",
+      "position": {
+        "opened": "2026-08-06",
+        "direction": "long",
+        "price": 58.0,
+        "products": [
+          {
+            "t": "FAS",
+            "x": 3,
+            "side": "long",
+            "price": 183.6999969482422,
+            "change_pct": 0.7403294760298662,
+            "turnover": 78095015.81886292
+          },
+          {
+            "t": "UYG",
+            "x": 2,
+            "side": "long",
+            "price": 99.41999816894533,
+            "change_pct": 0.6377135819207735,
+            "turnover": 2218409.9534988403
+          }
+        ],
+        "pick": {
+          "t": "FAS",
+          "x": 3,
+          "price": 183.6999969482422,
+          "change_pct": 0.7403294760298662,
+          "turnover": 78095015.81886292,
+          "thin": false,
+          "no_price": false,
+          "why": "3배 · 감가 감당 가능 · 20일 기대 순이익 +13.8%"
+        },
+        "leverage": 3,
+        "plan": {
+          "leverage": 3,
+          "direction": "long",
+          "entry": 183.6999969482422,
+          "entry_note": "다음 거래일 시가 근처. 종가 판정이라 갭이 크면 건너뛰세요.",
+          "stop_pct": -0.0910413184145008,
+          "stop_price": 166.97570703333443,
+          "stop_basis": "기초자산 MA20 이탈 기준",
+          "u_stop": 56.23986784398632,
+          "target_pct": 0.1820826368290016,
+          "target_price": 217.14857677805767,
+          "target_r": 2.0,
+          "target_is_rule": false,
+          "proj_pct": 0.13830407528467825,
+          "proj_price": 209.10645515596704,
+          "time_stop_days": 20,
+          "rr": 2.0,
+          "risk_per_trade": 0.02,
+          "size_by_risk": 0.21968047418801942,
+          "size_cap": 0.09999999999999999,
+          "position_pct": 0.09999999999999999,
+          "capped": true,
+          "gap_risk": true
+        },
+        "atr_pct": 0.012321668477539956
+      }
+    },
+    "KBWB": {
+      "status": "entry",
+      "last_alert_date": "2026-08-06",
+      "position": {
+        "opened": "2026-08-06",
+        "direction": "long",
+        "price": 98.66999816894533,
+        "products": [
+          {
+            "t": "BNKU",
+            "x": 3,
+            "side": "long",
+            "price": 47.43199920654297,
+            "change_pct": 2.1184923043692683,
+            "turnover": 518089.22679901123
+          }
+        ],
+        "pick": {
+          "t": "BNKU",
+          "x": 3,
+          "price": 47.43199920654297,
+          "change_pct": 2.1184923043692683,
+          "turnover": 518089.22679901123,
+          "thin": true,
+          "no_price": false,
+          "why": "3배 · 감가 감당 가능 · 20일 기대 순이익 +16.8%"
+        },
+        "leverage": 3,
+        "plan": {
+          "leverage": 3,
+          "direction": "long",
+          "entry": 47.43199920654297,
+          "entry_note": "다음 거래일 시가 근처. 종가 판정이라 갭이 크면 건너뛰세요.",
+          "stop_pct": -0.08292986140608838,
+          "stop_price": 43.498470086130666,
+          "stop_basis": "기초자산 MA20 이탈 기준",
+          "u_stop": 95.94243507791545,
+          "target_pct": 0.16585972281217676,
+          "target_price": 55.299057447367574,
+          "target_r": 2.0,
+          "target_is_rule": false,
+          "proj_pct": 0.1675457637470874,
+          "proj_price": 55.379029739654456,
+          "time_stop_days": 20,
+          "rr": 2.0,
+          "risk_per_trade": 0.02,
+          "size_by_risk": 0.2411676525306683,
+          "size_cap": 0.09999999999999999,
+          "position_pct": 0.09999999999999999,
+          "capped": true,
+          "gap_risk": true
+        },
+        "atr_pct": 0.01668361227167473
+      }
+    },
+    "XLV": {
+      "status": "entry",
+      "last_alert_date": "2026-08-06",
+      "position": {
+        "opened": "2026-08-06",
+        "direction": "long",
+        "price": 164.16000366210938,
+        "products": [
+          {
+            "t": "CURE",
+            "x": 3,
+            "side": "long",
+            "price": 121.66999816894533,
+            "change_pct": 3.566560003647168,
+            "turnover": 8357557.077903748
+          },
+          {
+            "t": "RXL",
+            "x": 2,
+            "side": "long",
+            "price": 56.15999984741211,
+            "change_pct": 2.669102493800768,
+            "turnover": 1015747.5005340576
+          }
+        ],
+        "pick": {
+          "t": "CURE",
+          "x": 3,
+          "price": 121.66999816894533,
+          "change_pct": 3.566560003647168,
+          "turnover": 8357557.077903748,
+          "thin": false,
+          "no_price": false,
+          "why": "3배 · 감가 감당 가능 · 20일 기대 순이익 +13.5%"
+        },
+        "leverage": 3,
+        "plan": {
+          "leverage": 3,
+          "direction": "long",
+          "entry": 121.66999816894533,
+          "entry_note": "다음 거래일 시가 근처. 종가 판정이라 갭이 크면 건너뛰세요.",
+          "stop_pct": -0.06586724416587364,
+          "stop_price": 113.65593069189,
+          "stop_basis": "기초자산 MA20 이탈 기준",
+          "u_stop": 160.5557479809484,
+          "target_pct": 0.13173448833174728,
+          "target_price": 137.69813312305598,
+          "target_r": 2.0,
+          "target_is_rule": false,
+          "proj_pct": 0.13492011609339064,
+          "proj_price": 138.08572844698205,
+          "time_stop_days": 20,
+          "rr": 2.0,
+          "risk_per_trade": 0.02,
+          "size_by_risk": 0.30364106246245787,
+          "size_cap": 0.09999999999999999,
+          "position_pct": 0.09999999999999999,
+          "capped": true,
+          "gap_risk": true
+        },
+        "atr_pct": 0.016789700402785594
+      }
+    },
+    "XBI": {
+      "status": "watch",
+      "last_alert_date": null,
+      "position": null
+    },
+    "XPH": {
+      "status": "entry",
+      "last_alert_date": "2026-08-06",
+      "position": {
+        "opened": "2026-08-06",
+        "direction": "long",
+        "price": 70.0199966430664,
+        "products": [
+          {
+            "t": "PILL",
+            "x": 3,
+            "side": "long",
+            "price": 20.36000061035156,
+            "change_pct": 1.0923596195151486,
+            "turnover": 1352862.6517868042
+          }
+        ],
+        "pick": {
+          "t": "PILL",
+          "x": 3,
+          "price": 20.36000061035156,
+          "change_pct": 1.0923596195151486,
+          "turnover": 1352862.6517868042,
+          "thin": true,
+          "no_price": false,
+          "why": "3배 · 감가 감당 가능 · 20일 기대 순이익 +24.0%"
+        },
+        "leverage": 3,
+        "plan": {
+          "leverage": 3,
+          "direction": "long",
+          "entry": 20.36000061035156,
+          "entry_note": "다음 거래일 시가 근처. 종가 판정이라 갭이 크면 건너뛰세요.",
+          "stop_pct": -0.09953917783840216,
+          "stop_price": 18.333382888807797,
+          "stop_basis": "기초자산 MA20 이탈 기준",
+          "u_stop": 67.69675234370024,
+          "target_pct": 0.19907835567680432,
+          "target_price": 24.41323605343908,
+          "target_r": 2.0,
+          "target_is_rule": false,
+          "proj_pct": 0.23956972552123332,
+          "proj_price": 25.237640368185623,
+          "time_stop_days": 20,
+          "rr": 2.0,
+          "risk_per_trade": 0.02,
+          "size_by_risk": 0.20092591112686498,
+          "size_cap": 0.09999999999999999,
+          "position_pct": 0.09999999999999999,
+          "capped": true,
+          "gap_risk": true
+        },
+        "atr_pct": 0.02158961323784814
+      }
+    },
+    "IYR": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "ITB": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "XLE": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "XOP": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "XLU": {
+      "status": "none",
+      "last_alert_date": null,
+      "position": null
+    },
+    "XLI": {
+      "status": "watch",
+      "last_alert_date": null,
+      "position": null
+    },
+    "IYT": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "XLY": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "XRT": {
+      "status": "watch",
+      "last_alert_date": null,
+      "position": null
+    },
+    "GDX": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "GDXJ": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "FNGS": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "EEM": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "FXI": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "EWY": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "INDA": {
+      "status": "none",
+      "last_alert_date": null,
+      "position": null
+    },
+    "EWJ": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "EWZ": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "VGK": {
+      "status": "watch",
+      "last_alert_date": null,
+      "position": null
+    },
+    "TLT": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "IEF": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "GLD": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "SLV": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "USO": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "UNG": {
+      "status": "watch",
+      "last_alert_date": null,
+      "position": null
+    },
+    "IBIT": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "ETHA": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "NVDA": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "TSLA": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "AAPL": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "MSFT": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "AMZN": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "GOOGL": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "META": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "AVGO": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "AMD": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "MU": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "NFLX": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "PLTR": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "COIN": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "MSTR": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "BABA": {
+      "status": "none",
+      "last_alert_date": null,
+      "position": null
+    },
+    "SMCI": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "SPCX": {
+      "status": "blocked",
+      "last_alert_date": null,
+      "position": null
+    },
+    "ALB": {
+      "status": "none",
+      "last_alert_date": null,
+      "position": null
+    }
+  },
+  "history": [
+    {
+      "ts": "2026-08-06T12:22:09+00:00",
+      "kind": "entry",
+      "id": "DIA",
+      "name": "다우존스",
+      "group": "미국 지수",
+      "direction": "long",
+      "price": 542.8099975585938,
+      "products": [
+        {
+          "t": "UDOW",
+          "x": 3,
+          "side": "long",
+          "price": 77.55000305175781,
+          "change_pct": 1.2666508194176807,
+          "turnover": 115893950.83770752
+        },
+        {
+          "t": "DDM",
+          "x": 2,
+          "side": "long",
+          "price": 70.29000091552734,
+          "change_pct": 0.8609534410987552,
+          "turnover": 13161336.746292114
+        }
+      ],
+      "pick": {
+        "t": "UDOW",
+        "x": 3,
+        "price": 77.55000305175781,
+        "change_pct": 1.2666508194176807,
+        "turnover": 115893950.83770752,
+        "thin": false,
+        "no_price": false,
+        "why": "3배 · 감가 감당 가능 · 20일 기대 순이익 +6.3%"
+      },
+      "plan": {
+        "leverage": 3,
+        "direction": "long",
+        "entry": 77.55000305175781,
+        "entry_note": "다음 거래일 시가 근처. 종가 판정이라 갭이 크면 건너뛰세요.",
+        "stop_pct": -0.11821767241786174,
+        "stop_price": 68.38222219498093,
+        "stop_basis": "기초자산 MA20 이탈 기준",
+        "u_stop": 521.4200860664197,
+        "target_pct": 0.23643534483572348,
+        "target_price": 95.88556476531159,
+        "target_r": 2.0,
+        "target_is_rule": false,
+        "proj_pct": 0.06263138564793796,
+        "proj_price": 82.40706719989122,
+        "time_stop_days": 20,
+        "rr": 2.0,
+        "risk_per_trade": 0.02,
+        "size_by_risk": 0.1691794432333804,
+        "size_cap": 0.09999999999999999,
+        "position_pct": 0.09999999999999999,
+        "capped": true,
+        "gap_risk": true
+      },
+      "plan_lines": [
+        "   매수      77.55  (다음 거래일 시가 근처)",
+        "   손절      68.38   -11.8%  ← 기초자산 MA20 이탈 기준",
+        "   목표      95.89   +23.6%  (손절폭의 2배)",
+        "             ※ 자동 청산 아님. 추세가 꺾일 때까지 들고 갑니다.",
+        "   추세 예상  82.41   +6.3%  (20거래일 기준)",
+        "   시간 한도  20거래일 — 그때까지 못 벌면 청산",
+        "   투입 비중  총자산의 10% 이하  (3배 상한. 손절폭 기준으로는 17% 까지 나오지만 줄였습니다)",
+        "             ※ 3배는 갭 하락 시 손절가에 못 팝니다. 손절선을 믿고 크게 넣지 마세요."
+      ],
+      "passed": 10,
+      "total": 10
+    },
+    {
+      "ts": "2026-08-06T12:22:09+00:00",
+      "kind": "entry",
+      "id": "XLF",
+      "name": "금융",
+      "group": "미국 섹터",
+      "direction": "long",
+      "price": 58.0,
+      "products": [
+        {
+          "t": "FAS",
+          "x": 3,
+          "side": "long",
+          "price": 183.6999969482422,
+          "change_pct": 0.7403294760298662,
+          "turnover": 78095015.81886292
+        },
+        {
+          "t": "UYG",
+          "x": 2,
+          "side": "long",
+          "price": 99.41999816894533,
+          "change_pct": 0.6377135819207735,
+          "turnover": 2218409.9534988403
+        }
+      ],
+      "pick": {
+        "t": "FAS",
+        "x": 3,
+        "price": 183.6999969482422,
+        "change_pct": 0.7403294760298662,
+        "turnover": 78095015.81886292,
+        "thin": false,
+        "no_price": false,
+        "why": "3배 · 감가 감당 가능 · 20일 기대 순이익 +13.8%"
+      },
+      "plan": {
+        "leverage": 3,
+        "direction": "long",
+        "entry": 183.6999969482422,
+        "entry_note": "다음 거래일 시가 근처. 종가 판정이라 갭이 크면 건너뛰세요.",
+        "stop_pct": -0.0910413184145008,
+        "stop_price": 166.97570703333443,
+        "stop_basis": "기초자산 MA20 이탈 기준",
+        "u_stop": 56.23986784398632,
+        "target_pct": 0.1820826368290016,
+        "target_price": 217.14857677805767,
+        "target_r": 2.0,
+        "target_is_rule": false,
+        "proj_pct": 0.13830407528467825,
+        "proj_price": 209.10645515596704,
+        "time_stop_days": 20,
+        "rr": 2.0,
+        "risk_per_trade": 0.02,
+        "size_by_risk": 0.21968047418801942,
+        "size_cap": 0.09999999999999999,
+        "position_pct": 0.09999999999999999,
+        "capped": true,
+        "gap_risk": true
+      },
+      "plan_lines": [
+        "   매수      183.70  (다음 거래일 시가 근처)",
+        "   손절      166.98   -9.1%  ← 기초자산 MA20 이탈 기준",
+        "   목표      217.15   +18.2%  (손절폭의 2배)",
+        "             ※ 자동 청산 아님. 추세가 꺾일 때까지 들고 갑니다.",
+        "   추세 예상  209.11   +13.8%  (20거래일 기준)",
+        "   시간 한도  20거래일 — 그때까지 못 벌면 청산",
+        "   투입 비중  총자산의 10% 이하  (3배 상한. 손절폭 기준으로는 22% 까지 나오지만 줄였습니다)",
+        "             ※ 3배는 갭 하락 시 손절가에 못 팝니다. 손절선을 믿고 크게 넣지 마세요."
+      ],
+      "passed": 10,
+      "total": 10
+    },
+    {
+      "ts": "2026-08-06T12:22:09+00:00",
+      "kind": "entry",
+      "id": "KBWB",
+      "name": "은행",
+      "group": "미국 섹터",
+      "direction": "long",
+      "price": 98.66999816894533,
+      "products": [
+        {
+          "t": "BNKU",
+          "x": 3,
+          "side": "long",
+          "price": 47.43199920654297,
+          "change_pct": 2.1184923043692683,
+          "turnover": 518089.22679901123
+        }
+      ],
+      "pick": {
+        "t": "BNKU",
+        "x": 3,
+        "price": 47.43199920654297,
+        "change_pct": 2.1184923043692683,
+        "turnover": 518089.22679901123,
+        "thin": true,
+        "no_price": false,
+        "why": "3배 · 감가 감당 가능 · 20일 기대 순이익 +16.8%"
+      },
+      "plan": {
+        "leverage": 3,
+        "direction": "long",
+        "entry": 47.43199920654297,
+        "entry_note": "다음 거래일 시가 근처. 종가 판정이라 갭이 크면 건너뛰세요.",
+        "stop_pct": -0.08292986140608838,
+        "stop_price": 43.498470086130666,
+        "stop_basis": "기초자산 MA20 이탈 기준",
+        "u_stop": 95.94243507791545,
+        "target_pct": 0.16585972281217676,
+        "target_price": 55.299057447367574,
+        "target_r": 2.0,
+        "target_is_rule": false,
+        "proj_pct": 0.1675457637470874,
+        "proj_price": 55.379029739654456,
+        "time_stop_days": 20,
+        "rr": 2.0,
+        "risk_per_trade": 0.02,
+        "size_by_risk": 0.2411676525306683,
+        "size_cap": 0.09999999999999999,
+        "position_pct": 0.09999999999999999,
+        "capped": true,
+        "gap_risk": true
+      },
+      "plan_lines": [
+        "   매수      47.43  (다음 거래일 시가 근처)",
+        "   손절      43.50   -8.3%  ← 기초자산 MA20 이탈 기준",
+        "   목표      55.30   +16.6%  (손절폭의 2배)",
+        "             ※ 자동 청산 아님. 추세가 꺾일 때까지 들고 갑니다.",
+        "   추세 예상  55.38   +16.8%  (20거래일 기준)",
+        "   시간 한도  20거래일 — 그때까지 못 벌면 청산",
+        "   투입 비중  총자산의 10% 이하  (3배 상한. 손절폭 기준으로는 24% 까지 나오지만 줄였습니다)",
+        "             ※ 3배는 갭 하락 시 손절가에 못 팝니다. 손절선을 믿고 크게 넣지 마세요."
+      ],
+      "passed": 9,
+      "total": 10
+    },
+    {
+      "ts": "2026-08-06T12:22:09+00:00",
+      "kind": "entry",
+      "id": "XLV",
+      "name": "헬스케어",
+      "group": "미국 섹터",
+      "direction": "long",
+      "price": 164.16000366210938,
+      "products": [
+        {
+          "t": "CURE",
+          "x": 3,
+          "side": "long",
+          "price": 121.66999816894533,
+          "change_pct": 3.566560003647168,
+          "turnover": 8357557.077903748
+        },
+        {
+          "t": "RXL",
+          "x": 2,
+          "side": "long",
+          "price": 56.15999984741211,
+          "change_pct": 2.669102493800768,
+          "turnover": 1015747.5005340576
+        }
+      ],
+      "pick": {
+        "t": "CURE",
+        "x": 3,
+        "price": 121.66999816894533,
+        "change_pct": 3.566560003647168,
+        "turnover": 8357557.077903748,
+        "thin": false,
+        "no_price": false,
+        "why": "3배 · 감가 감당 가능 · 20일 기대 순이익 +13.5%"
+      },
+      "plan": {
+        "leverage": 3,
+        "direction": "long",
+        "entry": 121.66999816894533,
+        "entry_note": "다음 거래일 시가 근처. 종가 판정이라 갭이 크면 건너뛰세요.",
+        "stop_pct": -0.06586724416587364,
+        "stop_price": 113.65593069189,
+        "stop_basis": "기초자산 MA20 이탈 기준",
+        "u_stop": 160.5557479809484,
+        "target_pct": 0.13173448833174728,
+        "target_price": 137.69813312305598,
+        "target_r": 2.0,
+        "target_is_rule": false,
+        "proj_pct": 0.13492011609339064,
+        "proj_price": 138.08572844698205,
+        "time_stop_days": 20,
+        "rr": 2.0,
+        "risk_per_trade": 0.02,
+        "size_by_risk": 0.30364106246245787,
+        "size_cap": 0.09999999999999999,
+        "position_pct": 0.09999999999999999,
+        "capped": true,
+        "gap_risk": true
+      },
+      "plan_lines": [
+        "   매수      121.67  (다음 거래일 시가 근처)",
+        "   손절      113.66   -6.6%  ← 기초자산 MA20 이탈 기준",
+        "   목표      137.70   +13.2%  (손절폭의 2배)",
+        "             ※ 자동 청산 아님. 추세가 꺾일 때까지 들고 갑니다.",
+        "   추세 예상  138.09   +13.5%  (20거래일 기준)",
+        "   시간 한도  20거래일 — 그때까지 못 벌면 청산",
+        "   투입 비중  총자산의 10% 이하  (3배 상한. 손절폭 기준으로는 30% 까지 나오지만 줄였습니다)",
+        "             ※ 3배는 갭 하락 시 손절가에 못 팝니다. 손절선을 믿고 크게 넣지 마세요."
+      ],
+      "passed": 9,
+      "total": 10
+    },
+    {
+      "ts": "2026-08-06T12:22:09+00:00",
+      "kind": "entry",
+      "id": "XPH",
+      "name": "제약",
+      "group": "미국 섹터",
+      "direction": "long",
+      "price": 70.0199966430664,
+      "products": [
+        {
+          "t": "PILL",
+          "x": 3,
+          "side": "long",
+          "price": 20.36000061035156,
+          "change_pct": 1.0923596195151486,
+          "turnover": 1352862.6517868042
+        }
+      ],
+      "pick": {
+        "t": "PILL",
+        "x": 3,
+        "price": 20.36000061035156,
+        "change_pct": 1.0923596195151486,
+        "turnover": 1352862.6517868042,
+        "thin": true,
+        "no_price": false,
+        "why": "3배 · 감가 감당 가능 · 20일 기대 순이익 +24.0%"
+      },
+      "plan": {
+        "leverage": 3,
+        "direction": "long",
+        "entry": 20.36000061035156,
+        "entry_note": "다음 거래일 시가 근처. 종가 판정이라 갭이 크면 건너뛰세요.",
+        "stop_pct": -0.09953917783840216,
+        "stop_price": 18.333382888807797,
+        "stop_basis": "기초자산 MA20 이탈 기준",
+        "u_stop": 67.69675234370024,
+        "target_pct": 0.19907835567680432,
+        "target_price": 24.41323605343908,
+        "target_r": 2.0,
+        "target_is_rule": false,
+        "proj_pct": 0.23956972552123332,
+        "proj_price": 25.237640368185623,
+        "time_stop_days": 20,
+        "rr": 2.0,
+        "risk_per_trade": 0.02,
+        "size_by_risk": 0.20092591112686498,
+        "size_cap": 0.09999999999999999,
+        "position_pct": 0.09999999999999999,
+        "capped": true,
+        "gap_risk": true
+      },
+      "plan_lines": [
+        "   매수      20.36  (다음 거래일 시가 근처)",
+        "   손절      18.33   -10.0%  ← 기초자산 MA20 이탈 기준",
+        "   목표      24.41   +19.9%  (손절폭의 2배)",
+        "             ※ 자동 청산 아님. 추세가 꺾일 때까지 들고 갑니다.",
+        "   추세 예상  25.24   +24.0%  (20거래일 기준)",
+        "   시간 한도  20거래일 — 그때까지 못 벌면 청산",
+        "   투입 비중  총자산의 10% 이하  (3배 상한. 손절폭 기준으로는 20% 까지 나오지만 줄였습니다)",
+        "             ※ 3배는 갭 하락 시 손절가에 못 팝니다. 손절선을 믿고 크게 넣지 마세요."
+      ],
+      "passed": 9,
+      "total": 10
+    }
+  ]
+}
