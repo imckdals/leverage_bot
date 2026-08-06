@@ -1,0 +1,70 @@
+name: 레버리지 관제
+
+on:
+  schedule:
+    - cron: '45 6 * * 1-5'
+    - cron: '10 21 * * 1-5'
+    - cron: '30 23 * * 0-4'
+  workflow_dispatch:
+    inputs:
+      digest:
+        description: '보유 요약도 같이 보낼지'
+        type: boolean
+        default: true
+
+concurrency:
+  group: leverage-watch
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: 패키지 설치
+        run: pip install -r requirements.txt
+
+      - name: 시세 캐시 복원
+        uses: actions/cache@v4
+        with:
+          path: state/cache
+          key: prices-${{ github.run_id }}
+          restore-keys: prices-
+
+      - name: 규칙 검사
+        run: python selftest.py
+
+      - name: 점검 실행
+        env:
+          LEV_CHANNEL: telegram
+          LEV_TG_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          LEV_TG_CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          if [ "${{ github.event.schedule }}" = "30 23 * * 0-4" ] || \
+             [ "${{ inputs.digest }}" = "true" ]; then
+            python run.py --digest
+          else
+            python run.py
+          fi
+
+      - name: 보유 기록 저장
+        run: |
+          git config user.name  "leverage-watch"
+          git config user.email "actions@github.com"
+          git add -f state/state.json state/latest.json 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "변경 없음"
+          else
+            git commit -m "점검 $(date -u +'%Y-%m-%d %H:%M') UTC"
+            git push
+          fi
