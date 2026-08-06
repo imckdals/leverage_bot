@@ -26,25 +26,40 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: 프로젝트 위치 확인
+        id: loc
+        run: |
+          f=$(find . -name requirements.txt -not -path './.git/*' | head -1)
+          if [ -z "$f" ]; then
+            echo "::error::requirements.txt 를 찾지 못했습니다. 프로젝트 파일이 저장소에 올라가지 않았습니다."
+            exit 1
+          fi
+          d=$(dirname "$f")
+          echo "dir=$d" >> $GITHUB_OUTPUT
+          echo "프로젝트 폴더: $d"
+          ls "$d"
+
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-          cache: pip
 
       - name: 패키지 설치
+        working-directory: ${{ steps.loc.outputs.dir }}
         run: pip install -r requirements.txt
 
       - name: 시세 캐시 복원
         uses: actions/cache@v4
         with:
-          path: state/cache
+          path: ${{ steps.loc.outputs.dir }}/state/cache
           key: prices-${{ github.run_id }}
           restore-keys: prices-
 
       - name: 규칙 검사
+        working-directory: ${{ steps.loc.outputs.dir }}
         run: python selftest.py
 
       - name: 점검 실행
+        working-directory: ${{ steps.loc.outputs.dir }}
         env:
           LEV_CHANNEL: telegram
           LEV_TG_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
@@ -58,6 +73,7 @@ jobs:
           fi
 
       - name: 보유 기록 저장
+        working-directory: ${{ steps.loc.outputs.dir }}
         run: |
           git config user.name  "leverage-watch"
           git config user.email "actions@github.com"
