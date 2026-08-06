@@ -77,21 +77,27 @@ def send(cfg: dict, events: list[dict]) -> None:
 def _creds(cfg: dict) -> tuple[str, dict]:
     """알림 설정. 환경변수가 있으면 config.yaml 보다 우선한다.
 
-    GitHub Actions 처럼 설정 파일에 토큰을 못 적는 환경을 위한 것.
-    비밀값을 저장소에 커밋하지 않아도 된다.
+    붙여넣기로 들어온 값에는 줄바꿈이나 공백이 섞이는 일이 흔하다.
+    그대로 URL 에 넣으면 요청이 통째로 실패하므로 반드시 털어낸다.
     """
     import os
-    ch = os.environ.get("LEV_CHANNEL") or cfg["alerts"].get("channel", "console")
-    tg = dict(cfg["alerts"].get("telegram") or {})
+
+    def clean(x) -> str:
+        return str(x).strip().strip('"').strip("'") if x else ""
+
+    ch = clean(os.environ.get("LEV_CHANNEL")) or cfg["alerts"].get("channel", "console")
+    tg = {k: clean(v) for k, v in (cfg["alerts"].get("telegram") or {}).items()}
     if os.environ.get("LEV_TG_TOKEN"):
-        tg["bot_token"] = os.environ["LEV_TG_TOKEN"]
+        tg["bot_token"] = clean(os.environ["LEV_TG_TOKEN"])
     if os.environ.get("LEV_TG_CHAT"):
-        tg["chat_id"] = os.environ["LEV_TG_CHAT"]
-    dc = dict(cfg["alerts"].get("discord") or {})
+        tg["chat_id"] = clean(os.environ["LEV_TG_CHAT"])
+
+    dc = {k: clean(v) for k, v in (cfg["alerts"].get("discord") or {}).items()}
     if os.environ.get("LEV_DISCORD_WEBHOOK"):
-        dc["webhook_url"] = os.environ["LEV_DISCORD_WEBHOOK"]
+        dc["webhook_url"] = clean(os.environ["LEV_DISCORD_WEBHOOK"])
+
     if ch == "console" and tg.get("bot_token") and tg.get("chat_id"):
-        ch = "telegram"          # 토큰만 넣어도 동작하게
+        ch = "telegram"
     return ch, {"telegram": tg, "discord": dc}
 
 
