@@ -11,6 +11,11 @@ on:
         description: '보유 요약도 같이 보낼지'
         type: boolean
         default: true
+      reset:
+        description: '보유 기록 초기화 (안 산 종목 정리)'
+        type: boolean
+        default: false
+      
 
 concurrency:
   group: leverage-watch
@@ -65,6 +70,9 @@ jobs:
           LEV_TG_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           LEV_TG_CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
+          if [ "${{ inputs.reset }}" = "true" ]; then
+            python run.py --reset
+          fi
           if [ "${{ github.event.schedule }}" = "30 23 * * 0-4" ] || \
              [ "${{ inputs.digest }}" = "true" ]; then
             python run.py --digest
