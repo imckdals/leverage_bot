@@ -82,7 +82,9 @@ def run_scan(cfg: dict | None = None, quiet: bool = False,
 
     digest = build_digest(verdicts, frames, cfg, st)
     if send_digest:
-        notify.send_digest(cfg, digest, dt.date.today().isoformat())
+        near = [v.pick["t"] if v.pick else v.name
+                for v in verdicts if v.status == "watch"][:6]
+        notify.send_digest(cfg, digest, dt.date.today().isoformat(), near)
 
     verdicts.sort(key=lambda v: (ORDER.get(v.status, 9), -v.passed, v.group, v.name))
     groups: list[str] = []
@@ -294,13 +296,13 @@ def build_digest(verdicts, frames, cfg, st) -> list[dict]:
         to_tgt = None if (ret is None or tgt_pct is None) else tgt_pct - ret
 
         if v.status == "exit":
-            action = "청산 신호 — 오늘 파세요"
+            action = "지금 파세요"
         elif to_stop is not None and to_stop < 0.05:
-            action = "손절선에 근접했습니다"
+            action = "손절선 근접 — 깨지면 파세요"
         elif to_tgt is not None and to_tgt <= 0:
-            action = "목표 도달. 추세가 살아 있으면 계속, 아니면 정리"
+            action = "목표 도달 — 추세 꺾이면 정리"
         else:
-            action = "그대로 두세요"
+            action = "아직 파는 조건 없음"
 
         items.append({
             "name": v.name, "ticker": (pos.get("pick") or {}).get("t", "—"),
