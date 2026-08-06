@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>레버리지 관제</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ground:#0d1720;
+    --panel:#15222d;
+    --panel-2:#1b2b38;
+    --line:#243542;
+    --line-soft:#1e2d3a;
+    --text:#dde7ee;
+    --muted:#7a93a4;
+    --dim:#4d6472;
+    --live:#e3a93f;      /* 주목이 필요할 때만 등장 */
+    --cool:#5fafc2;      /* 인버스 · 보유 */
+    --rust:#c7643e;      /* 이탈 */
+    --r:3px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--ground);color:var(--text);
+    font-family:"IBM Plex Sans KR",system-ui,-apple-system,sans-serif;
+    -webkit-font-smoothing:antialiased;line-height:1.5;
+  }
+  .mono{font-family:"IBM Plex Mono","IBM Plex Sans KR",monospace;font-variant-numeric:tabular-nums}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 22px}
+
+  /* ── 상단 바 ─────────────────────────────── */
+  header{
+    border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20;
+    background:rgba(13,23,32,.94);backdrop-filter:blur(8px);
+  }
+  .bar{display:flex;align-items:center;gap:16px;height:56px}
+  .brand{font-weight:700;font-size:14px;letter-spacing:.14em;white-space:nowrap}
+  .brand span{color:var(--muted);font-weight:400;letter-spacing:.02em}
+  .stamp{margin-left:auto;font-size:11.5px;color:var(--muted);letter-spacing:.03em;text-align:right}
+  button.scan{
+    font-family:inherit;font-size:12px;font-weight:500;letter-spacing:.04em;
+    color:var(--text);background:transparent;border:1px solid var(--line);
+    border-radius:var(--r);padding:7px 14px;cursor:pointer;
+    transition:border-color .15s,color .15s;
+  }
+  button.scan:hover{border-color:var(--muted)}
+  button.scan:focus-visible{outline:2px solid var(--live);outline-offset:2px}
+  button.scan[disabled]{color:var(--dim);cursor:default;border-color:var(--line-soft)}
+
+  /* ── 판정 밴드 ───────────────────────────── */
+  .verdict{padding:54px 0 42px;border-bottom:1px solid var(--line)}
+  .verdict .headline{font-size:clamp(26px,4.2vw,42px);font-weight:300;
+    letter-spacing:-.015em;line-height:1.22;margin:0}
+  .verdict.quiet .headline{color:var(--muted)}
+  .verdict .sub{margin-top:14px;font-size:13.5px;color:var(--muted);max-width:62ch}
+  .verdict .sub b{color:var(--text);font-weight:500}
+
+  .calls{margin-top:30px;display:flex;flex-direction:column;gap:1px;
+    background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+  .call{display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+    background:var(--panel);padding:16px 18px;border-left:2px solid var(--live)}
+  .call.is-exit{border-left-color:var(--rust)}
+  .call .kind{font-size:11px;letter-spacing:.16em;color:var(--live);font-weight:600}
+  .call.is-exit .kind{color:var(--rust)}
+  .call .who{font-size:16px;font-weight:600}
+  .call .sub2{font-size:11.5px;color:var(--muted);margin-top:2px}
+  .call .meta{font-size:12.5px;color:var(--muted);margin-left:auto;text-align:right}
+
+  /* ── 국면 ────────────────────────────────── */
+  .regime{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);
+    border-bottom:1px solid var(--line)}
+  .regime .cell{background:var(--ground);padding:17px 0}
+  .regime .inner{max-width:620px;margin:0 auto;padding:0 22px;width:100%}
+  .regime .mkt{font-size:11px;letter-spacing:.16em;color:var(--dim);font-weight:600}
+  .regime .txt{margin-top:5px;font-size:13.5px;color:var(--muted)}
+  .regime .txt b{color:var(--text);font-weight:500}
+
+  /* ── 필터 ────────────────────────────────── */
+  .filters{display:flex;gap:7px;flex-wrap:wrap;padding:20px 0 4px}
+  .fchip{
+    font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.04em;
+    color:var(--muted);background:transparent;border:1px solid var(--line-soft);
+    border-radius:2px;padding:5px 10px;cursor:pointer;transition:all .13s;
+  }
+  .fchip:hover{border-color:var(--line);color:var(--text)}
+  .fchip.on{color:var(--ground);background:var(--muted);border-color:var(--muted)}
+  .fchip:focus-visible{outline:2px solid var(--live);outline-offset:2px}
+
+  /* ── 섹션 ────────────────────────────────── */
+  section{padding:30px 0 0}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:14px}
+  .sec-head h2{font-size:12px;font-weight:600;letter-spacing:.18em;margin:0}
+  .sec-head .n{font-size:11.5px;color:var(--dim);letter-spacing:.04em}
+  .sec-head .hot{font-size:11px;color:var(--live);letter-spacing:.04em}
+  .rule{height:1px;background:var(--line);margin-bottom:16px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:11px}
+
+  /* ── 카드 ────────────────────────────────── */
+  .card{background:var(--panel);border:1px solid var(--line-soft);border-radius:var(--r);
+    padding:15px 15px 12px;cursor:pointer;transition:border-color .15s,background .15s}
+  .card:hover{border-color:var(--line);background:var(--panel-2)}
+  .card:focus-visible{outline:2px solid var(--live);outline-offset:2px}
+  .card.s-entry{border-color:var(--live)}
+  .card.s-exit{border-color:var(--rust)}
+  .card.s-holding{border-color:#33566050}
+  .card.s-none,.card.s-blocked{opacity:.42;cursor:default}
+
+  .card-top{display:flex;align-items:flex-start;gap:10px}
+  .nm{font-size:14.5px;font-weight:600;letter-spacing:-.005em}
+  .lb{font-size:11px;color:var(--muted);margin-top:2px}
+  .px{margin-left:auto;text-align:right;white-space:nowrap}
+  .px .v{font-size:13.5px;font-weight:500}
+  .px .d{font-size:11px;color:var(--muted);margin-top:2px}
+
+  /* 게이트 사다리 */
+  .ladder{display:flex;gap:3px;margin:14px 0 8px;align-items:flex-end;height:24px}
+  .g{flex:1;height:66%;border-radius:1px;background:#22323e;transition:background .2s}
+  .g.req{height:100%;box-shadow:inset 0 -1px 0 0 var(--line)}
+  .g.on{background:var(--muted)}
+  .s-entry .g.on{background:var(--live)}
+  .s-holding .g.on,.s-watch .g.on{background:var(--cool)}
+  .s-exit .g.on{background:var(--rust)}
+
+  .chiprow{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-top:6px}
+  .chiplab{font-size:9.5px;letter-spacing:.1em;color:var(--dim);margin-right:3px;flex:none}
+  .idle-row .chiplab{color:#3d5260}
+  .chip.idle{opacity:.42;border-style:dashed}
+  .plan{margin:9px 0 2px;padding:9px 11px;border:1px solid var(--line-soft);
+        border-radius:var(--r)}
+  .prow{display:flex;align-items:baseline;gap:9px;padding:2.5px 0;font-size:11px}
+  .pk{color:var(--dim);width:46px;flex:none;letter-spacing:.06em}
+  .pv{color:var(--text);font-weight:500;min-width:76px}
+  .ps{color:var(--dim);font-size:10px;margin-left:auto;text-align:right}
+  .pick{margin:11px 0 2px;padding:10px 11px;border:1px solid var(--line);
+        border-radius:var(--r);background:#1a2a36}
+  .s-entry .pick{border-color:var(--live);background:#241f14}
+  .ptop{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+  .plabel{font-size:9.5px;letter-spacing:.14em;color:var(--dim);width:100%}
+  .s-entry .plabel{color:var(--live)}
+  .pticker{font-size:17px;font-weight:600;letter-spacing:.02em;color:var(--text)}
+  .plev{font-size:11.5px;color:var(--muted)}
+  .pprice{margin-left:auto;font-size:13px;color:var(--muted)}
+  .pwhy{margin-top:6px;font-size:10.5px;color:var(--dim);line-height:1.45}
+  .pwarn{margin-top:5px;font-size:10.5px;color:var(--rust)}
+  .ticker{font-size:15px;font-weight:600;color:var(--text)}
+  .straight{margin:10px 0 2px}
+  .sline{display:flex;align-items:center;gap:7px;font-size:10.5px;color:var(--dim)}
+  .slab{letter-spacing:.1em;flex:none}
+  .sval{color:var(--muted);flex:none}
+  .smeter{flex:1;height:3px;background:#22323e;border-radius:2px;overflow:hidden;min-width:34px}
+  .sfill{display:block;height:100%;background:var(--dim)}
+  .s-entry .sfill{background:var(--live)}
+  .s-holding .sfill,.s-watch .sfill{background:var(--cool)}
+  .sdecay{margin-top:5px;font-size:10.5px;color:var(--dim);line-height:1.4}
+  .sdecay.good{color:var(--muted)}
+  .card-foot{display:flex;align-items:center;gap:10px;margin-top:8px}
+  .count{font-size:11px;color:var(--muted);letter-spacing:.03em}
+  .pill{margin-left:auto;font-size:10px;font-weight:600;letter-spacing:.14em;
+    color:var(--muted);border:1px solid var(--line);border-radius:2px;padding:2.5px 7px}
+  .s-entry .pill{color:var(--live);border-color:var(--live)}
+  .s-exit .pill{color:var(--rust);border-color:var(--rust)}
+  .s-holding .pill,.s-watch .pill{color:var(--cool);border-color:#33565f}
+
+  .chips{display:flex;gap:4px;flex-wrap:wrap;margin-top:10px}
+  .chip{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--muted);
+    border:1px solid var(--line-soft);border-radius:2px;padding:2px 6px;white-space:nowrap}
+  .s-entry .chip{color:var(--text);border-color:var(--line)}
+  .chip.gone{color:var(--dim);text-decoration:line-through}
+  .why{margin-top:9px;font-size:11px;color:var(--dim);line-height:1.45}
+
+  .detail{display:none;margin-top:12px;border-top:1px solid var(--line-soft);padding-top:10px}
+  .card.open .detail{display:block}
+  .grow{display:flex;align-items:baseline;gap:9px;padding:3.5px 0;font-size:11px}
+  .grow .mark{width:11px;color:var(--dim);flex:none}
+  .grow.on .mark{color:var(--muted)}
+  .s-entry .grow.on .mark{color:var(--live)}
+  .grow .lab{color:var(--muted)}
+  .grow.on .lab{color:var(--text)}
+  .grow .req-tag{font-size:9px;color:var(--dim);letter-spacing:.1em;flex:none}
+  .grow .val{margin-left:auto;color:var(--dim);white-space:nowrap}
+
+  /* ── 기록 ────────────────────────────────── */
+  .log{margin-top:6px;border-top:1px solid var(--line)}
+  .log .row{display:flex;gap:14px;padding:10px 0;border-bottom:1px solid var(--line-soft);font-size:12.5px}
+  .log .when{color:var(--dim);flex:none;width:118px}
+  .log .what{color:var(--muted)}
+  .log .what b{color:var(--text);font-weight:500}
+  .empty-log{padding:16px 0;font-size:12.5px;color:var(--dim)}
+
+  footer{margin-top:40px;border-top:1px solid var(--line);padding:20px 0 46px;
+    font-size:11.5px;color:var(--dim);line-height:1.7}
+  .boot{padding:90px 0;text-align:center;color:var(--muted);font-size:14px}
+
+  @media (max-width:640px){
+    .regime{grid-template-columns:1fr}
+    .verdict{padding:38px 0 30px}
+    .log .when{width:92px}
+    .call .meta{margin-left:0;text-align:left;width:100%}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <div class="brand">레버리지 관제 <span>· 보수적 판정</span></div>
+    <button class="scan" id="scanBtn" type="button">지금 점검</button>
+    <div class="stamp mono" id="stamp">불러오는 중</div>
+  </div>
+</header>
+
+<main id="app">
+  <div class="wrap boot">점검 기록을 불러오는 중입니다.</div>
+</main>
+
+<script>
+const STATUS = {
+  entry:{ko:"진입",cls:"s-entry"}, exit:{ko:"이탈",cls:"s-exit"},
+  holding:{ko:"보유",cls:"s-holding"}, watch:{ko:"관심",cls:"s-watch"},
+  flat:{ko:"관망",cls:"s-flat"}, none:{ko:"상품없음",cls:"s-none"},
+  blocked:{ko:"보류",cls:"s-blocked"},
+};
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const num = (v,m) => v == null ? "—" : v.toLocaleString("ko-KR",
+  {minimumFractionDigits: m==="KR"?0:2, maximumFractionDigits: m==="KR"?0:2});
+const pad = n => String(n).padStart(2,"0");
+
+let DATA = null, FILTER = "all";
+
+function stampText(iso, d){
+  if(!iso) return "점검 이력 없음";
+  const t = new Date(iso);
+  const n = d ? ` · 기초자산 ${d.items.length} · 상품 ${d.product_count}` : "";
+  return `마지막 점검 ${pad(t.getMonth()+1)}.${pad(t.getDate())} ${pad(t.getHours())}:${pad(t.getMinutes())}${n}`;
+}
+
+function verdictBlock(d){
+  const live = d.items.filter(i => i.status==="entry" || i.status==="exit");
+  if(!live.length){
+    const bits = [];
+    if(d.counts.holding) bits.push(`보유 중 <b>${d.counts.holding}건</b>은 이탈 조건에 걸리지 않았습니다`);
+    if(d.counts.watch) bits.push(`조건에 근접한 <b>관심 ${d.counts.watch}건</b>이 있습니다`);
+    bits.push(`기초자산 <b>${d.items.length}개</b>를 점검했고 행동할 신호는 없습니다`);
+    return `<div class="wrap verdict quiet">
+      <h1 class="headline">오늘 행동할 신호는 없습니다.</h1>
+      <p class="sub">${bits.join(". ")}. 다음 점검은 한국장 15:45, 미국장 06:10입니다.</p>
+    </div>`;
+  }
+  const rows = live.map(i => {
+    const isExit = i.status==="exit";
+    const arrow = i.direction==="long" ? "▲" : "▼";
+    const ps = (i.products||[]).map(p => `${p.t} ${Math.abs(p.x)}x`).join(" · ");
+    return `<div class="call ${isExit?"is-exit":""}">
+      <div class="kind mono">${isExit?"이탈":"진입"}</div>
+      <div>
+        <div class="who">${arrow} ${esc(i.name)}</div>
+        <div class="sub2 mono">${esc(ps)}</div>
+      </div>
+      <div class="meta mono">${isExit?esc(i.reason):`조건 ${i.passed}/${i.total} 충족`}<br>
+        기초자산 ${num(i.price,i.market)}</div>
+    </div>`;
+  }).join("");
+  const nE = live.filter(i=>i.status==="entry").length, nX = live.length-nE;
+  const head = [nE?`진입 신호 ${nE}건`:"", nX?`이탈 신호 ${nX}건`:""].filter(Boolean).join(" · ");
+  return `<div class="wrap verdict">
+    <h1 class="headline">${head}.</h1>
+    <p class="sub">필수 조건이 모두 맞았을 때만 올라옵니다. 카드를 눌러 어떤 조건이 충족됐는지 확인하세요.</p>
+    <div class="calls">${rows}</div>
+  </div>`;
+}
+
+function regimeBlock(r){
+  const cell = (k,ko) => {
+    const x = r[k]||{};
+    return `<div class="cell"><div class="inner">
+      <div class="mkt mono">${ko}</div>
+      <div class="txt">${esc(x.detail||"데이터 없음")} —
+        롱 <b>${x.long_ok?"허용":"차단"}</b> · 인버스 <b>${x.short_ok?"허용":"차단"}</b></div>
+    </div></div>`;
+  };
+  return `<div class="regime">${cell("KR","한국")}${cell("US","미국")}</div>`;
+}
+
+function filterBar(d){
+  const opts = [["all","전체"],["live","신호·관심만"]].concat(d.groups.map(g=>[g,g]));
+  return `<div class="wrap"><div class="filters">` + opts.map(([k,label]) =>
+    `<button class="fchip ${FILTER===k?"on":""}" data-f="${esc(k)}" type="button">${esc(label)}</button>`
+  ).join("") + `</div></div>`;
+}
+
+// 직진성 = 이 도구의 핵심 지표. 기초자산이 "쭉" 가고 있는가.
+function straightRow(i){
+  if(i.er60 == null) return "";
+  const pct = Math.max(0, Math.min(1, i.er60 / 0.45));   // 0.45 를 가득참으로
+  const decay = i.decay_20d == null ? null : i.decay_20d * 100;
+  const gain  = i.gain_20d  == null ? null : i.gain_20d * 100;
+  let verdict = "", vcls = "bad";
+  if(decay != null && gain != null){
+    if(gain > 0 && decay <= gain * 0.35){ verdict = `20일 예상 +${gain.toFixed(1)}% 대비 감가 ${decay.toFixed(1)}%`; vcls = "good"; }
+    else if(gain <= 0){ verdict = `추세가 이 방향으로 밀어주지 않음`; }
+    else { verdict = `추세 +${gain.toFixed(1)}% 인데 감가 ${decay.toFixed(1)}% 로 상쇄`; }
+  }
+  return `<div class="straight">
+    <div class="sline">
+      <span class="slab mono">직진성</span>
+      <span class="smeter"><span class="sfill" style="width:${(pct*100).toFixed(0)}%"></span></span>
+      <span class="sval mono">${i.er60.toFixed(2)}</span>
+      <span class="slab mono">경로</span>
+      <span class="sval mono">R² ${i.r2==null?"—":i.r2.toFixed(2)}</span>
+    </div>
+    <div class="sdecay ${vcls}">${esc(verdict)}</div>
+  </div>`;
+}
+
+// 살 종목 하나로 좁혀서 보여준다. 같은 기초자산에 상품이 여러 개라
+// "FAS 3x · UYG 2x" 처럼 나열하면 결국 사용자가 다시 골라야 한다.
+function pickRow(i){
+  if(!i.pick) return "";
+  const p = i.pick;
+  const dir = p.x > 0 ? "롱" : "인버스";
+  const px = p.price == null ? "" : `<span class="pprice mono">${num(p.price, i.market)}</span>`;
+  return `<div class="pick">
+    <div class="ptop">
+      <span class="plabel mono">이걸 사면 됩니다</span>
+      <span class="pticker mono">${esc(p.t)}</span>
+      <span class="plev mono">${Math.abs(p.x)}배 ${dir}</span>
+      ${px}
+    </div>
+    <div class="pwhy">${esc(p.why || "")}</div>
+    ${p.thin ? '<div class="pwarn">거래대금이 얇습니다. 시장가 대신 지정가로 나눠 사세요.</div>' : ""}
+    ${p.no_price ? '<div class="pwarn">시세를 받지 못해 대표 종목으로 표시했습니다. HTS 에서 확인하세요.</div>' : ""}
+  </div>`;
+}
+
+// 매매계획 — 얼마에 사고 어디서 자를지
+function planRow(i){
+  if(!i.plan) return "";
+  const p = i.plan, m = i.market;
+  const row = (k, v, sub) => `<div class="prow">
+      <span class="pk mono">${k}</span>
+      <span class="pv mono">${v}</span>
+      ${sub ? `<span class="ps">${sub}</span>` : ""}</div>`;
+  const pc = x => x == null ? "—" : `${x > 0 ? "+" : ""}${(x*100).toFixed(1)}%`;
+  return `<div class="plan">
+    ${row("매수", num(p.entry, m), "다음 거래일 시가 근처")}
+    ${row("손절", num(p.stop_price, m), `${pc(p.stop_pct)} · ${esc(p.stop_basis)}`)}
+    ${row(p.target_is_rule ? "익절" : "목표", num(p.target_price, m),
+          `${pc(p.target_pct)} · 손절폭의 ${p.target_r}배${p.target_is_rule ? "" : " (자동청산 아님)"}`)}
+    ${row("시간한도", `${p.time_stop_days}거래일`, "그때까지 못 벌면 청산")}
+    ${row("비중", `총자산 ${(p.position_pct*100).toFixed(0)}% 이하`,
+          p.capped ? `${Math.abs(p.leverage)}배 상한 적용` : "한 번에 2% 잃는 기준")}
+    ${p.gap_risk ? '<div class="pwarn">3배는 갭 하락 시 손절가에 못 팝니다. 크게 넣지 마세요.</div>' : ""}
+  </div>`;
+}
+
+function card(i){
+  const st = STATUS[i.status] || STATUS.flat;
+  const arrow = i.direction==="long" ? "▲" : "▼";
+  const chipOf = (p, dim) => {
+    const px = p.price!=null ? ` · ${num(p.price,"US")}` : "";
+    return `<span class="chip ${p.missing?"gone":""} ${dim?"idle":""}">${esc(p.t)} ${Math.abs(p.x)}x${px}</span>`;
+  };
+  const active = (i.products||[]).map(p => chipOf(p, false)).join("");
+  const otherList = i.products_other||[];
+  const otherDir = i.direction === "long" ? "인버스" : "롱";
+  const other = otherList.length
+    ? `<div class="chiprow idle-row"><span class="chiplab mono">${otherDir}</span>`
+      + otherList.map(p => chipOf(p, true)).join("") + `</div>`
+    : "";
+  const activeDir = i.direction === "long" ? "롱" : "인버스";
+  const chips = (active
+      ? `<div class="chiprow"><span class="chiplab mono">${activeDir} · 판정 중</span>${active}</div>`
+      : "") + other;
+
+  const ladder = (i.gates||[]).length
+    ? `<div class="ladder">` + i.gates.map(g =>
+        `<div class="g ${g.mandatory?"req":""} ${g.passed?"on":""}" title="${esc(g.label)}"></div>`
+      ).join("") + `</div>`
+    : `<div class="ladder"></div>`;
+
+  const rows = (i.gates||[]).map(g => `<div class="grow ${g.passed?"on":""}">
+      <div class="mark mono">${g.passed?"■":"□"}</div>
+      <div class="lab">${esc(g.label)}</div>
+      ${g.mandatory?'<div class="req-tag mono">필수</div>':""}
+      <div class="val mono">${esc(g.detail)}</div>
+    </div>`).join("");
+
+  const chg = i.change_pct==null ? "" : `${i.change_pct>0?"+":""}${i.change_pct.toFixed(2)}%`;
+  const interactive = i.gates && i.gates.length;
+
+  return `<div class="card ${st.cls}" ${interactive?'tabindex="0" role="button" aria-expanded="false"':""}>
+    <div class="card-top">
+      <div>
+        <div class="nm">${arrow} ${esc(i.name)}</div>
+        <div class="lb mono">${esc(i.id)}</div>
+      </div>
+      <div class="px mono"><div class="v">${num(i.price,i.market)}</div><div class="d">${chg}</div></div>
+    </div>
+    ${ladder}
+    ${straightRow(i)}
+    ${pickRow(i)}
+    ${planRow(i)}
+    <div class="card-foot">
+      <div class="count mono">${interactive?`조건 ${i.passed}/${i.total}`:"—"}</div>
+      <div class="pill mono">${st.ko}</div>
+    </div>
+    ${chips?`<div class="chips">${chips}</div>`:""}
+    <div class="why">${esc(i.reason||"")}</div>
+    ${interactive?`<div class="detail">${rows}
+      <div class="why" style="margin-top:10px">기준일 ${esc(i.asof||"-")} · 판정은 기초자산 ${esc(i.id)} 기준</div>
+    </div>`:""}
+  </div>`;
+}
+
+function visible(d){
+  if(FILTER==="all") return d.items;
+  if(FILTER==="live") return d.items.filter(i=>["entry","exit","holding","watch"].includes(i.status));
+  return d.items.filter(i=>i.group===FILTER);
+}
+
+function sections(d){
+  const items = visible(d);
+  if(!items.length) return `<section class="wrap"><div class="empty-log">
+    해당하는 종목이 없습니다. 다른 필터를 눌러보세요.</div></section>`;
+  return d.groups.map(g => {
+    const list = items.filter(i=>i.group===g);
+    if(!list.length) return "";
+    const hot = list.filter(i=>["entry","exit"].includes(i.status)).length;
+    return `<section class="wrap">
+      <div class="sec-head"><h2>${esc(g)}</h2>
+        <span class="n mono">${list.length}</span>
+        ${hot?`<span class="hot mono">신호 ${hot}</span>`:""}</div>
+      <div class="rule"></div>
+      <div class="grid">${list.map(card).join("")}</div>
+    </section>`;
+  }).join("");
+}
+
+function digestBlock(d){
+  const g = d.digest || [];
+  if(!g.length) return "";
+  const rows = g.map(x => `<div class="drow">
+      <div class="dname">${esc(x.name)} <span class="mono">${esc(x.ticker)}</span></div>
+      <div class="dret mono ${x.ret > 0 ? "up" : "dn"}">${x.ret == null ? "—" :
+        `${x.ret > 0 ? "+" : ""}${(x.ret*100).toFixed(1)}%`}</div>
+      <div class="dmeta mono">${x.held}/${x.time_stop}일${
+        x.to_stop == null ? "" : ` · 손절까지 ${(x.to_stop*100).toFixed(1)}%p`}</div>
+      <div class="daction">${esc(x.action)}</div>
+    </div>`).join("");
+  return `<section class="wrap">
+    <div class="sec-head"><h2>보유 중</h2><span class="n mono">${g.length}건</span></div>
+    <div class="rule"></div><div class="digest">${rows}</div>
+  </section>`;
+}
+
+function logBlock(h){
+  if(!h||!h.length) return `<section class="wrap">
+    <div class="sec-head"><h2>신호 기록</h2></div><div class="rule"></div>
+    <div class="empty-log">아직 발생한 신호가 없습니다. 조건이 모두 맞는 날에만 여기에 쌓입니다.</div>
+  </section>`;
+  const rows = h.map(e => {
+    const t = new Date(e.ts);
+    const when = `${t.getFullYear()}.${pad(t.getMonth()+1)}.${pad(t.getDate())} ${pad(t.getHours())}:${pad(t.getMinutes())}`;
+    const kind = {entry:"진입",exit:"이탈",watch:"관심"}[e.kind] || e.kind;
+    const tail = e.kind==="exit" ? esc(e.reason) : `조건 ${e.passed ?? "-"}/${e.total ?? "-"}`;
+    const ps = (e.products||[]).slice(0,3).map(p=>p.t).join(", ");
+    return `<div class="row"><div class="when mono">${when}</div>
+      <div class="what"><b>${kind}</b> · ${esc(e.name)} — ${tail}${ps?` · ${esc(ps)}`:""}</div></div>`;
+  }).join("");
+  return `<section class="wrap">
+    <div class="sec-head"><h2>신호 기록</h2><span class="n mono">최근 ${h.length}건</span></div>
+    <div class="rule"></div><div class="log">${rows}</div>
+  </section>`;
+}
+
+function render(d){
+  DATA = d;
+  document.getElementById("stamp").textContent = stampText(d.generated_at, d);
+  document.getElementById("app").innerHTML =
+    verdictBlock(d) + regimeBlock(d.regime||{}) + filterBar(d) + sections(d) + logBlock(d.history) +
+    `<footer class="wrap">
+      게이트 막대에서 키가 큰 칸이 필수 조건입니다. 필수가 하나라도 비면 나머지가 다 차도 신호가 나지 않습니다.<br>
+      판단 단위는 기초자산입니다. 같은 기초자산을 쓰는 레버리지 상품은 추세 판단을 공유하므로 한 카드에 묶여 있습니다.<br>
+      티커는 수시로 상장·폐지·분할됩니다. <span class="mono">python run.py --audit</span> 로 정기적으로 확인하세요.<br>
+      이 화면은 규칙 점검 도구이며 투자 자문이 아닙니다. 레버리지 상품은 변동성 감가로 원금 전액을 잃을 수 있습니다.
+    </footer>`;
+
+  document.querySelectorAll(".fchip").forEach(b => b.addEventListener("click", () => {
+    FILTER = b.dataset.f; render(DATA);
+    window.scrollTo({top: Math.min(window.scrollY, 400), behavior:"instant"});
+  }));
+
+  document.querySelectorAll('.card[role="button"]').forEach(c => {
+    const toggle = () => c.setAttribute("aria-expanded", c.classList.toggle("open") ? "true":"false");
+    c.addEventListener("click", toggle);
+    c.addEventListener("keydown", e => {
+      if(e.key==="Enter"||e.key===" "){ e.preventDefault(); toggle(); }
+    });
+  });
+}
+
+let polling = false;
+async function refresh(){
+  try{
+    const r = await fetch("/api/latest",{cache:"no-store"});
+    const d = await r.json();
+    const btn = document.getElementById("scanBtn");
+    if(d.scanning){
+      btn.disabled = true; btn.textContent = "점검 중";
+      if(!polling){ polling = true; setTimeout(()=>{polling=false; refresh();}, 5000); }
+    }else{ btn.disabled = false; btn.textContent = "지금 점검"; }
+    if(d.empty){
+      document.getElementById("stamp").textContent = "점검 이력 없음";
+      document.getElementById("app").innerHTML = `<div class="wrap boot">${d.scanning
+        ? "첫 점검을 진행 중입니다. 기초자산 60건 가까이 받아오느라 2~3분 걸립니다."
+        : "아직 점검 기록이 없습니다. 위의 ‘지금 점검’을 누르면 시작합니다."}</div>`;
+      return;
+    }
+    render(d);
+  }catch(e){
+    document.getElementById("stamp").textContent = "서버에 연결하지 못했습니다";
+  }
+}
+
+document.getElementById("scanBtn").addEventListener("click", async () => {
+  const btn = document.getElementById("scanBtn");
+  btn.disabled = true; btn.textContent = "점검 중";
+  await fetch("/api/scan",{method:"POST"});
+  setTimeout(refresh, 1500);
+});
+
+refresh();
+setInterval(refresh, 60000);
+</script>
+</body>
+</html>

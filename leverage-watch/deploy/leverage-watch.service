@@ -1,0 +1,37 @@
+[Unit]
+Description=레버리지 관제 — 대시보드 및 자동 점검
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+
+# ── 아래 3줄만 본인 환경에 맞게 고치세요 ──────────────────
+User=youruser
+Group=youruser
+WorkingDirectory=/opt/leverage-watch
+# ──────────────────────────────────────────────────────
+
+ExecStart=/opt/leverage-watch/.venv/bin/python server.py --host 127.0.0.1 --port 8777
+
+Restart=on-failure
+RestartSec=30
+
+# 다른 서비스와 자원 다툼이 없도록 상한을 둔다.
+# 실측 최대 86MB 라 여유가 충분하다.
+MemoryMax=512M
+CPUQuota=50%
+
+# 자기 폴더 말고는 못 건드리게
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/opt/leverage-watch/state
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=leverage-watch
+
+[Install]
+WantedBy=multi-user.target
