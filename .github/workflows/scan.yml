@@ -7,18 +7,15 @@ on:
     - cron: '30 23 * * 0-4'
   workflow_dispatch:
     inputs:
-      audit:
-        description: '티커 점검만 하기 (죽은 종목 찾기)'
-        type: boolean
-        default: false
-      reset:
-        description: '보유 기록 비우기 (안 산 종목 정리)'
-        type: boolean
-        default: false
       digest:
-        description: '알림 보내기'
+        description: '보유 요약도 같이 보낼지'
         type: boolean
         default: true
+      reset:
+        description: '보유 기록 초기화 (안 산 종목 정리)'
+        type: boolean
+        default: false
+      
 
 concurrency:
   group: leverage-watch
@@ -27,7 +24,7 @@ concurrency:
 jobs:
   scan:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 25
     permissions:
       contents: write
 
@@ -39,12 +36,13 @@ jobs:
         run: |
           f=$(find . -name requirements.txt -not -path './.git/*' | head -1)
           if [ -z "$f" ]; then
-            echo "::error::requirements.txt 를 찾지 못했습니다."
+            echo "::error::requirements.txt 를 찾지 못했습니다. 프로젝트 파일이 저장소에 올라가지 않았습니다."
             exit 1
           fi
           d=$(dirname "$f")
           echo "dir=$d" >> $GITHUB_OUTPUT
           echo "프로젝트 폴더: $d"
+          ls "$d"
 
       - uses: actions/setup-python@v5
         with:
@@ -65,25 +63,17 @@ jobs:
         working-directory: ${{ steps.loc.outputs.dir }}
         run: python selftest.py
 
-      - name: 티커 점검
-        if: ${{ inputs.audit == true }}
-        working-directory: ${{ steps.loc.outputs.dir }}
-        run: python run.py --audit
-
-      - name: 보유 기록 비우기
-        if: ${{ inputs.reset == true }}
-        working-directory: ${{ steps.loc.outputs.dir }}
-        run: python run.py --reset
-
       - name: 점검 실행
-        if: ${{ inputs.audit != true }}
         working-directory: ${{ steps.loc.outputs.dir }}
         env:
           LEV_CHANNEL: telegram
           LEV_TG_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           LEV_TG_CHAT: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          if [ "${{ github.event_name }}" = "schedule" ] || \
+          if [ "${{ inputs.reset }}" = "true" ]; then
+            python run.py --reset
+          fi
+          if [ "${{ github.event.schedule }}" = "30 23 * * 0-4" ] || \
              [ "${{ inputs.digest }}" = "true" ]; then
             python run.py --digest
           else
@@ -91,15 +81,20 @@ jobs:
           fi
 
       - name: 보유 기록 저장
-        if: ${{ inputs.audit != true }}
         working-directory: ${{ steps.loc.outputs.dir }}
         run: |
           git config user.name  "leverage-watch"
           git config user.email "actions@github.com"
           git add -f state/state.json state/latest.json 2>/dev/null || true
+      
           if git diff --cached --quiet; then
             echo "변경 없음"
           else
             git commit -m "점검 $(date -u +'%Y-%m-%d %H:%M') UTC"
-            git push
-          fi
+      
+            # 원격 최신 커밋 반영
+            git pull --rebase origin main
+      
+            # 다시 푸시
+            git push origin main
+                fi
