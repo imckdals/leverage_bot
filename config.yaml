@@ -1,0 +1,829 @@
+# ─────────────────────────────────────────────────────────────
+#  레버리지 관제 — 설정
+#
+#  구조: 기초자산 1개 = 카드 1장.
+#  같은 기초자산을 쓰는 레버리지 상품은 전부 한 판단에 묶인다.
+#  (TQQQ·QLD·SQQQ·QID·PSQ 는 결국 QQQ 추세 하나로 결정된다)
+#
+#  long / short = [티커, 배수] 목록. 배수 음수 = 인버스.
+#  vol_max = ATR20/종가 상한. 이 위면 감가가 이겨서 진입 안 함.
+#
+#  티커는 수시로 상장·폐지·분할된다. `python run.py --audit` 로
+#  현재 살아 있는 티커만 남기고 정리하세요.
+# ─────────────────────────────────────────────────────────────
+
+alerts:
+  channel: console            # telegram | discord | console
+  telegram:
+    bot_token: ""             # @BotFather 에서 발급
+    chat_id: ""               # @userinfobot 에게 아무 말이나 보내면 알려줌
+  discord:
+    webhook_url: ""
+  # simple = 살 종목과 팔 조건만. full = 근거·대체종목까지 전부.
+  style: simple
+  # minimal = 살 것/팔 것만, 없으면 "없음" 한 줄.
+  # full    = 보유 현황·근접 종목·점검 통계까지.
+  digest_style: minimal
+  notify_on:
+    entry: true
+    exit: true
+    watch: false
+  # 보유 중인 종목의 손익·손절까지 거리를 매일 보내준다.
+  #   always       매일 보냄 (보유 없으면 한 줄)
+  #   when_holding 보유 중일 때만 (권장)
+  #   off          끔
+  daily_digest: when_holding
+  digest_time: "08:30"              # 켜면 알림이 꽤 늘어난다
+
+# ─────────────────────────────────────────────────────────────
+#  일정 회피
+#  실적 발표는 갭으로 움직여서 손절가에 팔 수가 없다.
+#  예측은 하지 않고, 그 구간을 피하기만 한다.
+# ─────────────────────────────────────────────────────────────
+events:
+  enabled: true
+  use_earnings: true
+  block_days_before_earnings: 5   # 실적 5일 전부터 신규 진입 차단
+  warn_days_before_earnings: 3    # 보유 중이면 3일 전부터 알림
+  # 국내는 실적일 사전 공지가 없다. 분기 종료 후 영업일 4~10일 사이라는
+  # 패턴으로 구간을 추정해 그 기간 전체를 막는다. 정확한 날짜가 아니다.
+  estimate_korean: true
+
+  use_macro: true
+  block_days_before_macro: 1      # 거시 일정 전날부터 차단
+  # 연준 공식 페이지에서 일정을 자동으로 받아온다.
+  # 실패하면 아래 목록을 그대로 쓰므로 멈추지 않는다.
+  auto_fomc: true
+
+  # FOMC 금리 결정일 (발표는 이틀째). 연준 공식 일정 기준.
+  # 지난 날짜는 자동으로 무시되니 그냥 두셔도 됩니다.
+  # CPI 등 다른 일정도 같은 형식으로 추가할 수 있습니다.
+  macro_calendar:
+    - {date: "2026-09-16", name: "FOMC"}
+    - {date: "2026-10-28", name: "FOMC"}
+    - {date: "2026-12-09", name: "FOMC"}
+    - {date: "2027-01-27", name: "FOMC"}
+    - {date: "2027-03-17", name: "FOMC"}
+    - {date: "2027-04-28", name: "FOMC"}
+    - {date: "2027-06-09", name: "FOMC"}
+    - {date: "2027-07-28", name: "FOMC"}
+    - {date: "2027-09-15", name: "FOMC"}
+    - {date: "2027-10-27", name: "FOMC"}
+    - {date: "2027-12-08", name: "FOMC"}
+
+portfolio:
+  # 한 번의 매매에서 총자산의 몇 %까지 잃을 각오인지.
+  # 손절폭이 -25% 면 총자산의 8% 만 넣게 계산된다 (0.02 / 0.25).
+  risk_per_trade: 0.02
+  # 배수로 나눈 절대 상한. 3배면 총자산의 10%, 2배면 15% 가 한도가 된다.
+  # 손절이 좁게 잡히는 날 비중이 터무니없이 커지는 걸 막는다.
+  max_position: 0.30
+
+server:
+  # 비워두면 인증 없음 (자기 컴퓨터에서만 볼 때).
+  # 서버에 올려서 밖에서 볼 거면 반드시 채우세요. 아이디는 아무거나,
+  # 비밀번호만 맞으면 됩니다.
+  password: ""
+
+schedule:
+  timezone: "Asia/Seoul"
+  runs:
+    - "15:45"                 # 한국 정규장 마감 직후
+    - "06:10"                 # 미국 정규장 마감 직후
+
+rules:
+  # ── 직진성 · 이 도구의 핵심 ────────────────────────────────
+  # 기초자산이 같은 폭을 움직여도, 한 방향으로 쭉 간 경우와
+  # 오르내리며 도달한 경우 레버리지 수익률은 완전히 달라진다.
+  # 아래 세 조건이 "확실히 쭉 가는 중"만 통과시키는 장치다.
+  straight:
+    er_strong: 0.15     # 이 이상이면 그것만으로 통과 (원래 매끄러운 지수용)
+    er_min: 0.10        # 절대 하한. 이 아래는 백분위가 높아도 탈락        # 효율성비율 = 60일 순이동 ÷ 실제 이동거리 합
+                        #   1.0 = 완전한 직선, 0.05 = 왔다갔다 제자리
+                        #   참고값: 강한 추세 0.33 / 보통 상승 0.19
+                        #          출렁이는 상승 0.06 / 횡보 0.04
+    r2_strong: 0.45     # 이 이상이면 그것만으로 통과
+    r2_min: 0.30        # 절대 하한        # 로그가격 직선회귀 R². 경로가 매끄러운가
+                        #   참고값: 강한 추세 0.87 / 보통 상승 0.64
+                        #          출렁이는 상승 0.16 / 횡보 0.10
+    pctile_min: 0.70    # 자기 2년 이력 대비 상위 30% 안에 드는 직진성일 것.
+                        # 지수는 원래 매끄럽고 개별주는 원래 거칠어서,
+                        # 절대 기준만 쓰면 개별주가 영원히 통과 못 한다.
+    horizon_days: 20    # 감가·추세이익을 계산하는 기간
+    decay_budget: 0.35  # 예상 감가가 예상 추세이익의 35% 넘으면 탈락
+
+  long:
+    min_gates: 9              # 게이트 9개 전부. 필수 8 + 보조 1
+    watch_gates: 8
+    cooldown_days: 10
+  short:
+    min_gates: 9              # 게이트 10개 중. 인버스는 한 칸 더 빡빡하게
+    watch_gates: 8
+    cooldown_days: 15
+    vol_multiplier: 1.3       # 하락장은 원래 변동성이 높아 상한을 완화
+  exit:
+    below_ma20_days: 2
+    vol_spike_mult: 1.6
+    target_r: 2.0       # 목표가 = 손절폭의 몇 배. 기본은 '참고선' 이고
+                        # 자동 청산은 하지 않는다 (추세 끝까지 들고 감).
+    take_profit: null   # 숫자를 넣으면 실제 익절 규칙이 된다. 예: 0.35
+                        # 켜기 전에 backtest.py 로 도움이 되는지 확인하세요.
+    time_stop_days: 20  # 이 거래일이 지나도 못 벌고 있으면 청산.
+    time_stop_min_return: 0.0   # 감가가 계속 갉아먹기 때문에 제자리 = 손실
+    stop_loss: 0.20     # 레버리지 상품 기준 -20% 면 무조건 청산.
+                        # 추세 이탈 신호는 며칠 걸리는데 3배 상품은
+                        # 그 사이 -40% 가 가능해서 별도 하한이 필요하다.
+
+regime:
+  us:
+    index: "SPY"
+    vix: "^VIX"
+    vix_max: 24
+    vix_min_for_short: 15
+  kr:
+    index: "069500.KS"        # KODEX 200 — 국내 국면 판단용
+    realized_vol_max: 0.30
+
+# 채권·원자재·크립토는 주식 지수 국면과 따로 논다.
+# 이 그룹은 시장 국면 게이트를 자기 추세로 대체한다.
+# ─────────────────────────────────────────────────────────────
+#  어떤 그룹만 볼지. 지금은 개별종목만 본다.
+#  지수·섹터까지 받고 싶으면 아래 목록에 줄을 추가하거나,
+#  watch_groups: [] 로 비우면 전부 대상이 된다.
+#
+#  쓸 수 있는 이름:
+#    미국 개별주 · 한국 단일종목 · 미국 지수 · 미국 섹터 · 미국 테마
+#    미국 해외지수 · 미국 채권 · 미국 원자재 · 미국 크립토
+#
+#  개별종목만 보면 신호가 훨씬 드뭅니다. 종목 하나가 무너질 때의
+#  낙폭도 지수보다 크므로, 비중 상한을 꼭 지키세요.
+# ─────────────────────────────────────────────────────────────
+watch_groups:
+  - "미국 개별주"
+  - "한국 단일종목"
+
+# ─────────────────────────────────────────────────────────────
+#  종목 직접 추가하기
+#
+#  단일종목 레버리지는 계속 새로 상장되고 티커도 자주 바뀝니다.
+#  아래 형식으로 universe 에 줄을 추가하면 바로 감시 대상이 됩니다.
+#
+#    - u: "UBER"                  기초자산 티커 (판정용, 본주)
+#      name: "우버"
+#      group: "미국 개별주"
+#      market: US
+#      vol_max: 0.040             ATR 상한. 변동성 큰 종목일수록 크게
+#      long:  [["UBRL", 2]]       오를 때 사는 상품 [티커, 배수]
+#      short: [["UBRS", -2]]      내릴 때 사는 상품. 없으면 []
+#
+#  추가한 뒤 Actions 에서 '티커 점검' 을 체크하고 실행하면
+#  실제로 데이터가 나오는지 확인해줍니다. 실패한 줄은 지우세요.
+# ─────────────────────────────────────────────────────────────
+
+# 이 그룹은 S&P500 국면 대신 자기 52주 레인지 위치로 판단한다.
+# 개별주를 넣은 이유: 무너진 종목은 지수가 올라도 무너진다.
+# S&P500 이 MA200 위라는 이유로 NVDA 인버스를 막는 건 틀린 규칙이었다.
+regime_exempt_groups:
+  - "미국 채권"
+  - "미국 원자재"
+  - "미국 크립토"
+  - "미국 개별주"
+  - "한국 단일종목"
+
+universe:
+
+# ══ 한국 ═══════════════════════════════════════════════════
+# 2026년 5월 27일 상장된 단일종목 레버리지·인버스2X.
+# 제도상 기초자산은 삼성전자·SK하이닉스 두 종목뿐이다.
+# 매수하려면 금융투자교육원 사전교육 이수 + 증권사 등록이 필요하다.
+
+  - u: "005930.KS"
+    name: "삼성전자"
+    group: "한국 단일종목"
+    market: KR
+    vol_max: 0.030
+    long:
+      - ["0193W0.KS", 2]     # KODEX 삼성전자단일종목레버리지 (현물)
+      - ["0195R0.KS", 2]     # TIGER 삼성전자단일종목레버리지 (현물)
+      - ["0194M0.KS", 2]     # ACE 삼성전자단일종목레버리지 (현물)
+      - ["0192M0.KS", 2]     # RISE 삼성전자단일종목레버리지 (현물)
+      - ["0193K0.KS", 2]     # PLUS 삼성전자단일종목레버리지 (현물)
+      - ["0194N0.KS", 2]     # KIWOOM 삼성전자선물단일종목레버리지 (선물)
+      - ["0198B0.KS", 2]     # 1Q 삼성전자선물단일종목레버리지 (선물)
+    short:
+      - ["0193L0.KS", -2]    # PLUS 삼성전자선물단일종목인버스2X (선물)
+
+  - u: "000660.KS"
+    name: "SK하이닉스"
+    group: "한국 단일종목"
+    market: KR
+    vol_max: 0.035
+    long:
+      - ["0193T0.KS", 2]     # KODEX SK하이닉스단일종목레버리지 (현물)
+      - ["0195S0.KS", 2]     # TIGER SK하이닉스단일종목레버리지 (현물)
+      - ["0194T0.KS", 2]     # ACE SK하이닉스단일종목레버리지 (현물)
+      - ["0192L0.KS", 2]     # RISE SK하이닉스단일종목레버리지 (현물)
+      - ["0197W0.KS", 2]     # SOL SK하이닉스단일종목레버리지 (현물)
+      - ["0194R0.KS", 2]     # KIWOOM SK하이닉스선물단일종목레버리지 (선물)
+      - ["0198D0.KS", 2]     # 1Q SK하이닉스선물단일종목레버리지 (선물)
+    short:
+      - ["0197X0.KS", -2]    # SOL SK하이닉스선물단일종목인버스2X (선물)
+
+# ══ 미국 지수 ══════════════════════════════════════════════
+
+  - u: "QQQ"
+    name: "나스닥100"
+    group: "미국 지수"
+    market: US
+    vol_max: 0.020
+    long:  [["TQQQ", 3], ["QLD", 2]]
+    short: [["SQQQ", -3], ["QID", -2], ["PSQ", -1]]
+
+  - u: "SPY"
+    name: "S&P500"
+    group: "미국 지수"
+    market: US
+    vol_max: 0.018
+    long:  [["UPRO", 3], ["SPXL", 3], ["SSO", 2]]
+    short: [["SPXU", -3], ["SPXS", -3], ["SDS", -2], ["SH", -1]]
+
+  - u: "DIA"
+    name: "다우존스"
+    group: "미국 지수"
+    market: US
+    vol_max: 0.018
+    long:  [["UDOW", 3], ["DDM", 2]]
+    short: [["SDOW", -3], ["DXD", -2]]
+
+  - u: "IWM"
+    name: "러셀2000"
+    group: "미국 지수"
+    market: US
+    vol_max: 0.024
+    long:  [["TNA", 3], ["UWM", 2]]
+    short: [["TZA", -3], ["TWM", -2]]
+
+  - u: "MDY"
+    name: "S&P 중형주400"
+    group: "미국 지수"
+    market: US
+    vol_max: 0.022
+    long:  [["MIDU", 3]]
+    short: []
+
+  - u: "SPHB"
+    name: "S&P 고베타"
+    group: "미국 지수"
+    market: US
+    vol_max: 0.028
+    long:  [["HIBL", 3]]
+    short: [["HIBS", -3]]
+
+# ══ 미국 섹터 ══════════════════════════════════════════════
+
+  - u: "SOXX"
+    name: "반도체"
+    group: "미국 섹터"
+    market: US
+    vol_max: 0.028
+    long:  [["SOXL", 3], ["USD", 2]]
+    short: [["SOXS", -3]]
+
+  - u: "XLK"
+    name: "기술"
+    group: "미국 섹터"
+    market: US
+    vol_max: 0.024
+    long:  [["TECL", 3], ["ROM", 2]]
+    short: [["TECS", -3]]
+
+  - u: "XLF"
+    name: "금융"
+    group: "미국 섹터"
+    market: US
+    vol_max: 0.022
+    long:  [["FAS", 3], ["UYG", 2]]
+    short: [["FAZ", -3], ["SKF", -2]]
+
+  - u: "KBWB"
+    name: "은행"
+    group: "미국 섹터"
+    market: US
+    vol_max: 0.026
+    long:  [["BNKU", 3]]
+    short: [["BNKD", -3]]
+
+  - u: "XLV"
+    name: "헬스케어"
+    group: "미국 섹터"
+    market: US
+    vol_max: 0.020
+    long:  [["CURE", 3], ["RXL", 2]]
+    short: []
+
+  - u: "XBI"
+    name: "바이오텍"
+    group: "미국 섹터"
+    market: US
+    vol_max: 0.032
+    long:  [["LABU", 3]]
+    short: [["LABD", -3]]
+
+  - u: "XPH"
+    name: "제약"
+    group: "미국 섹터"
+    market: US
+    vol_max: 0.026
+    long:  [["PILL", 3]]
+    short: []
+
+  - u: "IYR"
+    name: "부동산"
+    group: "미국 섹터"
+    market: US
+    vol_max: 0.024
+    long:  [["DRN", 3], ["URE", 2]]
+    short: [["DRV", -3]]
+
+  - u: "ITB"
+    name: "주택건설"
+    group: "미국 섹터"
+    market: US
+    vol_max: 0.028
+    long:  [["NAIL", 3]]
+    short: []
+
+  - u: "XLE"
+    name: "에너지"
+    group: "미국 섹터"
+    market: US
+    vol_max: 0.028
+    long:  [["ERX", 2], ["DIG", 2]]
+    short: [["ERY", -2]]
+
+  - u: "XOP"
+    name: "오일·가스 E&P"
+    group: "미국 섹터"
+    market: US
+    vol_max: 0.034
+    long:  [["GUSH", 2]]
+    short: [["DRIP", -2]]
+
+  - u: "XLU"
+    name: "유틸리티"
+    group: "미국 섹터"
+    market: US
+    vol_max: 0.020
+    long:  [["UTSL", 3]]
+    short: []
+
+  - u: "XLI"
+    name: "산업재"
+    group: "미국 섹터"
+    market: US
+    vol_max: 0.022
+    long:  [["DUSL", 3]]
+    short: []
+
+  - u: "IYT"
+    name: "운송"
+    group: "미국 섹터"
+    market: US
+    vol_max: 0.026
+    long:  [["TPOR", 3]]
+    short: []
+
+  - u: "XLY"
+    name: "경기소비재"
+    group: "미국 섹터"
+    market: US
+    vol_max: 0.024
+    long:  [["WANT", 3]]
+    short: []
+
+  - u: "XRT"
+    name: "소매"
+    group: "미국 섹터"
+    market: US
+    vol_max: 0.028
+    long:  [["RETL", 3]]
+    short: []
+
+  - u: "GDX"
+    name: "금광주"
+    group: "미국 섹터"
+    market: US
+    vol_max: 0.038
+    long:  [["NUGT", 2]]
+    short: [["DUST", -2]]
+
+  - u: "GDXJ"
+    name: "주니어 금광주"
+    group: "미국 섹터"
+    market: US
+    vol_max: 0.042
+    long:  [["JNUG", 2]]
+    short: [["JDST", -2]]
+
+# ══ 미국 테마 ══════════════════════════════════════════════
+
+  - u: "FNGS"
+    name: "FANG+"
+    group: "미국 테마"
+    market: US
+    vol_max: 0.028
+    long:  [["FNGU", 3]]
+    short: [["FNGD", -3]]
+
+# ══ 미국 해외지수 ══════════════════════════════════════════
+
+  - u: "EEM"
+    name: "신흥국"
+    group: "미국 해외지수"
+    market: US
+    vol_max: 0.024
+    long:  [["EDC", 3]]
+    short: [["EDZ", -3]]
+
+  - u: "FXI"
+    name: "중국 대형주"
+    group: "미국 해외지수"
+    market: US
+    vol_max: 0.030
+    long:  [["YINN", 3]]
+    short: [["YANG", -3]]
+
+  - u: "EWY"
+    name: "한국 (MSCI)"
+    group: "미국 해외지수"
+    market: US
+    vol_max: 0.030
+    long:  [["KORU", 3]]
+    short: []
+
+  - u: "INDA"
+    name: "인도"
+    group: "미국 해외지수"
+    market: US
+    vol_max: 0.022
+    long:  [["INDL", 2]]
+    short: []
+
+  - u: "EWJ"
+    name: "일본"
+    group: "미국 해외지수"
+    market: US
+    vol_max: 0.022
+    long:  [["EZJ", 2]]
+    short: []
+
+  - u: "EWZ"
+    name: "브라질"
+    group: "미국 해외지수"
+    market: US
+    vol_max: 0.032
+    long:  [["BRZU", 2]]
+    short: []
+
+  - u: "VGK"
+    name: "유럽"
+    group: "미국 해외지수"
+    market: US
+    vol_max: 0.022
+    long:  [["EURL", 3]]
+    short: []
+
+# ══ 미국 채권 ══════════════════════════════════════════════
+
+  - u: "TLT"
+    name: "미국채 20년+"
+    group: "미국 채권"
+    market: US
+    vol_max: 0.016
+    long:  [["TMF", 3], ["UBT", 2]]
+    short: [["TMV", -3], ["TBT", -2], ["TBF", -1]]
+
+  - u: "IEF"
+    name: "미국채 7-10년"
+    group: "미국 채권"
+    market: US
+    vol_max: 0.010
+    long:  [["TYD", 3]]
+    short: [["TYO", -3]]
+
+# ══ 미국 원자재 ════════════════════════════════════════════
+
+  - u: "GLD"
+    name: "금"
+    group: "미국 원자재"
+    market: US
+    vol_max: 0.022
+    long:  [["UGL", 2]]
+    short: [["GLL", -2]]
+
+  - u: "SLV"
+    name: "은"
+    group: "미국 원자재"
+    market: US
+    vol_max: 0.032
+    long:  [["AGQ", 2]]
+    short: [["ZSL", -2]]
+
+  - u: "USO"
+    name: "원유"
+    group: "미국 원자재"
+    market: US
+    vol_max: 0.034
+    long:  [["UCO", 2]]
+    short: [["SCO", -2]]
+
+  - u: "UNG"
+    name: "천연가스"
+    group: "미국 원자재"
+    market: US
+    vol_max: 0.050
+    long:  [["BOIL", 2]]
+    short: [["KOLD", -2]]
+
+# ══ 미국 크립토 ════════════════════════════════════════════
+
+  - u: "IBIT"
+    name: "비트코인"
+    group: "미국 크립토"
+    market: US
+    vol_max: 0.045
+    long:  [["BITX", 2], ["BITU", 2]]
+    short: [["BITI", -2], ["SBIT", -2]]
+
+  - u: "ETHA"
+    name: "이더리움"
+    group: "미국 크립토"
+    market: US
+    vol_max: 0.055
+    long:  [["ETHU", 2]]
+    short: [["ETHD", -2]]
+
+# ══ 미국 개별주 ════════════════════════════════════════════
+
+  - u: "NVDA"
+    name: "엔비디아"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.038
+    long:  [["NVDL", 2], ["NVDX", 2], ["NVDU", 2]]
+    short: [["NVD", -1], ["NVDQ", -2]]
+
+  - u: "TSLA"
+    name: "테슬라"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.045
+    long:  [["TSLL", 2], ["TSLR", 2], ["TSLT", 2]]
+    short: [["TSLS", -2], ["TSLZ", -2], ["TSLQ", -2]]
+
+  - u: "AAPL"
+    name: "애플"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.028
+    long:  [["AAPU", 2], ["AAPB", 2]]
+    short: [["AAPD", -1]]
+
+  - u: "MSFT"
+    name: "마이크로소프트"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.026
+    long:  [["MSFU", 2], ["MSFL", 2]]
+    short: [["MSFD", -1]]
+
+  - u: "AMZN"
+    name: "아마존"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.030
+    long:  [["AMZU", 2], ["AMZZ", 2]]
+    short: [["AMZD", -1]]
+
+  - u: "GOOGL"
+    name: "알파벳"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.030
+    long:  [["GGLL", 2]]
+    short: [["GGLS", -1]]
+
+  - u: "META"
+    name: "메타"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.034
+    long:  [["METU", 2], ["FBL", 2]]
+    short: [["METD", -1]]
+
+  - u: "AVGO"
+    name: "브로드컴"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.036
+    long:  [["AVL", 2]]
+    short: [["AVS", -1]]
+
+  - u: "AMD"
+    name: "AMD"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.042
+    long:  [["AMDL", 2], ["AMUU", 2]]
+    short: [["AMDD", -1]]
+
+  - u: "MU"
+    name: "마이크론"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.042
+    long:  [["MUU", 2]]
+    short: []                 # 인버스 MU 상품은 확인되지 않음
+
+  - u: "NFLX"
+    name: "넷플릭스"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.032
+    long:  [["NFXL", 2]]
+    short: [["NFXS", -1]]
+
+  - u: "PLTR"
+    name: "팔란티어"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.048
+    long:  [["PLTU", 2]]
+    short: [["PLTD", -1]]
+
+  - u: "COIN"
+    name: "코인베이스"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.050
+    long:  [["CONL", 2]]
+    short: [["CONI", -1]]
+
+  - u: "MSTR"
+    name: "스트래티지 (MSTR)"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.055
+    long:  [["MSTX", 2], ["MSTU", 2]]
+    short: [["MSTZ", -2], ["SMST", -2]]
+
+  - u: "BABA"
+    name: "알리바바"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.038
+    long:  [["BABX", 2]]
+    short: []
+
+  - u: "SMCI"
+    name: "슈퍼마이크로"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.055
+    long:  [["SMCL", 2]]
+    short: [["SMCZ", -2]]
+
+  # ── 반도체·AI (빅테크 밖) ────────────────────────────────
+  - u: "TSM"
+    name: "TSMC"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.034
+    long:  [["TSMX", 2], ["TSMG", 2]]
+    short: [["TSMZ", -2]]
+
+  - u: "ARM"
+    name: "ARM 홀딩스"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.045
+    long:  [["ARMG", 2]]
+    short: []
+
+  # ── 소프트웨어 ─────────────────────────────────────────
+  - u: "ORCL"
+    name: "오라클"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.038
+    long:  [["ORCX", 2]]
+    short: []
+
+  - u: "CRWD"
+    name: "크라우드스트라이크"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.040
+    long:  [["CRWL", 2]]
+    short: []
+
+  # ── 금융 ──────────────────────────────────────────────
+  - u: "BRK-B"
+    name: "버크셔 해서웨이"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.022
+    long:  [["BRKU", 2]]
+    short: []
+
+  - u: "HOOD"
+    name: "로빈후드"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.050
+    long:  [["HOOX", 2]]
+    short: []
+
+  # ── 헬스케어 ───────────────────────────────────────────
+  - u: "LLY"
+    name: "일라이릴리"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.030
+    long:  [["ELIL", 2]]
+    short: []
+
+  # ── 크립토 채굴 ────────────────────────────────────────
+  - u: "MARA"
+    name: "마라 홀딩스"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.060
+    long:  [["MRAL", 2]]
+    short: []
+
+  # 스페이스X — 2026년 6월 12일 나스닥 상장 (SPCX).
+  # 상장 직후라 200거래일 이력이 없어 당분간 '보류'로 표시됩니다.
+  # 이력이 쌓이면 아무것도 안 해도 자동으로 판정에 들어갑니다.
+  # 신규 상장주는 변동성이 극단적이라 vol_max 를 높게 잡아뒀습니다.
+  - u: "SPCX"
+    name: "스페이스X"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.070
+    long:
+      - ["LOFF", 2]
+      - ["SPAX", 2]
+      - ["SPAL", 2]
+      - ["SPCF", 2]
+    short:
+      - ["SNK", -2]
+
+  # ── GraniteShares 공식 목록에서 확인 ────────────────────
+  - u: "INTC"
+    name: "인텔"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.045
+    long:  [["INTW", 2]]
+    short: []
+
+  - u: "MRVL"
+    name: "마벨 테크놀로지"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.045
+    long:  [["MVLL", 2]]
+    short: []
+
+  - u: "IONQ"
+    name: "아이온큐 (양자컴퓨팅)"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.065
+    long:  [["IONL", 2]]
+    short: []
+
+  - u: "ISRG"
+    name: "인튜이티브 서지컬"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.030
+    long:  [["ISUL", 2]]
+    short: []
+
+  - u: "DELL"
+    name: "델 테크놀로지스"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.040
+    long:  [["DLLL", 2]]
+    short: []
+
+  - u: "ALB"
+    name: "앨버말 (리튬)"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.045
+    long:  [["ALBG", 2]]
+    short: []
