@@ -89,6 +89,18 @@ jobs:
           else
             python run.py
           fi
+      - name: 대시보드를 최상단 docs 로 복사
+        if: ${{ inputs.audit != true }}
+        run: |
+          src="${{ steps.loc.outputs.dir }}/docs/index.html"
+          if [ -f "$src" ]; then
+            mkdir -p docs
+            cp "$src" docs/index.html
+            touch docs/.nojekyll
+            echo "복사 완료 → docs/index.html ($(wc -c < docs/index.html) 바이트)"
+          else
+            echo "::warning::$src 가 없습니다. 점검이 먼저 돌아야 생성됩니다."
+          fi
 
       - name: 보유 기록 저장
         if: ${{ inputs.audit != true }}
@@ -96,7 +108,8 @@ jobs:
         run: |
           git config user.name  "leverage-watch"
           git config user.email "actions@github.com"
-          git add -f state/state.json state/latest.json 2>/dev/null || true
+          git add -f STATUS.md state/state.json state/latest.json 2>/dev/null || true
+          git -C "$GITHUB_WORKSPACE" add -f docs/index.html docs/.nojekyll 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "변경 없음"
           else
