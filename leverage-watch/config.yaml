@@ -162,6 +162,24 @@ watch_groups:
   - "미국 개별주"
   - "한국 단일종목"
 
+# ─────────────────────────────────────────────────────────────
+#  종목 직접 추가하기
+#
+#  단일종목 레버리지는 계속 새로 상장되고 티커도 자주 바뀝니다.
+#  아래 형식으로 universe 에 줄을 추가하면 바로 감시 대상이 됩니다.
+#
+#    - u: "UBER"                  기초자산 티커 (판정용, 본주)
+#      name: "우버"
+#      group: "미국 개별주"
+#      market: US
+#      vol_max: 0.040             ATR 상한. 변동성 큰 종목일수록 크게
+#      long:  [["UBRL", 2]]       오를 때 사는 상품 [티커, 배수]
+#      short: [["UBRS", -2]]      내릴 때 사는 상품. 없으면 []
+#
+#  추가한 뒤 Actions 에서 '티커 점검' 을 체크하고 실행하면
+#  실제로 데이터가 나오는지 확인해줍니다. 실패한 줄은 지우세요.
+# ─────────────────────────────────────────────────────────────
+
 # 이 그룹은 S&P500 국면 대신 자기 52주 레인지 위치로 판단한다.
 # 개별주를 넣은 이유: 무너진 종목은 지수가 올라도 무너진다.
 # S&P500 이 MA200 위라는 이유로 NVDA 인버스를 막는 건 틀린 규칙이었다.
@@ -675,20 +693,82 @@ universe:
     long:  [["SMCL", 2]]
     short: [["SMCZ", -2]]
 
-  # SpaceX — 2026년 6월 12일 상장. 기초자산 이력이 200일이 안 돼서
-  # 당분간 '보류'로 표시됩니다. 이력이 쌓이면 자동으로 판정에 들어갑니다.
-  - u: "SPCX"
-    name: "스페이스X"
+  # ── 반도체·AI (빅테크 밖) ────────────────────────────────
+  - u: "TSM"
+    name: "TSMC"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.034
+    long:  [["TSMX", 2], ["TSMG", 2]]
+    short: [["TSMZ", -2]]
+
+  - u: "ARM"
+    name: "ARM 홀딩스"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.045
+    long:  [["ARMG", 2]]
+    short: []
+
+  # ── 소프트웨어 ─────────────────────────────────────────
+  - u: "ORCL"
+    name: "오라클"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.038
+    long:  [["ORCX", 2]]
+    short: []
+
+  - u: "CRWD"
+    name: "크라우드스트라이크"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.040
+    long:  [["CRWL", 2]]
+    short: []
+
+  # ── 금융 ──────────────────────────────────────────────
+  - u: "BRK-B"
+    name: "버크셔 해서웨이"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.022
+    long:  [["BRKU", 2]]
+    short: []
+
+  - u: "JPM"
+    name: "JP모건"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.026
+    long:  [["JPMU", 2]]
+    short: []
+
+  - u: "HOOD"
+    name: "로빈후드"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.050
+    long:  [["HOOX", 2]]
+    short: []
+
+  # ── 헬스케어 ───────────────────────────────────────────
+  - u: "LLY"
+    name: "일라이릴리"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.030
+    long:  [["ELIL", 2]]
+    short: [["ELIS", -2]]
+
+  # ── 크립토 채굴 ────────────────────────────────────────
+  - u: "MARA"
+    name: "마라 홀딩스"
     group: "미국 개별주"
     market: US
     vol_max: 0.060
-    long:
-      - ["LOFF", 2]     # Direxion Daily SpaceX Bull 2X
-      - ["SPAX", 2]     # T-REX 2X Long SpaceX
-      - ["SPAL", 2]     # GraniteShares 2x Long SpaceX
-      - ["SPCF", 2]     # ProShares Ultra SpaceX
-    short:
-      - ["SNK", -2]     # GraniteShares 2x Short SpaceX
+    long:  [["MARL", 2]]
+    short: []
 
   - u: "ALB"
     name: "앨버말 (리튬)"
