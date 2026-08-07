@@ -161,9 +161,14 @@ def _straightness(row, item, cfg, L: int, choice: dict | None = None) -> tuple[l
     horizon = int(s["horizon_days"])
     er_min = float(item.get("er_min", s["er_min"]))
     r2_min = float(item.get("r2_min", s["r2_min"]))
+    pct_min = float(s.get("pctile_min", 0.70))
+    er_strong = float(s.get("er_strong", 0.15))
+    r2_strong = float(s.get("r2_strong", 0.45))
 
     er = float(row["er60"]) if not pd.isna(row["er60"]) else 0.0
     r2 = float(row["r2_60"]) if not pd.isna(row["r2_60"]) else 0.0
+    erp = float(row["er_pct"]) if not pd.isna(row.get("er_pct")) else 0.0
+    r2p = float(row["r2_pct"]) if not pd.isna(row.get("r2_pct")) else 0.0
     sigma = float(row["rvol20"]) if not pd.isna(row["rvol20"]) else float("nan")
 
     # 기초자산이 지금 속도로 horizon 일 더 가면 레버리지 상품이 얻을 몫
@@ -187,10 +192,18 @@ def _straightness(row, item, cfg, L: int, choice: dict | None = None) -> tuple[l
                            f"감가 −{best['decay'] * 100:.1f}%{note}")
 
     gates = [
-        Gate("straight", f"직진성 ER60 ≥ {er_min:.2f}", True, bool(er >= er_min),
-             f"현재 {er:.2f} — 60일 순이동 ÷ 실제 이동거리"),
-        Gate("smooth", f"경로 매끄러움 R² ≥ {r2_min:.2f}", True, bool(r2 >= r2_min),
-             f"현재 {r2:.2f} — 직선에 얼마나 맞는지"),
+        # 두 갈래 중 하나만 맞으면 된다.
+        #   절대적으로 곧거나 (지수처럼 원래 매끄러운 자산)
+        #   자기 이력 기준으로 유난히 곧거나 (개별주처럼 원래 거친 자산)
+        # 절대 기준만 쓰면 변동성 큰 종목은 영원히 통과 못 한다.
+        Gate("straight", "직진성", True,
+             bool(er >= er_strong or (er >= er_min and erp >= pct_min)),
+             f"ER {er:.2f} — 절대 {er_strong:.2f} 이상이거나, "
+             f"{er_min:.2f} 이상이면서 자기 이력 상위 {(1 - erp) * 100:.0f}%"),
+        Gate("smooth", "경로 매끄러움", True,
+             bool(r2 >= r2_strong or (r2 >= r2_min and r2p >= pct_min)),
+             f"R² {r2:.2f} — 절대 {r2_strong:.2f} 이상이거나, "
+             f"{r2_min:.2f} 이상이면서 자기 이력 상위 {(1 - r2p) * 100:.0f}%"),
         Gate("edge", f"감가 여유 (감가 ≤ 추세이익×{budget:.0%})", True, edge_ok,
              edge_detail or (
                  f"{horizon}일 예상 추세이익 {gain * 100:+.1f}% vs 감가 −{decay * 100:.1f}%"

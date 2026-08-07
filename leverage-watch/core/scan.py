@@ -11,6 +11,8 @@ import yaml
 
 from . import data, engine, notify, plan as plan_mod, state as state_mod
 
+VERSION = "2026.08.07"
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CONFIG_FILE = os.path.join(ROOT, "config.yaml")
 LATEST_FILE = os.path.join(ROOT, "state", "latest.json")
@@ -21,13 +23,46 @@ ACTIVE = ("exit", "entry", "holding", "watch")
 
 
 def load_config(path: str = CONFIG_FILE) -> dict:
+    """설정을 읽는다. 문법이 깨졌으면 어디가 문제인지 짚어준다."""
     with open(path, encoding="utf-8") as f:
-        return yaml.safe_load(f)
+        text = f.read()
+    try:
+        return yaml.safe_load(text)
+    except yaml.YAMLError as exc:
+        mark = getattr(exc, "problem_mark", None)
+        print("=" * 60)
+        print("config.yaml 문법이 깨졌습니다.")
+        if mark is not None:
+            n = mark.line + 1
+            print(f"위치: {n}번째 줄")
+            print()
+            lines = text.splitlines()
+            for i in range(max(0, n - 3), min(len(lines), n + 2)):
+                mk = " ←── 여기" if i == n - 1 else ""
+                print(f"  {i + 1:>4} | {lines[i]}{mk}")
+            print()
+        if getattr(exc, "problem", None):
+            print(f"사유: {exc.problem}")
+        print()
+        print("가장 흔한 원인:")
+        print("  · 대괄호를 열고 안 닫음   → short: [[\"AMDD\", -1]]  (끝에 ]] 두 개)")
+        print("  · 줄 끝에 쉼표만 남음     → [\"A\", 2],  뒤에 아무것도 없음")
+        print("  · 들여쓰기가 어긋남       → 같은 항목끼리 칸 수를 맞추세요")
+        print("=" * 60)
+        raise SystemExit(1)
 
 
 def run_scan(cfg: dict | None = None, quiet: bool = False,
              send_digest: bool = False) -> dict:
     cfg = cfg or load_config()
+
+    # 감시 대상 그룹 좁히기. 비어 있으면 전부 본다.
+    groups = cfg.get("watch_groups") or []
+    universe = [u for u in cfg["universe"] if not groups or u["group"] in groups]
+    if not universe:
+        print("watch_groups 에 맞는 종목이 없습니다. config.yaml 을 확인하세요.")
+        universe = cfg["universe"]
+    cfg = dict(cfg, universe=universe)
     universe = cfg["universe"]
 
     tickers = [cfg["regime"]["us"]["index"], cfg["regime"]["us"]["vix"],
@@ -35,6 +70,7 @@ def run_scan(cfg: dict | None = None, quiet: bool = False,
 
     want = sorted(set(tickers))
     if not quiet:
+        print(f"[버전 {VERSION}] 감시 그룹 {groups or '전체'} · 기초자산 {len(universe)}종")
         print(f"기초자산 {len(want)}건 수집 …")
     frames = data.load_many(want)
 
@@ -78,13 +114,18 @@ def run_scan(cfg: dict | None = None, quiet: bool = False,
     st = state_mod.load_state()
     events = state_mod.apply(verdicts, frames, cfg, st)
     state_mod.save_state(st)
-    notify.send(cfg, events)
+
+    # 최소 형식 요약을 보낼 실행에서는 개별 알림을 생략한다.
+    # 안 그러면 같은 내용이 두 번 간다.
+    minimal_digest = (send_digest
+                      and cfg["alerts"].get("digest_style", "minimal") == "minimal")
+    if not minimal_digest:
+        notify.send(cfg, events)
 
     digest = build_digest(verdicts, frames, cfg, st)
     if send_digest:
-        near = [v.pick["t"] if v.pick else v.name
-                for v in verdicts if v.status == "watch"][:6]
-        notify.send_digest(cfg, digest, dt.date.today().isoformat(), near)
+        notify.send_digest(cfg, digest, dt.date.today().isoformat(),
+                           _near_misses(verdicts), _coverage(verdicts), events)
 
     verdicts.sort(key=lambda v: (ORDER.get(v.status, 9), -v.passed, v.group, v.name))
     groups: list[str] = []
@@ -269,6 +310,42 @@ def _pick_product(v) -> None:
     v.pick = {"t": top["t"], "x": int(top["x"]), "price": top.get("price"),
               "change_pct": top.get("change_pct"), "turnover": turn,
               "thin": thin, "no_price": no_price, "why": why}
+
+
+SINGLE = ("미국 개별주", "한국 단일종목")
+
+
+def _near_misses(verdicts, limit: int = 6) -> list[dict]:
+    """조건에 가까운 종목. 개별주를 먼저 보여준다.
+
+    "왜 개별주는 신호가 안 오지" 를 화면 없이 알 수 있게 하려는 것이다.
+    막고 있는 게 무엇인지까지 같이 담는다.
+    """
+    cand = [v for v in verdicts if v.status == "watch"]
+    cand.sort(key=lambda v: (v.group not in SINGLE, -(v.passed / max(v.total, 1))))
+    out = []
+    for v in cand[:limit]:
+        miss = [g.label for g in v.gates if not g.passed]
+        out.append({
+            "name": (v.pick or {}).get("t") or v.name,
+            "dir": "롱" if v.direction == "long" else "인버스",
+            "passed": v.passed, "total": v.total,
+            "miss": ", ".join(miss[:2]) + (f" 외 {len(miss) - 2}" if len(miss) > 2 else ""),
+        })
+    return out
+
+
+def _coverage(verdicts) -> dict:
+    """무엇을 몇 종 점검했고 몇 개가 통과했는지."""
+    single = [v for v in verdicts if v.group in SINGLE]
+    return {
+        "total": len(verdicts),
+        "entry": sum(1 for v in verdicts if v.status == "entry"),
+        "watch": sum(1 for v in verdicts if v.status == "watch"),
+        "single_total": len(single),
+        "single_entry": sum(1 for v in single if v.status == "entry"),
+        "single_watch": sum(1 for v in single if v.status == "watch"),
+    }
 
 
 def build_digest(verdicts, frames, cfg, st) -> list[dict]:

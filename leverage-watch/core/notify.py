@@ -196,37 +196,90 @@ def send_test(cfg: dict) -> None:
                 "reason": "이 메시지가 보이면 알림 설정 완료"}])
 
 
-def format_digest(items: list[dict], asof: str, watch: list[str] | None = None) -> str:
-    """매일 아침 상태. 실제 매수 여부는 시스템이 알 수 없으므로
-    '신호 기준' 이라고 분명히 밝힌다."""
-    if not items:
-        head = [f"[{asof}] 잡고 있는 신호 없음"]
-        if watch:
-            head.append("조건에 가까운 종목: " + ", ".join(watch[:6]))
-        return "\n".join(head)
+def _minimal_digest(events: list[dict], asof: str) -> str:
+    """살 것과 팔 것만. 없으면 없다고 한 줄.
 
-    out = [f"[{asof}] 신호 기준 {len(items)}건",
-           "※ 실제 매수 여부와 무관하게 진입 신호가 난 종목을 추적합니다."]
-    for it in items:
-        r = it.get("ret")
+    매일 오는 알림이라 짧아야 한다. 보유 현황이나 근접 종목 같은 건
+    대시보드에서 보면 되고, 알림은 행동만 담는다.
+    """
+    buys = [e for e in events if e["kind"] == "entry"]
+    sells = [e for e in events if e["kind"] == "exit"]
+
+    if not buys and not sells:
+        return f"[{asof}] 오늘 살 것도 팔 것도 없습니다."
+
+    out = [f"[{asof}]"]
+    for e in sells:
+        pick = e.get("pick") or {}
         out.append("")
-        out.append(f"■ {it['ticker']} {abs(int(it['leverage']))}배 · {it['name']}")
-        out.append(f"   신호 후   {r * 100:+.1f}%" if r is not None else "   신호 후   —")
-        if it.get("to_stop") is not None:
-            out.append(f"   손절까지  {it['to_stop'] * 100:.1f}%p")
-        out.append(f"   경과      {it['held']}/{it['time_stop']}거래일")
-        out.append(f"   → {it['action']}")
-    out.append("")
-    out.append("안 산 종목이 섞여 있으면 python run.py --reset 으로 비우세요.")
+        out.append(f"■ 파세요   {pick.get('t') or e['name']}  ({e['name']})")
+        out.append(f"   {e['reason']}")
+    for e in buys:
+        pick = e.get("pick") or {}
+        p = e.get("plan") or {}
+        mk = e.get("market", "US")
+        f = lambda x: "—" if x is None else (f"{x:,.0f}" if mk == "KR" else f"{x:,.2f}")
+        out.append("")
+        out.append(f"■ 사세요   {pick.get('t', '?')}  "
+                   f"{abs(int(pick.get('x', 1)))}배  ({e['name']})")
+        out.append(f"   매수 {f(pick.get('price'))}  ·  손절 {f(p.get('stop_price'))}"
+                   f"  ·  목표 {f(p.get('target_price'))}")
+        out.append(f"   {p.get('time_stop_days', 20)}거래일 안에 정리 · "
+                   f"총자산 {(p.get('position_pct') or 0) * 100:.0f}% 이하")
+        if pick.get("thin"):
+            out.append("   ※ 거래대금이 얇으니 지정가로 나눠 사세요.")
+    return "\n".join(out)
+
+
+def format_digest(items: list[dict], asof: str,
+                  near: list[dict] | None = None,
+                  stats: dict | None = None) -> str:
+    """상세 요약. digest_style: full 일 때만 쓴다."""
+    out: list[str] = []
+
+    if items:
+        out.append(f"[{asof}] 신호 기준 {len(items)}건")
+        out.append("※ 실제 매수 여부와 무관하게 진입 신호가 난 종목을 추적합니다.")
+        for it in items:
+            r = it.get("ret")
+            out.append("")
+            out.append(f"■ {it['ticker']} {abs(int(it['leverage']))}배 · {it['name']}")
+            if it["held"] == 0:
+                out.append("   오늘 뜬 신호 (손익은 내일부터)")
+            else:
+                out.append(f"   신호 후   {r * 100:+.1f}%" if r is not None else "   신호 후   —")
+                if it.get("to_stop") is not None:
+                    out.append(f"   손절까지  {it['to_stop'] * 100:.1f}%p")
+            out.append(f"   경과      {it['held']}/{it['time_stop']}거래일")
+            out.append(f"   → {it['action']}")
+    else:
+        out.append(f"[{asof}] 잡고 있는 신호 없음")
+
+    if near:
+        out.append("")
+        out.append("─ 조건에 가까운 종목 ─")
+        for x in near:
+            out.append(f"{x['name']} {x['dir']} {x['passed']}/{x['total']}"
+                       f"  └ {x['miss']}")
+    if stats:
+        out.append("")
+        out.append(f"점검 {stats['total']}종 · 진입 {stats['entry']} · 관심 {stats['watch']}")
     return "\n".join(out)
 
 
 def send_digest(cfg: dict, items: list[dict], asof: str,
-                watch: list[str] | None = None) -> None:
+                near: list[dict] | None = None,
+                stats: dict | None = None,
+                events: list[dict] | None = None) -> None:
     mode = cfg["alerts"].get("daily_digest", "when_holding")
-    if mode == "off" or (mode == "when_holding" and not items):
+    if mode == "off":
         return
-    _deliver(cfg, format_digest(items, asof, watch))
+    if cfg["alerts"].get("digest_style", "minimal") == "minimal":
+        _deliver(cfg, _minimal_digest(events or [], asof))
+        return
+    if mode == "when_holding" and not items and not near:
+        return
+    _deliver(cfg, format_digest(items, asof, near, stats))
 
 
 def find_chat_id(cfg: dict) -> None:

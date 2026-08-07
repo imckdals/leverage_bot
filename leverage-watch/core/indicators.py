@@ -134,4 +134,10 @@ def enrich(df: pd.DataFrame) -> pd.DataFrame:
     r2, logslope = trend_fit(c, 60)
     out["r2_60"] = r2
     out["logslope"] = logslope        # 하루당 로그수익률 추세 속도
+
+    # 절대 기준만 쓰면 변동성이 큰 자산은 영원히 통과 못 한다.
+    # 지수는 원래 매끄럽고 개별주는 원래 거칠기 때문이다.
+    # 그래서 "이 종목 자기 이력 대비 지금이 얼마나 곧은가" 를 같이 본다.
+    out["er_pct"] = out["er60"].rolling(500, min_periods=200).rank(pct=True)
+    out["r2_pct"] = out["r2_60"].rolling(500, min_periods=200).rank(pct=True)
     return out
