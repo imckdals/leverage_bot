@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-08-06T14:34:02+00:00",
+  "last_run": "2026-08-07T01:02:40+00:00",
   "tickers": {
     "005930.KS": {
       "status": "flat",
@@ -356,7 +356,7 @@
       "position": null
     },
     "ITB": {
-      "status": "flat",
+      "status": "none",
       "last_alert_date": null,
       "position": null
     },
