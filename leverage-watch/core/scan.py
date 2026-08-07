@@ -345,6 +345,7 @@ def _coverage(verdicts) -> dict:
         "single_total": len(single),
         "single_entry": sum(1 for v in single if v.status == "entry"),
         "single_watch": sum(1 for v in single if v.status == "watch"),
+        "holding": sum(1 for v in verdicts if v.status == "holding"),
     }
 
 

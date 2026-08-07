@@ -196,7 +196,9 @@ def send_test(cfg: dict) -> None:
                 "reason": "이 메시지가 보이면 알림 설정 완료"}])
 
 
-def _minimal_digest(events: list[dict], asof: str) -> str:
+def _minimal_digest(events: list[dict], asof: str,
+                    near: list[dict] | None = None,
+                    stats: dict | None = None) -> str:
     """살 것과 팔 것만. 없으면 없다고 한 줄.
 
     매일 오는 알림이라 짧아야 한다. 보유 현황이나 근접 종목 같은 건
@@ -206,7 +208,20 @@ def _minimal_digest(events: list[dict], asof: str) -> str:
     sells = [e for e in events if e["kind"] == "exit"]
 
     if not buys and not sells:
-        return f"[{asof}] 오늘 살 것도 팔 것도 없습니다."
+        # "없음" 만 오면 제대로 도는 건지 고장인지 구분이 안 된다.
+        # 몇 종을 봤고 뭐가 제일 가까운지 한 줄로 붙인다.
+        line = f"[{asof}] 오늘 살 것도 팔 것도 없습니다."
+        if stats:
+            tail = f"{stats.get('total', 0)}종 점검"
+            if stats.get("holding"):
+                tail += f" · 보유 {stats['holding']}"
+            if near:
+                x = near[0]
+                tail += f" · 가장 가까운 건 {x['name']} {x['passed']}/{x['total']}"
+            elif not stats.get("holding"):
+                tail += " · 근접 종목 없음"
+            line += "\n" + tail
+        return line
 
     out = [f"[{asof}]"]
     for e in sells:
@@ -275,7 +290,7 @@ def send_digest(cfg: dict, items: list[dict], asof: str,
     if mode == "off":
         return
     if cfg["alerts"].get("digest_style", "minimal") == "minimal":
-        _deliver(cfg, _minimal_digest(events or [], asof))
+        _deliver(cfg, _minimal_digest(events or [], asof, near, stats))
         return
     if mode == "when_holding" and not items and not near:
         return
