@@ -360,7 +360,15 @@ def evaluate(item: dict, df: pd.DataFrame | None, regimes: dict, cfg: dict) -> V
                 market=item["market"], direction="long", status="blocked")
 
     if df is None or len(df) < 210 or pd.isna(df["ma200"].iloc[-1]):
-        v.error = "기초자산 데이터 부족 (200거래일 이상 필요)"
+        n = 0 if df is None else len(df)
+        if n:
+            need = 210 - n
+            ready = df.index[-1] + pd.Timedelta(days=int(need * 1.45))
+            v.error = (f"상장 {n}거래일차 — 판정에 210일 필요. "
+                       f"{need}거래일 더 쌓이면 자동으로 들어옵니다 "
+                       f"(대략 {ready.date()})")
+        else:
+            v.error = "기초자산 시세를 받지 못했습니다"
         v.reason = v.error
         return v
 
