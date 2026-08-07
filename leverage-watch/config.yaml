@@ -552,7 +552,7 @@ universe:
     market: US
     vol_max: 0.042
     long:  [["AMDL", 2], ["AMUU", 2]]
-    short: [["AMDD", -1], ["AMDS", -2]]
+    short: [["AMDD", -1]
 
   - u: "MU"
     name: "마이크론"
@@ -610,20 +610,6 @@ universe:
     long:  [["SMCL", 2]]
     short: [["SMCZ", -2]]
 
-  # SpaceX — 2026년 6월 12일 상장. 기초자산 이력이 200일이 안 돼서
-  # 당분간 '보류'로 표시됩니다. 이력이 쌓이면 자동으로 판정에 들어갑니다.
-  - u: "SPCX"
-    name: "스페이스X"
-    group: "미국 개별주"
-    market: US
-    vol_max: 0.060
-    long:
-      - ["LOFF", 2]     # Direxion Daily SpaceX Bull 2X
-      - ["SPAX", 2]     # T-REX 2X Long SpaceX
-      - ["SPAL", 2]     # GraniteShares 2x Long SpaceX
-      - ["SPCF", 2]     # ProShares Ultra SpaceX
-    short:
-      - ["SNK", -2]     # GraniteShares 2x Short SpaceX
 
   - u: "ALB"
     name: "앨버말 (리튬)"
