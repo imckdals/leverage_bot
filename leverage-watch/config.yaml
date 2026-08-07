@@ -552,7 +552,7 @@ universe:
     market: US
     vol_max: 0.042
     long:  [["AMDL", 2], ["AMUU", 2]]
-    short: [["AMDD", -1]
+    short: [["AMDD", -1]]
 
   - u: "MU"
     name: "마이크론"
