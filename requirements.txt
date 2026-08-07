@@ -1,8 +1,0 @@
-pandas>=2.0
-numpy>=1.24
-PyYAML>=6.0
-yfinance>=0.2.40
-fastapi>=0.110
-uvicorn>=0.27
-APScheduler>=3.10
-pykrx>=1.0.45      # 선택 — 국내 종목 데이터 보완용
