@@ -9,7 +9,8 @@ import os
 import pandas as pd
 import yaml
 
-from . import data, engine, notify, plan as plan_mod, state as state_mod
+from . import (data, engine, notify, plan as plan_mod, publish,
+               report, state as state_mod)
 
 VERSION = "2026.08.07"
 
@@ -145,6 +146,19 @@ def run_scan(cfg: dict | None = None, quiet: bool = False,
         "product_count": sum(len(it.get("long") or []) + len(it.get("short") or [])
                              for it in universe),
     }
+
+    # 핸드폰에서 보려고 마크다운 현황도 같이 쓴다
+    try:
+        report.write(payload, digest, _near_misses(verdicts),
+                     _coverage(verdicts), VERSION)
+    except Exception as exc:
+        print(f"현황 파일 생성 실패: {exc}")
+
+    # GitHub Pages 용 단독 대시보드
+    try:
+        publish.build(payload, VERSION)
+    except Exception as exc:
+        print(f"대시보드 생성 실패: {exc}")
 
     os.makedirs(os.path.dirname(LATEST_FILE), exist_ok=True)
     tmp = LATEST_FILE + ".tmp"
