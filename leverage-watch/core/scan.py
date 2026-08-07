@@ -9,6 +9,7 @@ import os
 import pandas as pd
 import yaml
 
+from . import events as events_mod
 from . import (data, engine, notify, plan as plan_mod, publish,
                report, state as state_mod)
 
@@ -112,6 +113,20 @@ def run_scan(cfg: dict | None = None, quiet: bool = False,
             if v.status == "entry" and v.pick:
                 v.plan = plan_mod.make_plan(v, frames.get(v.id), cfg)
 
+    # 일정 회피: 종목 조건이 다 맞아도 실적이 코앞이면 진입시키지 않는다.
+    # 실적은 갭으로 움직여서 손절가에 팔 수가 없다.
+    for v in verdicts:
+        if v.status not in ("entry", "holding"):
+            continue
+        try:
+            v.event = events_mod.check(v, cfg)
+        except Exception:
+            continue
+        if v.status == "entry" and v.event.get("block"):
+            v.status = "watch"
+            v.reason = v.event["reason"]
+            v.pick = v.plan = None
+
     st = state_mod.load_state()
     events = state_mod.apply(verdicts, frames, cfg, st)
     state_mod.save_state(st)
@@ -122,6 +137,27 @@ def run_scan(cfg: dict | None = None, quiet: bool = False,
                       and cfg["alerts"].get("digest_style", "minimal") == "minimal")
     if not minimal_digest:
         notify.send(cfg, events)
+
+    # 보유 중 실적이 다가오면 알린다. 팔지 말지는 사용자가 정한다.
+    warn_d = int((cfg.get("events") or {}).get("warn_days_before_earnings", 3))
+    for v in verdicts:
+        if v.status != "holding" or not v.event:
+            continue
+        d = v.event.get("d_earnings")
+        if d is None or d > warn_d:
+            continue
+        pos = (st.get("tickers") or {}).get(v.id) or {}
+        if (pos.get("position") or {}).get("earn_warned") == v.event.get("earnings"):
+            continue
+        events.append({"kind": "earnings_warn", "id": v.id, "name": v.name,
+                       "ticker": (v.pick or {}).get("t") or v.name, "days": d})
+        if pos.get("position"):
+            pos["position"]["earn_warned"] = v.event.get("earnings")
+
+    if events:
+        state_mod.save_state(st)
+        if not (send_digest and cfg["alerts"].get("digest_style", "minimal") == "minimal"):
+            notify.send(cfg, [e for e in events if e["kind"] == "earnings_warn"])
 
     digest = build_digest(verdicts, frames, cfg, st)
     if send_digest:

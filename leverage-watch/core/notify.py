@@ -41,6 +41,14 @@ def _simple_entry(e: dict) -> str:
     if p.get("position_pct") is not None:
         out.append(f"비중   총자산 {p['position_pct'] * 100:.0f}% 이하")
 
+    ev = e.get("event") or {}
+    d = ev.get("d_earnings")
+    if d is not None:
+        tag = " 추정" if ev.get("estimated") else ""
+        out.append(f"실적   {d}일 뒤{tag} ({ev.get('earnings')})")
+    if ev.get("d_macro") is not None and ev["d_macro"] <= 7:
+        out.append(f"일정   {ev['macro']} {ev['d_macro']}일 뒤")
+
     out.append("")
     out.append("팔 때가 되면 따로 알립니다.")
     if pick.get("thin"):
@@ -229,6 +237,13 @@ def _minimal_digest(events: list[dict], asof: str,
         out.append("")
         out.append(f"■ 파세요   {pick.get('t') or e['name']}  ({e['name']})")
         out.append(f"   {e['reason']}")
+    warn = [e for e in events if e.get("kind") == "earnings_warn"]
+    for e in warn:
+        out.append("")
+        out.append(f"■ 확인하세요   {e['ticker']}  ({e['name']})")
+        out.append(f"   {e['days']}일 뒤 실적 발표입니다. 들고 갈지 정하세요.")
+        out.append("   실적은 갭으로 움직여 손절가에 못 팝니다.")
+
     for e in buys:
         pick = e.get("pick") or {}
         p = e.get("plan") or {}

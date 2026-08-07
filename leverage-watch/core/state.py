@@ -100,7 +100,7 @@ def apply(verdicts: list[Verdict], frames: dict, cfg: dict,
                     events.append({"kind": "entry", "id": v.id, "name": v.name,
                                    "group": v.group, "direction": v.direction,
                                    "price": v.price, "products": v.products,
-                                   "pick": v.pick, "plan": v.plan,
+                                   "pick": v.pick, "plan": v.plan, "event": v.event,
                                    "plan_lines": (plan_mod.plan_lines(v, v.plan, v.market)
                                                   if v.plan else []),
                                    "passed": v.passed, "total": v.total})

@@ -52,6 +52,7 @@ class Verdict:
     pick_net: float | None = None         # 그 배수의 20일 기대 순이익
     pick: dict | None = None              # 최종 추천 종목 1개
     plan: dict | None = None              # 매수·손절·목표·시간한도
+    event: dict | None = None             # 실적·거시 일정
     leverage_table: list = field(default_factory=list)
     asof: str | None = None
     reason: str = ""

@@ -35,6 +35,42 @@ alerts:
   daily_digest: when_holding
   digest_time: "08:30"              # 켜면 알림이 꽤 늘어난다
 
+# ─────────────────────────────────────────────────────────────
+#  일정 회피
+#  실적 발표는 갭으로 움직여서 손절가에 팔 수가 없다.
+#  예측은 하지 않고, 그 구간을 피하기만 한다.
+# ─────────────────────────────────────────────────────────────
+events:
+  enabled: true
+  use_earnings: true
+  block_days_before_earnings: 5   # 실적 5일 전부터 신규 진입 차단
+  warn_days_before_earnings: 3    # 보유 중이면 3일 전부터 알림
+  # 국내는 실적일 사전 공지가 없다. 분기 종료 후 영업일 4~10일 사이라는
+  # 패턴으로 구간을 추정해 그 기간 전체를 막는다. 정확한 날짜가 아니다.
+  estimate_korean: true
+
+  use_macro: true
+  block_days_before_macro: 1      # 거시 일정 전날부터 차단
+  # 연준 공식 페이지에서 일정을 자동으로 받아온다.
+  # 실패하면 아래 목록을 그대로 쓰므로 멈추지 않는다.
+  auto_fomc: true
+
+  # FOMC 금리 결정일 (발표는 이틀째). 연준 공식 일정 기준.
+  # 지난 날짜는 자동으로 무시되니 그냥 두셔도 됩니다.
+  # CPI 등 다른 일정도 같은 형식으로 추가할 수 있습니다.
+  macro_calendar:
+    - {date: "2026-09-16", name: "FOMC"}
+    - {date: "2026-10-28", name: "FOMC"}
+    - {date: "2026-12-09", name: "FOMC"}
+    - {date: "2027-01-27", name: "FOMC"}
+    - {date: "2027-03-17", name: "FOMC"}
+    - {date: "2027-04-28", name: "FOMC"}
+    - {date: "2027-06-09", name: "FOMC"}
+    - {date: "2027-07-28", name: "FOMC"}
+    - {date: "2027-09-15", name: "FOMC"}
+    - {date: "2027-10-27", name: "FOMC"}
+    - {date: "2027-12-08", name: "FOMC"}
+
 portfolio:
   # 한 번의 매매에서 총자산의 몇 %까지 잃을 각오인지.
   # 손절폭이 -25% 면 총자산의 8% 만 넣게 계산된다 (0.02 / 0.25).

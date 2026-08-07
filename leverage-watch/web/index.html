@@ -129,6 +129,8 @@
   .chiplab{font-size:9.5px;letter-spacing:.1em;color:var(--dim);margin-right:3px;flex:none}
   .idle-row .chiplab{color:#3d5260}
   .chip.idle{opacity:.42;border-style:dashed}
+  .evrow{margin:8px 0 2px;font-size:10.5px;color:var(--dim);letter-spacing:.02em}
+  .evrow.hot{color:var(--rust)}
   .plan{margin:9px 0 2px;padding:9px 11px;border:1px solid var(--line-soft);
         border-radius:var(--r)}
   .prow{display:flex;align-items:baseline;gap:9px;padding:2.5px 0;font-size:11px}
@@ -358,6 +360,21 @@ function planRow(i){
   </div>`;
 }
 
+// 실적·거시 일정. 가격만 보는 시스템의 가장 큰 빈틈이라 눈에 띄게 둔다.
+function eventRow(i){
+  const e = i.event;
+  if(!e) return "";
+  const bits = [];
+  if(e.d_earnings != null)
+    bits.push(`실적 D-${e.d_earnings}${e.estimated ? " 추정" : ""} (${e.earnings})`);
+  if(e.d_macro != null && e.d_macro <= 7)
+    bits.push(`${esc(e.macro)} D-${e.d_macro}`);
+  if(!bits.length) return "";
+  const hot = (e.d_earnings != null && e.d_earnings <= 5) || e.block;
+  return `<div class="evrow ${hot ? "hot" : ""}">${bits.join(" · ")}${
+    e.block ? " — 진입 보류" : ""}</div>`;
+}
+
 function card(i){
   const st = STATUS[i.status] || STATUS.flat;
   const arrow = i.direction==="long" ? "▲" : "▼";
@@ -405,6 +422,7 @@ function card(i){
     ${straightRow(i)}
     ${pickRow(i)}
     ${planRow(i)}
+    ${eventRow(i)}
     <div class="card-foot">
       <div class="count mono">${interactive?`조건 ${i.passed}/${i.total}`:"—"}</div>
       <div class="pill mono">${st.ko}</div>
