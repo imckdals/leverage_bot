@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>레버리지 관제</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ground:#0d1720;
+    --panel:#15222d;
+    --panel-2:#1b2b38;
+    --line:#243542;
+    --line-soft:#1e2d3a;
+    --text:#dde7ee;
+    --muted:#7a93a4;
+    --dim:#4d6472;
+    --live:#e3a93f;      /* 주목이 필요할 때만 등장 */
+    --cool:#5fafc2;      /* 인버스 · 보유 */
+    --rust:#c7643e;      /* 이탈 */
+    --r:3px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--ground);color:var(--text);
+    font-family:"IBM Plex Sans KR",system-ui,-apple-system,sans-serif;
+    -webkit-font-smoothing:antialiased;line-height:1.5;
+  }
+  .mono{font-family:"IBM Plex Mono","IBM Plex Sans KR",monospace;font-variant-numeric:tabular-nums}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 22px}
+
+  /* ── 상단 바 ─────────────────────────────── */
+  header{
+    border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20;
+    background:rgba(13,23,32,.94);backdrop-filter:blur(8px);
+  }
+  .bar{display:flex;align-items:center;gap:16px;height:56px}
+  .brand{font-weight:700;font-size:14px;letter-spacing:.14em;white-space:nowrap}
+  .brand span{color:var(--muted);font-weight:400;letter-spacing:.02em}
+  .stamp{margin-left:auto;font-size:11.5px;color:var(--muted);letter-spacing:.03em;text-align:right}
+  button.scan{
+    font-family:inherit;font-size:12px;font-weight:500;letter-spacing:.04em;
+    color:var(--text);background:transparent;border:1px solid var(--line);
+    border-radius:var(--r);padding:7px 14px;cursor:pointer;
+    transition:border-color .15s,color .15s;
+  }
+  button.scan:hover{border-color:var(--muted)}
+  button.scan:focus-visible{outline:2px solid var(--live);outline-offset:2px}
+  button.scan[disabled]{color:var(--dim);cursor:default;border-color:var(--line-soft)}
+
+  /* ── 판정 밴드 ───────────────────────────── */
+  .verdict{padding:54px 0 42px;border-bottom:1px solid var(--line)}
+  .verdict .headline{font-size:clamp(26px,4.2vw,42px);font-weight:300;
+    letter-spacing:-.015em;line-height:1.22;margin:0}
+  .verdict.quiet .headline{color:var(--muted)}
+  .verdict .sub{margin-top:14px;font-size:13.5px;color:var(--muted);max-width:62ch}
+  .verdict .sub b{color:var(--text);font-weight:500}
+
+  .calls{margin-top:30px;display:flex;flex-direction:column;gap:1px;
+    background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+  .call{display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+    background:var(--panel);padding:16px 18px;border-left:2px solid var(--live)}
+  .call.is-exit{border-left-color:var(--rust)}
+  .call .kind{font-size:11px;letter-spacing:.16em;color:var(--live);font-weight:600}
+  .call.is-exit .kind{color:var(--rust)}
+  .call .who{font-size:16px;font-weight:600}
+  .call .sub2{font-size:11.5px;color:var(--muted);margin-top:2px}
+  .call .meta{font-size:12.5px;color:var(--muted);margin-left:auto;text-align:right}
+
+  /* ── 국면 ────────────────────────────────── */
+  .regime{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);
+    border-bottom:1px solid var(--line)}
+  .regime .cell{background:var(--ground);padding:17px 0}
+  .regime .inner{max-width:620px;margin:0 auto;padding:0 22px;width:100%}
+  .regime .mkt{font-size:11px;letter-spacing:.16em;color:var(--dim);font-weight:600}
+  .regime .txt{margin-top:5px;font-size:13.5px;color:var(--muted)}
+  .regime .txt b{color:var(--text);font-weight:500}
+
+  /* ── 필터 ────────────────────────────────── */
+  .filters{display:flex;gap:7px;flex-wrap:wrap;padding:20px 0 4px}
+  .fchip{
+    font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.04em;
+    color:var(--muted);background:transparent;border:1px solid var(--line-soft);
+    border-radius:2px;padding:5px 10px;cursor:pointer;transition:all .13s;
+  }
+  .fchip:hover{border-color:var(--line);color:var(--text)}
+  .fchip.on{color:var(--ground);background:var(--muted);border-color:var(--muted)}
+  .fchip:focus-visible{outline:2px solid var(--live);outline-offset:2px}
+
+  /* ── 섹션 ────────────────────────────────── */
+  section{padding:30px 0 0}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin-bottom:14px}
+  .sec-head h2{font-size:12px;font-weight:600;letter-spacing:.18em;margin:0}
+  .sec-head .n{font-size:11.5px;color:var(--dim);letter-spacing:.04em}
+  .sec-head .hot{font-size:11px;color:var(--live);letter-spacing:.04em}
+  .rule{height:1px;background:var(--line);margin-bottom:16px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:11px}
+
+  /* ── 카드 ────────────────────────────────── */
+  .card{background:var(--panel);border:1px solid var(--line-soft);border-radius:var(--r);
+    padding:15px 15px 12px;cursor:pointer;transition:border-color .15s,background .15s}
+  .card:hover{border-color:var(--line);background:var(--panel-2)}
+  .card:focus-visible{outline:2px solid var(--live);outline-offset:2px}
+  .card.s-entry{border-color:var(--live)}
+  .card.s-exit{border-color:var(--rust)}
+  .card.s-holding{border-color:#33566050}
+  .card.s-none,.card.s-blocked{opacity:.42;cursor:default}
+
+  .card-top{display:flex;align-items:flex-start;gap:10px}
+  .nm{font-size:14.5px;font-weight:600;letter-spacing:-.005em}
+  .lb{font-size:11px;color:var(--muted);margin-top:2px}
+  .px{margin-left:auto;text-align:right;white-space:nowrap}
+  .px .v{font-size:13.5px;font-weight:500}
+  .px .d{font-size:11px;color:var(--muted);margin-top:2px}
+
+  /* 게이트 사다리 */
+  .ladder{display:flex;gap:3px;margin:14px 0 8px;align-items:flex-end;height:24px}
+  .g{flex:1;height:66%;border-radius:1px;background:#22323e;transition:background .2s}
+  .g.req{height:100%;box-shadow:inset 0 -1px 0 0 var(--line)}
+  .g.on{background:var(--muted)}
+  .s-entry .g.on{background:var(--live)}
+  .s-holding .g.on,.s-watch .g.on{background:var(--cool)}
+  .s-exit .g.on{background:var(--rust)}
+
+  .chiprow{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-top:6px}
+  .chiplab{font-size:9.5px;letter-spacing:.1em;color:var(--dim);margin-right:3px;flex:none}
+  .idle-row .chiplab{color:#3d5260}
+  .chip.idle{opacity:.42;border-style:dashed}
+  .plan{margin:9px 0 2px;padding:9px 11px;border:1px solid var(--line-soft);
+        border-radius:var(--r)}
+  .prow{display:flex;align-items:baseline;gap:9px;padding:2.5px 0;font-size:11px}
+  .pk{color:var(--dim);width:46px;flex:none;letter-spacing:.06em}
+  .pv{color:var(--text);font-weight:500;min-width:76px}
+  .ps{color:var(--dim);font-size:10px;margin-left:auto;text-align:right}
+  .pick{margin:11px 0 2px;padding:10px 11px;border:1px solid var(--line);
+        border-radius:var(--r);background:#1a2a36}
+  .s-entry .pick{border-color:var(--live);background:#241f14}
+  .ptop{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+  .plabel{font-size:9.5px;letter-spacing:.14em;color:var(--dim);width:100%}
+  .s-entry .plabel{color:var(--live)}
+  .pticker{font-size:17px;font-weight:600;letter-spacing:.02em;color:var(--text)}
+  .plev{font-size:11.5px;color:var(--muted)}
+  .pprice{margin-left:auto;font-size:13px;color:var(--muted)}
+  .pwhy{margin-top:6px;font-size:10.5px;color:var(--dim);line-height:1.45}
+  .pwarn{margin-top:5px;font-size:10.5px;color:var(--rust)}
+  .ticker{font-size:15px;font-weight:600;color:var(--text)}
+  .straight{margin:10px 0 2px}
+  .sline{display:flex;align-items:center;gap:7px;font-size:10.5px;color:var(--dim)}
+  .slab{letter-spacing:.1em;flex:none}
+  .sval{color:var(--muted);flex:none}
+  .smeter{flex:1;height:3px;background:#22323e;border-radius:2px;overflow:hidden;min-width:34px}
+  .sfill{display:block;height:100%;background:var(--dim)}
+  .s-entry .sfill{background:var(--live)}
+  .s-holding .sfill,.s-watch .sfill{background:var(--cool)}
+  .sdecay{margin-top:5px;font-size:10.5px;color:var(--dim);line-height:1.4}
+  .sdecay.good{color:var(--muted)}
+  .card-foot{display:flex;align-items:center;gap:10px;margin-top:8px}
+  .count{font-size:11px;color:var(--muted);letter-spacing:.03em}
+  .pill{margin-left:auto;font-size:10px;font-weight:600;letter-spacing:.14em;
+    color:var(--muted);border:1px solid var(--line);border-radius:2px;padding:2.5px 7px}
+  .s-entry .pill{color:var(--live);border-color:var(--live)}
+  .s-exit .pill{color:var(--rust);border-color:var(--rust)}
+  .s-holding .pill,.s-watch .pill{color:var(--cool);border-color:#33565f}
+
+  .chips{display:flex;gap:4px;flex-wrap:wrap;margin-top:10px}
+  .chip{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--muted);
+    border:1px solid var(--line-soft);border-radius:2px;padding:2px 6px;white-space:nowrap}
+  .s-entry .chip{color:var(--text);border-color:var(--line)}
+  .chip.gone{color:var(--dim);text-decoration:line-through}
+  .why{margin-top:9px;font-size:11px;color:var(--dim);line-height:1.45}
+
+  .detail{display:none;margin-top:12px;border-top:1px solid var(--line-soft);padding-top:10px}
+  .card.open .detail{display:block}
+  .grow{display:flex;align-items:baseline;gap:9px;padding:3.5px 0;font-size:11px}
+  .grow .mark{width:11px;color:var(--dim);flex:none}
+  .grow.on .mark{color:var(--muted)}
+  .s-entry .grow.on .mark{color:var(--live)}
+  .grow .lab{color:var(--muted)}
+  .grow.on .lab{color:var(--text)}
+  .grow .req-tag{font-size:9px;color:var(--dim);letter-spacing:.1em;flex:none}
+  .grow .val{margin-left:auto;color:var(--dim);white-space:nowrap}
+
+  /* ── 기록 ────────────────────────────────── */
+  .log{margin-top:6px;border-top:1px solid var(--line)}
+  .log .row{display:flex;gap:14px;padding:10px 0;border-bottom:1px solid var(--line-soft);font-size:12.5px}
+  .log .when{color:var(--dim);flex:none;width:118px}
+  .log .what{color:var(--muted)}
+  .log .what b{color:var(--text);font-weight:500}
+  .empty-log{padding:16px 0;font-size:12.5px;color:var(--dim)}
+
+  footer{margin-top:40px;border-top:1px solid var(--line);padding:20px 0 46px;
+    font-size:11.5px;color:var(--dim);line-height:1.7}
+  .boot{padding:90px 0;text-align:center;color:var(--muted);font-size:14px}
+
+  @media (max-width:640px){
+    .regime{grid-template-columns:1fr}
+    .verdict{padding:38px 0 30px}
+    .log .when{width:92px}
+    .call .meta{margin-left:0;text-align:left;width:100%}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <div class="brand">레버리지 관제 <span>· 보수적 판정</span></div>
+    <button class="scan" id="scanBtn" type="button">지금 점검</button>
+    <div class="stamp mono" id="stamp">불러오는 중</div>
+  </div>
+</header>
+
+<main id="app">
+  <div class="wrap boot">점검 기록을 불러오는 중입니다.</div>
+</main>
+
+<script>
+const STATUS = {
+  entry:{ko:"진입",cls:"s-entry"}, exit:{ko:"이탈",cls:"s-exit"},
+  holding:{ko:"보유",cls:"s-holding"}, watch:{ko:"관심",cls:"s-watch"},
+  flat:{ko:"관망",cls:"s-flat"}, none:{ko:"상품없음",cls:"s-none"},
+  blocked:{ko:"보류",cls:"s-blocked"},
+};
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const num = (v,m) => v == null ? "—" : v.toLocaleString("ko-KR",
+  {minimumFractionDigits: m==="KR"?0:2, maximumFractionDigits: m==="KR"?0:2});
+const pad = n => String(n).padStart(2,"0");
+
+let DATA = null, FILTER = "all";
+
+function stampText(iso, d){
+  if(!iso) return "점검 이력 없음";
+  const t = new Date(iso);
+  const n = d ? ` · 기초자산 ${d.items.length} · 상품 ${d.product_count}` : "";
+  return `마지막 점검 ${pad(t.getMonth()+1)}.${pad(t.getDate())} ${pad(t.getHours())}:${pad(t.getMinutes())}${n}`;
+}
+
+function verdictBlock(d){
+  const live = d.items.filter(i => i.status==="entry" || i.status==="exit");
+  if(!live.length){
+    const bits = [];
+    if(d.counts.holding) bits.push(`보유 중 <b>${d.counts.holding}건</b>은 이탈 조건에 걸리지 않았습니다`);
+    if(d.counts.watch) bits.push(`조건에 근접한 <b>관심 ${d.counts.watch}건</b>이 있습니다`);
+    bits.push(`기초자산 <b>${d.items.length}개</b>를 점검했고 행동할 신호는 없습니다`);
+    return `<div class="wrap verdict quiet">
+      <h1 class="headline">오늘 행동할 신호는 없습니다.</h1>
+      <p class="sub">${bits.join(". ")}. 다음 점검은 한국장 15:45, 미국장 06:10입니다.</p>
+    </div>`;
+  }
+  const rows = live.map(i => {
+    const isExit = i.status==="exit";
+    const arrow = i.direction==="long" ? "▲" : "▼";
+    const ps = (i.products||[]).map(p => `${p.t} ${Math.abs(p.x)}x`).join(" · ");
+    return `<div class="call ${isExit?"is-exit":""}">
+      <div class="kind mono">${isExit?"이탈":"진입"}</div>
+      <div>
+        <div class="who">${arrow} ${esc(i.name)}</div>
+        <div class="sub2 mono">${esc(ps)}</div>
+      </div>
+      <div class="meta mono">${isExit?esc(i.reason):`조건 ${i.passed}/${i.total} 충족`}<br>
+        기초자산 ${num(i.price,i.market)}</div>
+    </div>`;
+  }).join("");
+  const nE = live.filter(i=>i.status==="entry").length, nX = live.length-nE;
+  const head = [nE?`진입 신호 ${nE}건`:"", nX?`이탈 신호 ${nX}건`:""].filter(Boolean).join(" · ");
+  return `<div class="wrap verdict">
+    <h1 class="headline">${head}.</h1>
+    <p class="sub">필수 조건이 모두 맞았을 때만 올라옵니다. 카드를 눌러 어떤 조건이 충족됐는지 확인하세요.</p>
+    <div class="calls">${rows}</div>
+  </div>`;
+}
+
+function regimeBlock(r){
+  const cell = (k,ko) => {
+    const x = r[k]||{};
+    return `<div class="cell"><div class="inner">
+      <div class="mkt mono">${ko}</div>
+      <div class="txt">${esc(x.detail||"데이터 없음")} —
+        롱 <b>${x.long_ok?"허용":"차단"}</b> · 인버스 <b>${x.short_ok?"허용":"차단"}</b></div>
+    </div></div>`;
+  };
+  return `<div class="regime">${cell("KR","한국")}${cell("US","미국")}</div>`;
+}
+
+function filterBar(d){
+  const opts = [["all","전체"],["live","신호·관심만"]].concat(d.groups.map(g=>[g,g]));
+  return `<div class="wrap"><div class="filters">` + opts.map(([k,label]) =>
+    `<button class="fchip ${FILTER===k?"on":""}" data-f="${esc(k)}" type="button">${esc(label)}</button>`
+  ).join("") + `</div></div>`;
+}
+
+// 직진성 = 이 도구의 핵심 지표. 기초자산이 "쭉" 가고 있는가.
+function straightRow(i){
+  if(i.er60 == null) return "";
+  const pct = Math.max(0, Math.min(1, i.er60 / 0.45));   // 0.45 를 가득참으로
+  const decay = i.decay_20d == null ? null : i.decay_20d * 100;
+  const gain  = i.gain_20d  == null ? null : i.gain_20d * 100;
+  let verdict = "", vcls = "bad";
+  if(decay != null && gain != null){
+    if(gain > 0 && decay <= gain * 0.35){ verdict = `20일 예상 +${gain.toFixed(1)}% 대비 감가 ${decay.toFixed(1)}%`; vcls = "good"; }
+    else if(gain <= 0){ verdict = `추세가 이 방향으로 밀어주지 않음`; }
+    else { verdict = `추세 +${gain.toFixed(1)}% 인데 감가 ${decay.toFixed(1)}% 로 상쇄`; }
+  }
+  return `<div class="straight">
+    <div class="sline">
+      <span class="slab mono">직진성</span>
+      <span class="smeter"><span class="sfill" style="width:${(pct*100).toFixed(0)}%"></span></span>
+      <span class="sval mono">${i.er60.toFixed(2)}</span>
+      <span class="slab mono">경로</span>
+      <span class="sval mono">R² ${i.r2==null?"—":i.r2.toFixed(2)}</span>
+    </div>
+    <div class="sdecay ${vcls}">${esc(verdict)}</div>
+  </div>`;
+}
+
+// 살 종목 하나로 좁혀서 보여준다. 같은 기초자산에 상품이 여러 개라
+// "FAS 3x · UYG 2x" 처럼 나열하면 결국 사용자가 다시 골라야 한다.
+function pickRow(i){
+  if(!i.pick) return "";
+  const p = i.pick;
+  const dir = p.x > 0 ? "롱" : "인버스";
+  const px = p.price == null ? "" : `<span class="pprice mono">${num(p.price, i.market)}</span>`;
+  return `<div class="pick">
+    <div class="ptop">
+      <span class="plabel mono">이걸 사면 됩니다</span>
+      <span class="pticker mono">${esc(p.t)}</span>
+      <span class="plev mono">${Math.abs(p.x)}배 ${dir}</span>
+      ${px}
+    </div>
+    <div class="pwhy">${esc(p.why || "")}</div>
+    ${p.thin ? '<div class="pwarn">거래대금이 얇습니다. 시장가 대신 지정가로 나눠 사세요.</div>' : ""}
+    ${p.no_price ? '<div class="pwarn">시세를 받지 못해 대표 종목으로 표시했습니다. HTS 에서 확인하세요.</div>' : ""}
+  </div>`;
+}
+
+// 매매계획 — 얼마에 사고 어디서 자를지
+function planRow(i){
+  if(!i.plan) return "";
+  const p = i.plan, m = i.market;
+  const row = (k, v, sub) => `<div class="prow">
+      <span class="pk mono">${k}</span>
+      <span class="pv mono">${v}</span>
+      ${sub ? `<span class="ps">${sub}</span>` : ""}</div>`;
+  const pc = x => x == null ? "—" : `${x > 0 ? "+" : ""}${(x*100).toFixed(1)}%`;
+  return `<div class="plan">
+    ${row("매수", num(p.entry, m), "다음 거래일 시가 근처")}
+    ${row("손절", num(p.stop_price, m), `${pc(p.stop_pct)} · ${esc(p.stop_basis)}`)}
+    ${row(p.target_is_rule ? "익절" : "목표", num(p.target_price, m),
+          `${pc(p.target_pct)} · 손절폭의 ${p.target_r}배${p.target_is_rule ? "" : " (자동청산 아님)"}`)}
+    ${row("시간한도", `${p.time_stop_days}거래일`, "그때까지 못 벌면 청산")}
+    ${row("비중", `총자산 ${(p.position_pct*100).toFixed(0)}% 이하`,
+          p.capped ? `${Math.abs(p.leverage)}배 상한 적용` : "한 번에 2% 잃는 기준")}
+    ${p.gap_risk ? '<div class="pwarn">3배는 갭 하락 시 손절가에 못 팝니다. 크게 넣지 마세요.</div>' : ""}
+  </div>`;
+}
+
+function card(i){
+  const st = STATUS[i.status] || STATUS.flat;
+  const arrow = i.direction==="long" ? "▲" : "▼";
+  const chipOf = (p, dim) => {
+    const px = p.price!=null ? ` · ${num(p.price,"US")}` : "";
+    return `<span class="chip ${p.missing?"gone":""} ${dim?"idle":""}">${esc(p.t)} ${Math.abs(p.x)}x${px}</span>`;
+  };
+  const active = (i.products||[]).map(p => chipOf(p, false)).join("");
+  const otherList = i.products_other||[];
+  const otherDir = i.direction === "long" ? "인버스" : "롱";
+  const other = otherList.length
+    ? `<div class="chiprow idle-row"><span class="chiplab mono">${otherDir}</span>`
+      + otherList.map(p => chipOf(p, true)).join("") + `</div>`
+    : "";
+  const activeDir = i.direction === "long" ? "롱" : "인버스";
+  const chips = (active
+      ? `<div class="chiprow"><span class="chiplab mono">${activeDir} · 판정 중</span>${active}</div>`
+      : "") + other;
+
+  const ladder = (i.gates||[]).length
+    ? `<div class="ladder">` + i.gates.map(g =>
+        `<div class="g ${g.mandatory?"req":""} ${g.passed?"on":""}" title="${esc(g.label)}"></div>`
+      ).join("") + `</div>`
+    : `<div class="ladder"></div>`;
+
+  const rows = (i.gates||[]).map(g => `<div class="grow ${g.passed?"on":""}">
+      <div class="mark mono">${g.passed?"■":"□"}</div>
+      <div class="lab">${esc(g.label)}</div>
+      ${g.mandatory?'<div class="req-tag mono">필수</div>':""}
+      <div class="val mono">${esc(g.detail)}</div>
+    </div>`).join("");
+
+  const chg = i.change_pct==null ? "" : `${i.change_pct>0?"+":""}${i.change_pct.toFixed(2)}%`;
+  const interactive = i.gates && i.gates.length;
+
+  return `<div class="card ${st.cls}" ${interactive?'tabindex="0" role="button" aria-expanded="false"':""}>
+    <div class="card-top">
+      <div>
+        <div class="nm">${arrow} ${esc(i.name)}</div>
+        <div class="lb mono">${esc(i.id)}</div>
+      </div>
+      <div class="px mono"><div class="v">${num(i.price,i.market)}</div><div class="d">${chg}</div></div>
+    </div>
+    ${ladder}
+    ${straightRow(i)}
+    ${pickRow(i)}
+    ${planRow(i)}
+    <div class="card-foot">
+      <div class="count mono">${interactive?`조건 ${i.passed}/${i.total}`:"—"}</div>
+      <div class="pill mono">${st.ko}</div>
+    </div>
+    ${chips?`<div class="chips">${chips}</div>`:""}
+    <div class="why">${esc(i.reason||"")}</div>
+    ${interactive?`<div class="detail">${rows}
+      <div class="why" style="margin-top:10px">기준일 ${esc(i.asof||"-")} · 판정은 기초자산 ${esc(i.id)} 기준</div>
+    </div>`:""}
+  </div>`;
+}
+
+function visible(d){
+  if(FILTER==="all") return d.items;
+  if(FILTER==="live") return d.items.filter(i=>["entry","exit","holding","watch"].includes(i.status));
+  return d.items.filter(i=>i.group===FILTER);
+}
+
+function sections(d){
+  const items = visible(d);
+  if(!items.length) return `<section class="wrap"><div class="empty-log">
+    해당하는 종목이 없습니다. 다른 필터를 눌러보세요.</div></section>`;
+  return d.groups.map(g => {
+    const list = items.filter(i=>i.group===g);
+    if(!list.length) return "";
+    const hot = list.filter(i=>["entry","exit"].includes(i.status)).length;
+    return `<section class="wrap">
+      <div class="sec-head"><h2>${esc(g)}</h2>
+        <span class="n mono">${list.length}</span>
+        ${hot?`<span class="hot mono">신호 ${hot}</span>`:""}</div>
+      <div class="rule"></div>
+      <div class="grid">${list.map(card).join("")}</div>
+    </section>`;
+  }).join("");
+}
+
+function digestBlock(d){
+  const g = d.digest || [];
+  if(!g.length) return "";
+  const rows = g.map(x => `<div class="drow">
+      <div class="dname">${esc(x.name)} <span class="mono">${esc(x.ticker)}</span></div>
+      <div class="dret mono ${x.ret > 0 ? "up" : "dn"}">${x.ret == null ? "—" :
+        `${x.ret > 0 ? "+" : ""}${(x.ret*100).toFixed(1)}%`}</div>
+      <div class="dmeta mono">${x.held}/${x.time_stop}일${
+        x.to_stop == null ? "" : ` · 손절까지 ${(x.to_stop*100).toFixed(1)}%p`}</div>
+      <div class="daction">${esc(x.action)}</div>
+    </div>`).join("");
+  return `<section class="wrap">
+    <div class="sec-head"><h2>보유 중</h2><span class="n mono">${g.length}건</span></div>
+    <div class="rule"></div><div class="digest">${rows}</div>
+  </section>`;
+}
+
+function logBlock(h){
+  if(!h||!h.length) return `<section class="wrap">
+    <div class="sec-head"><h2>신호 기록</h2></div><div class="rule"></div>
+    <div class="empty-log">아직 발생한 신호가 없습니다. 조건이 모두 맞는 날에만 여기에 쌓입니다.</div>
+  </section>`;
+  const rows = h.map(e => {
+    const t = new Date(e.ts);
+    const when = `${t.getFullYear()}.${pad(t.getMonth()+1)}.${pad(t.getDate())} ${pad(t.getHours())}:${pad(t.getMinutes())}`;
+    const kind = {entry:"진입",exit:"이탈",watch:"관심"}[e.kind] || e.kind;
+    const tail = e.kind==="exit" ? esc(e.reason) : `조건 ${e.passed ?? "-"}/${e.total ?? "-"}`;
+    const ps = (e.products||[]).slice(0,3).map(p=>p.t).join(", ");
+    return `<div class="row"><div class="when mono">${when}</div>
+      <div class="what"><b>${kind}</b> · ${esc(e.name)} — ${tail}${ps?` · ${esc(ps)}`:""}</div></div>`;
+  }).join("");
+  return `<section class="wrap">
+    <div class="sec-head"><h2>신호 기록</h2><span class="n mono">최근 ${h.length}건</span></div>
+    <div class="rule"></div><div class="log">${rows}</div>
+  </section>`;
+}
+
+function render(d){
+  DATA = d;
+  document.getElementById("stamp").textContent = stampText(d.generated_at, d);
+  document.getElementById("app").innerHTML =
+    verdictBlock(d) + regimeBlock(d.regime||{}) + filterBar(d) + sections(d) + logBlock(d.history) +
+    `<footer class="wrap">
+      게이트 막대에서 키가 큰 칸이 필수 조건입니다. 필수가 하나라도 비면 나머지가 다 차도 신호가 나지 않습니다.<br>
+      판단 단위는 기초자산입니다. 같은 기초자산을 쓰는 레버리지 상품은 추세 판단을 공유하므로 한 카드에 묶여 있습니다.<br>
+      티커는 수시로 상장·폐지·분할됩니다. <span class="mono">python run.py --audit</span> 로 정기적으로 확인하세요.<br>
+      이 화면은 규칙 점검 도구이며 투자 자문이 아닙니다. 레버리지 상품은 변동성 감가로 원금 전액을 잃을 수 있습니다.
+    </footer>`;
+
+  document.querySelectorAll(".fchip").forEach(b => b.addEventListener("click", () => {
+    FILTER = b.dataset.f; render(DATA);
+    window.scrollTo({top: Math.min(window.scrollY, 400), behavior:"instant"});
+  }));
+
+  document.querySelectorAll('.card[role="button"]').forEach(c => {
+    const toggle = () => c.setAttribute("aria-expanded", c.classList.toggle("open") ? "true":"false");
+    c.addEventListener("click", toggle);
+    c.addEventListener("keydown", e => {
+      if(e.key==="Enter"||e.key===" "){ e.preventDefault(); toggle(); }
+    });
+  });
+}
+
+let polling = false;
+async function refresh(){
+  try{
+    const r = await fetch("/api/latest",{cache:"no-store"});
+    const d = await r.json();
+    const btn = document.getElementById("scanBtn");
+    if(d.scanning){
+      btn.disabled = true; btn.textContent = "점검 중";
+      if(!polling){ polling = true; setTimeout(()=>{polling=false; refresh();}, 5000); }
+    }else{ btn.disabled = false; btn.textContent = "지금 점검"; }
+    if(d.empty){
+      document.getElementById("stamp").textContent = "점검 이력 없음";
+      document.getElementById("app").innerHTML = `<div class="wrap boot">${d.scanning
+        ? "첫 점검을 진행 중입니다. 기초자산 60건 가까이 받아오느라 2~3분 걸립니다."
+        : "아직 점검 기록이 없습니다. 위의 ‘지금 점검’을 누르면 시작합니다."}</div>`;
+      return;
+    }
+    render(d);
+  }catch(e){
+    document.getElementById("stamp").textContent = "서버에 연결하지 못했습니다";
+  }
+}
+
+if (false) document.getElementById("scanBtn").addEventListener("click", async () => {
+  const btn = document.getElementById("scanBtn");
+  btn.disabled = true; btn.textContent = "점검 중";
+  await fetch("/api/scan",{method:"POST"});
+  setTimeout(refresh, 1500);
+});
+
+const BAKED = {"generated_at": "2026-08-07T04:29:03+00:00", "regime": {"US": {"long_ok": false, "short_ok": true, "detail": "S&P500 MA200 아래 · VIX 22.4", "vix": 22.36967228670262, "index_above_ma200": false}, "KR": {"long_ok": false, "short_ok": false, "detail": "코스피200 MA200 위 · 실현변동성 35%", "vix": 0.3464829345033975, "index_above_ma200": true}}, "groups": ["한국 단일종목", "미국 개별주"], "items": [{"id": "AAPL", "name": "애플", "group": "미국 개별주", "market": "US", "direction": "long", "status": "entry", "passed": 9, "total": 10, "gates": [{"key": "trend", "label": "종가 > MA200", "mandatory": true, "passed": true, "detail": "MA200 대비 +48.1%"}, {"key": "align", "label": "정배열 + MA200 우상향", "mandatory": true, "passed": true, "detail": "MA50/MA200 이격 +29.4%"}, {"key": "near", "label": "종가 > MA20", "mandatory": true, "passed": true, "detail": "MA20 대비 +1.7%"}, {"key": "straight", "label": "직진성", "mandatory": true, "passed": true, "detail": "ER 0.41 — 절대 0.15 이상이거나, 0.10 이상이면서 자기 이력 상위 11%"}, {"key": "smooth", "label": "경로 매끄러움", "mandatory": true, "passed": true, "detail": "R² 0.93 — 절대 0.45 이상이거나, 0.30 이상이면서 자기 이력 상위 15%"}, {"key": "edge", "label": "감가 여유 (감가 ≤ 추세이익×35%)", "mandatory": true, "passed": true, "detail": "2배 기준 추세이익 +32.7% vs 감가 −0.8%"}, {"key": "vol", "label": "ATR20 ≤ 2.8%", "mandatory": true, "passed": true, "detail": "현재 1.8%"}, {"key": "not_hot", "label": "과열 아님", "mandatory": true, "passed": true, "detail": "RSI 64 · 이격 +1.7%"}, {"key": "momentum", "label": "MACD 정배열", "mandatory": false, "passed": false, "detail": "히스토그램 -1.30"}, {"key": "high_zone", "label": "고점권 유지", "mandatory": false, "passed": true, "detail": "52주 고점 대비 -4.2%"}], "products": [{"t": "AAPU", "x": 2, "side": "long", "price": 78.78480239419467, "change_pct": 1.859384423503374, "turnover": 644877968.0918449}, {"t": "AAPB", "x": 2, "side": "long", "price": 115.26153551019087, "change_pct": 3.1244658865522856, "turnover": 905390708.0548713}], "products_other": [{"t": "AAPD", "x": -1, "side": "short"}], "price": 154.6499462514473, "change_pct": 1.8679761374725823, "er60": 0.40596222231330387, "r2": 0.9294911159808875, "decay_20d": 0.008396862533733137, "gain_20d": 0.32727602476633005, "regime_ok": true, "leverage": 2, "pick_leverage": 2, "pick_net": 0.31887916223259694, "pick": {"t": "AAPB", "x": 2, "price": 115.26153551019087, "change_pct": 3.1244658865522856, "turnover": 905390708.0548713, "thin": false, "no_price": false, "why": "2배 · 감가 감당 가능 · 같은 배수 2종 중 거래대금 1위 · 20일 기대 순이익 +31.9%"}, "plan": {"leverage": 2, "direction": "long", "entry": 115.26153551019087, "entry_note": "다음 거래일 시가 근처. 종가 판정이라 갭이 크면 건너뛰세요.", "stop_pct": -0.04975940978797122, "stop_price": 109.52618953194849, "stop_basis": "기초자산 MA20 이탈 기준", "u_stop": 150.80230122684054, "target_pct": 0.09951881957594244, "target_price": 126.73222746667564, "target_r": 2.0, "target_is_rule": false, "proj_pct": 0.31887916223259694, "proj_price": 152.01603739132327, "time_stop_days": 20, "rr": 2.0, "risk_per_trade": 0.02, "size_by_risk": 0.4019340278596869, "size_cap": 0.15, "position_pct": 0.15, "capped": true, "gap_risk": false}, "leverage_table": [{"L": 2, "gain": 0.32727602476633005, "decay": 0.008396862533733137, "ok": true, "net": 0.31887916223259694}], "asof": "2026-08-07", "reason": "필수 조건 전부 + 9/10 충족 · 52주 레인지 91% 지점", "error": null}, {"id": "NVDA", "name": "엔비디아", "group": "미국 개별주", "market": "US", "direction": "long", "status": "entry", "passed": 9, "total": 10, "gates": [{"key": "trend", "label": "종가 > MA200", "mandatory": true, "passed": true, "detail": "MA200 대비 +32.6%"}, {"key": "align", "label": "정배열 + MA200 우상향", "mandatory": true, "passed": true, "detail": "MA50/MA200 이격 +20.1%"}, {"key": "near", "label": "종가 > MA20", "mandatory": true, "passed": true, "detail": "MA20 대비 +1.6%"}, {"key": "straight", "label": "직진성", "mandatory": true, "passed": true, "detail": "ER 0.34 — 절대 0.15 이상이거나, 0.10 이상이면서 자기 이력 상위 14%"}, {"key": "smooth", "label": "경로 매끄러움", "mandatory": true, "passed": true, "detail": "R² 0.72 — 절대 0.45 이상이거나, 0.30 이상이면서 자기 이력 상위 25%"}, {"key": "edge", "label": "감가 여유 (감가 ≤ 추세이익×35%)", "mandatory": true, "passed": true, "detail": "2배 기준 추세이익 +14.9% vs 감가 −0.2%"}, {"key": "vol", "label": "ATR20 ≤ 3.8%", "mandatory": true, "passed": true, "detail": "현재 1.2%"}, {"key": "not_hot", "label": "과열 아님", "mandatory": true, "passed": true, "detail": "RSI 66 · 이격 +1.6%"}, {"key": "momentum", "label": "MACD 정배열", "mandatory": false, "passed": false, "detail": "히스토그램 -0.67"}, {"key": "high_zone", "label": "고점권 유지", "mandatory": false, "passed": true, "detail": "52주 고점 대비 -2.4%"}], "products": [{"t": "NVDL", "x": 2, "side": "long", "price": 163.79114214242293, "change_pct": -1.2826324150489343, "turnover": 1255070975.1878648}, {"t": "NVDX", "x": 2, "side": "long", "price": 78.99989382749769, "change_pct": 4.187961402719154, "turnover": 630003543.2856871}, {"t": "NVDU", "x": 2, "side": "long", "price": 66.92815368167683, "change_pct": -1.249584264027559, "turnover": 526625922.54050875}], "products_other": [{"t": "NVD", "x": -1, "side": "short"}, {"t": "NVDQ", "x": -2, "side": "short"}], "price": 266.73560614391386, "change_pct": -0.8640230641260516, "er60": 0.33572233103815613, "r2": 0.7248607736118942, "decay_20d": 0.0023681105101608173, "gain_20d": 0.14911367252644114, "regime_ok": true, "leverage": 2, "pick_leverage": 2, "pick_net": 0.14674556201628033, "pick": {"t": "NVDL", "x": 2, "price": 163.79114214242293, "change_pct": -1.2826324150489343, "turnover": 1255070975.1878648, "thin": false, "no_price": false, "why": "2배 · 감가 감당 가능 · 같은 배수 3종 중 거래대금 1위 · 20일 기대 순이익 +14.7%"}, "plan": {"leverage": 2, "direction": "long", "entry": 163.79114214242293, "entry_note": "다음 거래일 시가 근처. 종가 판정이라 갭이 크면 건너뛰세요.", "stop_pct": -0.042855662366757974, "stop_price": 156.7717642561016, "stop_basis": "기초자산 MA20 이탈 기준", "u_stop": 261.0200406048658, "target_pct": 0.08571132473351595, "target_price": 177.8298979150656, "target_r": 2.0, "target_is_rule": false, "proj_pct": 0.14674556201628033, "proj_price": 187.82676534940123, "time_stop_days": 20, "rr": 2.0, "risk_per_trade": 0.02, "size_by_risk": 0.4666827881188807, "size_cap": 0.15, "position_pct": 0.15, "capped": true, "gap_risk": false}, "leverage_table": [{"L": 2, "gain": 0.14911367252644114, "decay": 0.0023681105101608173, "ok": true, "net": 0.14674556201628033}], "asof": "2026-08-07", "reason": "필수 조건 전부 + 9/10 충족 · 52주 레인지 95% 지점", "error": null}, {"id": "BABA", "name": "알리바바", "group": "미국 개별주", "market": "US", "direction": "long", "status": "watch", "passed": 8, "total": 10, "gates": [{"key": "trend", "label": "종가 > MA200", "mandatory": true, "passed": true, "detail": "MA200 대비 +19.8%"}, {"key": "align", "label": "정배열 + MA200 우상향", "mandatory": true, "passed": true, "detail": "MA50/MA200 이격 +8.8%"}, {"key": "near", "label": "종가 > MA20", "mandatory": true, "passed": false, "detail": "MA20 대비 -2.8%"}, {"key": "straight", "label": "직진성", "mandatory": true, "passed": true, "detail": "ER 0.20 — 절대 0.15 이상이거나, 0.10 이상이면서 자기 이력 상위 30%"}, {"key": "smooth", "label": "경로 매끄러움", "mandatory": true, "passed": true, "detail": "R² 0.68 — 절대 0.45 이상이거나, 0.30 이상이면서 자기 이력 상위 30%"}, {"key": "edge", "label": "감가 여유 (감가 ≤ 추세이익×35%)", "mandatory": true, "passed": true, "detail": "2배 기준 추세이익 +21.6% vs 감가 −1.0%"}, {"key": "vol", "label": "ATR20 ≤ 3.8%", "mandatory": true, "passed": true, "detail": "현재 2.0%"}, {"key": "not_hot", "label": "과열 아님", "mandatory": true, "passed": true, "detail": "RSI 52 · 이격 -2.8%"}, {"key": "momentum", "label": "MACD 정배열", "mandatory": false, "passed": false, "detail": "히스토그램 -2.55"}, {"key": "high_zone", "label": "고점권 유지", "mandatory": false, "passed": true, "detail": "52주 고점 대비 -8.7%"}], "products": [{"t": "BABX", "x": 2, "side": "long", "price": 59.79144220597519, "change_pct": -2.182391361679281, "turnover": 476583491.68675816}], "products_other": [], "price": 180.9751781837769, "change_pct": 0.6331795308481825, "er60": 0.19829628131491342, "r2": 0.6838499110683018, "decay_20d": 0.009867557585812571, "gain_20d": 0.2164420449596347, "regime_ok": true, "leverage": 2, "pick_leverage": 2, "pick_net": 0.20657448737382214, "pick": {"t": "BABX", "x": 2, "price": 59.79144220597519, "change_pct": -2.182391361679281, "turnover": 476583491.68675816, "thin": false, "no_price": false, "why": "2배 · 감가 감당 가능 · 20일 기대 순이익 +20.7%"}, "plan": null, "leverage_table": [{"L": 2, "gain": 0.2164420449596347, "decay": 0.009867557585812571, "ok": true, "net": 0.20657448737382214}], "asof": "2026-08-07", "reason": "미충족: 종가 > MA20 외 1건", "error": null}, {"id": "META", "name": "메타", "group": "미국 개별주", "market": "US", "direction": "short", "status": "flat", "passed": 8, "total": 10, "gates": [{"key": "trend", "label": "종가 < MA200", "mandatory": true, "passed": true, "detail": "MA200 대비 -13.4%"}, {"key": "align", "label": "역배열 + MA200 우하향", "mandatory": true, "passed": true, "detail": "MA50/MA200 이격 -5.3%"}, {"key": "near", "label": "종가 < MA20", "mandatory": true, "passed": true, "detail": "MA20 대비 -7.7%"}, {"key": "straight", "label": "직진성", "mandatory": true, "passed": true, "detail": "ER 0.16 — 절대 0.15 이상이거나, 0.10 이상이면서 자기 이력 상위 18%"}, {"key": "smooth", "label": "경로 매끄러움", "mandatory": true, "passed": false, "detail": "R² 0.18 — 절대 0.45 이상이거나, 0.30 이상이면서 자기 이력 상위 62%"}, {"key": "edge", "label": "감가 여유 (감가 ≤ 추세이익×35%)", "mandatory": true, "passed": false, "detail": "1배 기준 20일 추세이익 +2.8% vs 감가 −1.0% — 감당 가능한 배수 없음"}, {"key": "breakdown", "label": "60일 저점 이탈", "mandatory": true, "passed": true, "detail": "60일 저점 대비 -0.1%"}, {"key": "not_panic", "label": "투매 구간 아님", "mandatory": true, "passed": true, "detail": "RSI 35 · 이격 -7.7%"}, {"key": "vol", "label": "ATR20 ≤ 4.4%", "mandatory": false, "passed": true, "detail": "현재 2.4%"}, {"key": "momentum", "label": "MACD 역배열", "mandatory": false, "passed": true, "detail": "히스토그램 -1.13"}], "products": [{"t": "METD", "x": -1, "side": "short"}], "products_other": [{"t": "METU", "x": 2, "side": "long"}, {"t": "FBL", "x": 2, "side": "long"}], "price": 110.09710159652838, "change_pct": -2.038426649074887, "er60": 0.1594463106831621, "r2": 0.1817306257784902, "decay_20d": 0.009720120260191199, "gain_20d": 0.027508592604905662, "regime_ok": true, "leverage": -1, "pick_leverage": null, "pick_net": null, "pick": null, "plan": null, "leverage_table": [{"L": -1, "gain": 0.027508592604905662, "decay": 0.009720120260191199, "ok": false, "net": 0.017788472344714465}], "asof": "2026-08-07", "reason": "미충족: 경로 매끄러움, 감가 여유 (감가 ≤ 추세이익×35%)", "error": null}, {"id": "AMD", "name": "AMD", "group": "미국 개별주", "market": "US", "direction": "long", "status": "flat", "passed": 7, "total": 10, "gates": [{"key": "trend", "label": "종가 > MA200", "mandatory": true, "passed": true, "detail": "MA200 대비 +13.9%"}, {"key": "align", "label": "정배열 + MA200 우상향", "mandatory": true, "passed": true, "detail": "MA50/MA200 이격 +8.3%"}, {"key": "near", "label": "종가 > MA20", "mandatory": true, "passed": true, "detail": "MA20 대비 +3.7%"}, {"key": "straight", "label": "직진성", "mandatory": true, "passed": false, "detail": "ER 0.07 — 절대 0.15 이상이거나, 0.10 이상이면서 자기 이력 상위 80%"}, {"key": "smooth", "label": "경로 매끄러움", "mandatory": true, "passed": false, "detail": "R² 0.03 — 절대 0.45 이상이거나, 0.30 이상이면서 자기 이력 상위 91%"}, {"key": "edge", "label": "감가 여유 (감가 ≤ 추세이익×35%)", "mandatory": true, "passed": false, "detail": "2배 기준 20일 추세이익 -1.8% vs 감가 −1.0% — 감당 가능한 배수 없음"}, {"key": "vol", "label": "ATR20 ≤ 4.2%", "mandatory": true, "passed": true, "detail": "현재 2.0%"}, {"key": "not_hot", "label": "과열 아님", "mandatory": true, "passed": true, "detail": "RSI 58 · 이격 +3.7%"}, {"key": "momentum", "label": "MACD 정배열", "mandatory": false, "passed": true, "detail": "히스토그램 +0.45"}, {"key": "high_zone", "label": "고점권 유지", "mandatory": false, "passed": true, "detail": "52주 고점 대비 -7.6%"}], "products": [{"t": "AMDL", "x": 2, "side": "long"}, {"t": "AMUU", "x": 2, "side": "long"}], "products_other": [{"t": "AMDD", "x": -1, "side": "short"}, {"t": "AMDS", "x": -2, "side": "short"}], "price": 123.95354785857886, "change_pct": 1.6708561312193781, "er60": 0.06519907296707073, "r2": 0.02596931344754716, "decay_20d": 0.009661123576813643, "gain_20d": -0.017916079342942363, "regime_ok": true, "leverage": 2, "pick_leverage": null, "pick_net": null, "pick": null, "plan": null, "leverage_table": [{"L": 2, "gain": -0.017916079342942363, "decay": 0.009661123576813643, "ok": false, "net": -0.027577202919756006}], "asof": "2026-08-07", "reason": "미충족: 직진성, 경로 매끄러움 외 1건", "error": null}, {"id": "NFLX", "name": "넷플릭스", "group": "미국 개별주", "market": "US", "direction": "long", "status": "flat", "passed": 7, "total": 10, "gates": [{"key": "trend", "label": "종가 > MA200", "mandatory": true, "passed": true, "detail": "MA200 대비 +3.9%"}, {"key": "align", "label": "정배열 + MA200 우상향", "mandatory": true, "passed": false, "detail": "MA50/MA200 이격 +0.3%"}, {"key": "near", "label": "종가 > MA20", "mandatory": true, "passed": true, "detail": "MA20 대비 +2.8%"}, {"key": "straight", "label": "직진성", "mandatory": true, "passed": true, "detail": "ER 0.14 — 절대 0.15 이상이거나, 0.10 이상이면서 자기 이력 상위 18%"}, {"key": "smooth", "label": "경로 매끄러움", "mandatory": true, "passed": false, "detail": "R² 0.12 — 절대 0.45 이상이거나, 0.30 이상이면서 자기 이력 상위 66%"}, {"key": "edge", "label": "감가 여유 (감가 ≤ 추세이익×35%)", "mandatory": true, "passed": true, "detail": "2배 기준 추세이익 +3.7% vs 감가 −0.6%"}, {"key": "vol", "label": "ATR20 ≤ 3.2%", "mandatory": true, "passed": true, "detail": "현재 1.8%"}, {"key": "not_hot", "label": "과열 아님", "mandatory": true, "passed": true, "detail": "RSI 57 · 이격 +2.8%"}, {"key": "momentum", "label": "MACD 정배열", "mandatory": false, "passed": true, "detail": "히스토그램 +0.18"}, {"key": "high_zone", "label": "고점권 유지", "mandatory": false, "passed": false, "detail": "52주 고점 대비 -15.3%"}], "products": [{"t": "NFXL", "x": 2, "side": "long"}], "products_other": [{"t": "NFXS", "x": -1, "side": "short"}], "price": 108.72518320838998, "change_pct": 1.9367652361683696, "er60": 0.14393664478265578, "r2": 0.12122264857765097, "decay_20d": 0.005747616359571787, "gain_20d": 0.036690697001609825, "regime_ok": true, "leverage": 2, "pick_leverage": 2, "pick_net": 0.03094308064203804, "pick": null, "plan": null, "leverage_table": [{"L": 2, "gain": 0.036690697001609825, "decay": 0.005747616359571787, "ok": true, "net": 0.03094308064203804}], "asof": "2026-08-07", "reason": "미충족: 정배열 + MA200 우상향, 경로 매끄러움 외 1건", "error": null}, {"id": "SMCI", "name": "슈퍼마이크로", "group": "미국 개별주", "market": "US", "direction": "long", "status": "flat", "passed": 7, "total": 10, "gates": [{"key": "trend", "label": "종가 > MA200", "mandatory": true, "passed": true, "detail": "MA200 대비 +16.1%"}, {"key": "align", "label": "정배열 + MA200 우상향", "mandatory": true, "passed": true, "detail": "MA50/MA200 이격 +8.6%"}, {"key": "near", "label": "종가 > MA20", "mandatory": true, "passed": true, "detail": "MA20 대비 +8.1%"}, {"key": "straight", "label": "직진성", "mandatory": true, "passed": true, "detail": "ER 0.16 — 절대 0.15 이상이거나, 0.10 이상이면서 자기 이력 상위 9%"}, {"key": "smooth", "label": "경로 매끄러움", "mandatory": true, "passed": false, "detail": "R² 0.04 — 절대 0.45 이상이거나, 0.30 이상이면서 자기 이력 상위 77%"}, {"key": "edge", "label": "감가 여유 (감가 ≤ 추세이익×35%)", "mandatory": true, "passed": false, "detail": "2배 기준 20일 추세이익 -2.0% vs 감가 −0.7% — 감당 가능한 배수 없음"}, {"key": "vol", "label": "ATR20 ≤ 5.5%", "mandatory": true, "passed": true, "detail": "현재 1.7%"}, {"key": "not_hot", "label": "과열 아님", "mandatory": true, "passed": false, "detail": "RSI 68 · 이격 +8.1%"}, {"key": "momentum", "label": "MACD 정배열", "mandatory": false, "passed": true, "detail": "히스토그램 +1.37"}, {"key": "high_zone", "label": "고점권 유지", "mandatory": false, "passed": true, "detail": "52주 고점 대비 -1.4%"}], "products": [{"t": "SMCL", "x": 2, "side": "long"}], "products_other": [{"t": "SMCZ", "x": -2, "side": "short"}], "price": 125.56026289656847, "change_pct": 0.20204227752982362, "er60": 0.15670633905509945, "r2": 0.04050500106397692, "decay_20d": 0.007081687707245941, "gain_20d": -0.0198550492933232, "regime_ok": true, "leverage": 2, "pick_leverage": null, "pick_net": null, "pick": null, "plan": null, "leverage_table": [{"L": 2, "gain": -0.0198550492933232, "decay": 0.007081687707245941, "ok": false, "net": -0.02693673700056914}], "asof": "2026-08-07", "reason": "미충족: 경로 매끄러움, 감가 여유 (감가 ≤ 추세이익×35%) 외 1건", "error": null}, {"id": "MSTR", "name": "스트래티지 (MSTR)", "group": "미국 개별주", "market": "US", "direction": "short", "status": "flat", "passed": 7, "total": 10, "gates": [{"key": "trend", "label": "종가 < MA200", "mandatory": true, "passed": true, "detail": "MA200 대비 -23.2%"}, {"key": "align", "label": "역배열 + MA200 우하향", "mandatory": true, "passed": false, "detail": "MA50/MA200 이격 -9.6%"}, {"key": "near", "label": "종가 < MA20", "mandatory": true, "passed": true, "detail": "MA20 대비 -4.3%"}, {"key": "straight", "label": "직진성", "mandatory": true, "passed": true, "detail": "ER 0.25 — 절대 0.15 이상이거나, 0.10 이상이면서 자기 이력 상위 15%"}, {"key": "smooth", "label": "경로 매끄러움", "mandatory": true, "passed": true, "detail": "R² 0.88 — 절대 0.45 이상이거나, 0.30 이상이면서 자기 이력 상위 10%"}, {"key": "edge", "label": "감가 여유 (감가 ≤ 추세이익×35%)", "mandatory": true, "passed": true, "detail": "2배 기준 추세이익 +32.8% vs 감가 −2.9%"}, {"key": "breakdown", "label": "60일 저점 이탈", "mandatory": true, "passed": false, "detail": "60일 저점 대비 +1.9%"}, {"key": "not_panic", "label": "투매 구간 아님", "mandatory": true, "passed": true, "detail": "RSI 36 · 이격 -4.3%"}, {"key": "vol", "label": "ATR20 ≤ 7.2%", "mandatory": false, "passed": true, "detail": "현재 2.4%"}, {"key": "momentum", "label": "MACD 역배열", "mandatory": false, "passed": false, "detail": "히스토그램 +0.55"}], "products": [{"t": "MSTZ", "x": -2, "side": "short"}, {"t": "SMST", "x": -2, "side": "short"}], "products_other": [{"t": "MSTX", "x": 2, "side": "long"}, {"t": "MSTU", "x": 2, "side": "long"}], "price": 149.6857722068468, "change_pct": -1.254947771541981, "er60": 0.24957539174178603, "r2": 0.8824161527891337, "decay_20d": 0.029122985170776505, "gain_20d": 0.32758941157138116, "regime_ok": true, "leverage": -2, "pick_leverage": -2, "pick_net": 0.29846642640060467, "pick": null, "plan": null, "leverage_table": [{"L": -2, "gain": 0.32758941157138116, "decay": 0.029122985170776505, "ok": true, "net": 0.29846642640060467}], "asof": "2026-08-07", "reason": "미충족: 역배열 + MA200 우하향, 60일 저점 이탈 외 1건", "error": null}, {"id": "ALB", "name": "앨버말 (리튬)", "group": "미국 개별주", "market": "US", "direction": "long", "status": "flat", "passed": 7, "total": 10, "gates": [{"key": "trend", "label": "종가 > MA200", "mandatory": true, "passed": true, "detail": "MA200 대비 +15.7%"}, {"key": "align", "label": "정배열 + MA200 우상향", "mandatory": true, "passed": true, "detail": "MA50/MA200 이격 +16.6%"}, {"key": "near", "label": "종가 > MA20", "mandatory": true, "passed": false, "detail": "MA20 대비 -3.6%"}, {"key": "straight", "label": "직진성", "mandatory": true, "passed": false, "detail": "ER 0.04 — 절대 0.15 이상이거나, 0.10 이상이면서 자기 이력 상위 77%"}, {"key": "smooth", "label": "경로 매끄러움", "mandatory": true, "passed": true, "detail": "R² 0.63 — 절대 0.45 이상이거나, 0.30 이상이면서 자기 이력 상위 35%"}, {"key": "edge", "label": "감가 여유 (감가 ≤ 추세이익×35%)", "mandatory": true, "passed": true, "detail": "2배 기준 추세이익 +8.6% vs 감가 −1.3%"}, {"key": "vol", "label": "ATR20 ≤ 4.5%", "mandatory": true, "passed": true, "detail": "현재 2.2%"}, {"key": "not_hot", "label": "과열 아님", "mandatory": true, "passed": true, "detail": "RSI 45 · 이격 -3.6%"}, {"key": "momentum", "label": "MACD 정배열", "mandatory": false, "passed": false, "detail": "히스토그램 -0.87"}, {"key": "high_zone", "label": "고점권 유지", "mandatory": false, "passed": true, "detail": "52주 고점 대비 -8.4%"}], "products": [{"t": "ALBG", "x": 2, "side": "long"}], "products_other": [], "price": 169.92117025677143, "change_pct": -1.3845122188495762, "er60": 0.041521467023595916, "r2": 0.6284793923726284, "decay_20d": 0.013040143814693676, "gain_20d": 0.08581765300678292, "regime_ok": true, "leverage": 2, "pick_leverage": 2, "pick_net": 0.07277750919208924, "pick": null, "plan": null, "leverage_table": [{"L": 2, "gain": 0.08581765300678292, "decay": 0.013040143814693676, "ok": true, "net": 0.07277750919208924}], "asof": "2026-08-07", "reason": "미충족: 종가 > MA20, 직진성 외 1건", "error": null}, {"id": "MSFT", "name": "마이크로소프트", "group": "미국 개별주", "market": "US", "direction": "long", "status": "flat", "passed": 6, "total": 10, "gates": [{"key": "trend", "label": "종가 > MA200", "mandatory": true, "passed": true, "detail": "MA200 대비 +2.3%"}, {"key": "align", "label": "정배열 + MA200 우상향", "mandatory": true, "passed": true, "detail": "MA50/MA200 이격 +0.3%"}, {"key": "near", "label": "종가 > MA20", "mandatory": true, "passed": true, "detail": "MA20 대비 +0.8%"}, {"key": "straight", "label": "직진성", "mandatory": true, "passed": false, "detail": "ER 0.03 — 절대 0.15 이상이거나, 0.10 이상이면서 자기 이력 상위 89%"}, {"key": "smooth", "label": "경로 매끄러움", "mandatory": true, "passed": false, "detail": "R² 0.05 — 절대 0.45 이상이거나, 0.30 이상이면서 자기 이력 상위 84%"}, {"key": "edge", "label": "감가 여유 (감가 ≤ 추세이익×35%)", "mandatory": true, "passed": false, "detail": "2배 기준 20일 추세이익 -1.7% vs 감가 −0.9% — 감당 가능한 배수 없음"}, {"key": "vol", "label": "ATR20 ≤ 2.6%", "mandatory": true, "passed": true, "detail": "현재 1.9%"}, {"key": "not_hot", "label": "과열 아님", "mandatory": true, "passed": true, "detail": "RSI 52 · 이격 +0.8%"}, {"key": "momentum", "label": "MACD 정배열", "mandatory": false, "passed": true, "detail": "히스토그램 +0.23"}, {"key": "high_zone", "label": "고점권 유지", "mandatory": false, "passed": false, "detail": "52주 고점 대비 -12.5%"}], "products": [{"t": "MSFU", "x": 2, "side": "long"}, {"t": "MSFL", "x": 2, "side": "long"}], "products_other": [{"t": "MSFD", "x": -1, "side": "short"}], "price": 61.00715906398465, "change_pct": -3.326606570373014, "er60": 0.02624039902812685, "r2": 0.050127633256610404, "decay_20d": 0.00873907852296732, "gain_20d": -0.01737179404650795, "regime_ok": true, "leverage": 2, "pick_leverage": null, "pick_net": null, "pick": null, "plan": null, "leverage_table": [{"L": 2, "gain": -0.01737179404650795, "decay": 0.00873907852296732, "ok": false, "net": -0.02611087256947527}], "asof": "2026-08-07", "reason": "미충족: 직진성, 경로 매끄러움 외 2건", "error": null}, {"id": "AVGO", "name": "브로드컴", "group": "미국 개별주", "market": "US", "direction": "short", "status": "flat", "passed": 6, "total": 10, "gates": [{"key": "trend", "label": "종가 < MA200", "mandatory": true, "passed": true, "detail": "MA200 대비 -6.8%"}, {"key": "align", "label": "역배열 + MA200 우하향", "mandatory": true, "passed": true, "detail": "MA50/MA200 이격 -6.1%"}, {"key": "near", "label": "종가 < MA20", "mandatory": true, "passed": true, "detail": "MA20 대비 -0.6%"}, {"key": "straight", "label": "직진성", "mandatory": true, "passed": false, "detail": "ER 0.01 — 절대 0.15 이상이거나, 0.10 이상이면서 자기 이력 상위 96%"}, {"key": "smooth", "label": "경로 매끄러움", "mandatory": true, "passed": false, "detail": "R² 0.34 — 절대 0.45 이상이거나, 0.30 이상이면서 자기 이력 상위 59%"}, {"key": "edge", "label": "감가 여유 (감가 ≤ 추세이익×35%)", "mandatory": true, "passed": true, "detail": "1배 기준 추세이익 +3.8% vs 감가 −1.1%"}, {"key": "breakdown", "label": "60일 저점 이탈", "mandatory": true, "passed": false, "detail": "60일 저점 대비 +7.5%"}, {"key": "not_panic", "label": "투매 구간 아님", "mandatory": true, "passed": true, "detail": "RSI 49 · 이격 -0.6%"}, {"key": "vol", "label": "ATR20 ≤ 4.7%", "mandatory": false, "passed": true, "detail": "현재 2.3%"}, {"key": "momentum", "label": "MACD 역배열", "mandatory": false, "passed": false, "detail": "히스토그램 +0.33"}], "products": [{"t": "AVS", "x": -1, "side": "short"}], "products_other": [{"t": "AVL", "x": 2, "side": "long"}], "price": 70.36329577733083, "change_pct": -3.773354076626334, "er60": 0.006919406454940319, "r2": 0.34319107891641476, "decay_20d": 0.011400986981334753, "gain_20d": 0.03822049762496204, "regime_ok": true, "leverage": -1, "pick_leverage": -1, "pick_net": 0.026819510643627288, "pick": null, "plan": null, "leverage_table": [{"L": -1, "gain": 0.03822049762496204, "decay": 0.011400986981334753, "ok": true, "net": 0.026819510643627288}], "asof": "2026-08-07", "reason": "미충족: 직진성, 경로 매끄러움 외 2건", "error": null}, {"id": "SPCX", "name": "스페이스X", "group": "미국 개별주", "market": "US", "direction": "short", "status": "flat", "passed": 6, "total": 10, "gates": [{"key": "trend", "label": "종가 < MA200", "mandatory": true, "passed": true, "detail": "MA200 대비 -12.7%"}, {"key": "align", "label": "역배열 + MA200 우하향", "mandatory": true, "passed": true, "detail": "MA50/MA200 이격 -22.3%"}, {"key": "near", "label": "종가 < MA20", "mandatory": true, "passed": false, "detail": "MA20 대비 +8.7%"}, {"key": "straight", "label": "직진성", "mandatory": true, "passed": true, "detail": "ER 0.15 — 절대 0.15 이상이거나, 0.10 이상이면서 자기 이력 상위 47%"}, {"key": "smooth", "label": "경로 매끄러움", "mandatory": true, "passed": true, "detail": "R² 0.58 — 절대 0.45 이상이거나, 0.30 이상이면서 자기 이력 상위 41%"}, {"key": "edge", "label": "감가 여유 (감가 ≤ 추세이익×35%)", "mandatory": true, "passed": false, "detail": "2배 기준 20일 추세이익 -8.4% vs 감가 −2.9% — 감당 가능한 배수 없음"}, {"key": "breakdown", "label": "60일 저점 이탈", "mandatory": true, "passed": false, "detail": "60일 저점 대비 +25.0%"}, {"key": "not_panic", "label": "투매 구간 아님", "mandatory": true, "passed": true, "detail": "RSI 71 · 이격 +8.7%"}, {"key": "vol", "label": "ATR20 ≤ 7.8%", "mandatory": false, "passed": true, "detail": "현재 1.8%"}, {"key": "momentum", "label": "MACD 역배열", "mandatory": false, "passed": false, "detail": "히스토그램 +0.41"}], "products": [{"t": "SNK", "x": -2, "side": "short"}], "products_other": [{"t": "LOFF", "x": 2, "side": "long"}, {"t": "SPAX", "x": 2, "side": "long"}, {"t": "SPAL", "x": 2, "side": "long"}, {"t": "SPCF", "x": 2, "side": "long"}], "price": 67.55159145493356, "change_pct": 4.594445957866333, "er60": 0.15200690036167855, "r2": 0.582210661577617, "decay_20d": 0.028756151766483076, "gain_20d": -0.08405948149230563, "regime_ok": true, "leverage": -2, "pick_leverage": null, "pick_net": null, "pick": null, "plan": null, "leverage_table": [{"L": -2, "gain": -0.08405948149230563, "decay": 0.028756151766483076, "ok": false, "net": -0.11281563325878871}], "asof": "2026-08-07", "reason": "미충족: 종가 < MA20, 감가 여유 (감가 ≤ 추세이익×35%) 외 2건", "error": null}, {"id": "COIN", "name": "코인베이스", "group": "미국 개별주", "market": "US", "direction": "long", "status": "flat", "passed": 6, "total": 10, "gates": [{"key": "trend", "label": "종가 > MA200", "mandatory": true, "passed": true, "detail": "MA200 대비 +1.2%"}, {"key": "align", "label": "정배열 + MA200 우상향", "mandatory": true, "passed": false, "detail": "MA50/MA200 이격 -1.5%"}, {"key": "near", "label": "종가 > MA20", "mandatory": true, "passed": true, "detail": "MA20 대비 +2.2%"}, {"key": "straight", "label": "직진성", "mandatory": true, "passed": false, "detail": "ER 0.06 — 절대 0.15 이상이거나, 0.10 이상이면서 자기 이력 상위 83%"}, {"key": "smooth", "label": "경로 매끄러움", "mandatory": true, "passed": true, "detail": "R² 0.46 — 절대 0.45 이상이거나, 0.30 이상이면서 자기 이력 상위 52%"}, {"key": "edge", "label": "감가 여유 (감가 ≤ 추세이익×35%)", "mandatory": true, "passed": true, "detail": "2배 기준 추세이익 +8.0% vs 감가 −0.7%"}, {"key": "vol", "label": "ATR20 ≤ 5.0%", "mandatory": true, "passed": true, "detail": "현재 1.8%"}, {"key": "not_hot", "label": "과열 아님", "mandatory": true, "passed": true, "detail": "RSI 54 · 이격 +2.2%"}, {"key": "momentum", "label": "MACD 정배열", "mandatory": false, "passed": false, "detail": "히스토그램 -0.05"}, {"key": "high_zone", "label": "고점권 유지", "mandatory": false, "passed": false, "detail": "52주 고점 대비 -28.9%"}], "products": [{"t": "CONL", "x": 2, "side": "long"}], "products_other": [{"t": "CONI", "x": -1, "side": "short"}], "price": 32.46524936651486, "change_pct": 3.4404265783662957, "er60": 0.055041069655144874, "r2": 0.4579880695031071, "decay_20d": 0.006660075691808036, "gain_20d": 0.08005732379997685, "regime_ok": false, "leverage": 2, "pick_leverage": 2, "pick_net": 0.0733972481081688, "pick": null, "plan": null, "leverage_table": [{"L": 2, "gain": 0.08005732379997685, "decay": 0.006660075691808036, "ok": true, "net": 0.0733972481081688}], "asof": "2026-08-07", "reason": "미충족: 정배열 + MA200 우상향, 직진성 외 2건", "error": null}, {"id": "TSLA", "name": "테슬라", "group": "미국 개별주", "market": "US", "direction": "long", "status": "flat", "passed": 6, "total": 10, "gates": [{"key": "trend", "label": "종가 > MA200", "mandatory": true, "passed": true, "detail": "MA200 대비 +0.4%"}, {"key": "align", "label": "정배열 + MA200 우상향", "mandatory": true, "passed": true, "detail": "MA50/MA200 이격 +0.2%"}, {"key": "near", "label": "종가 > MA20", "mandatory": true, "passed": true, "detail": "MA20 대비 +2.1%"}, {"key": "straight", "label": "직진성", "mandatory": true, "passed": false, "detail": "ER 0.08 — 절대 0.15 이상이거나, 0.10 이상이면서 자기 이력 상위 54%"}, {"key": "smooth", "label": "경로 매끄러움", "mandatory": true, "passed": false, "detail": "R² 0.09 — 절대 0.45 이상이거나, 0.30 이상이면서 자기 이력 상위 87%"}, {"key": "edge", "label": "감가 여유 (감가 ≤ 추세이익×35%)", "mandatory": true, "passed": false, "detail": "2배 기준 20일 추세이익 +3.0% vs 감가 −1.4% — 감당 가능한 배수 없음"}, {"key": "vol", "label": "ATR20 ≤ 4.5%", "mandatory": true, "passed": true, "detail": "현재 2.2%"}, {"key": "not_hot", "label": "과열 아님", "mandatory": true, "passed": true, "detail": "RSI 54 · 이격 +2.1%"}, {"key": "momentum", "label": "MACD 정배열", "mandatory": false, "passed": true, "detail": "히스토그램 +0.17"}, {"key": "high_zone", "label": "고점권 유지", "mandatory": false, "passed": false, "detail": "52주 고점 대비 -19.5%"}], "products": [{"t": "TSLL", "x": 2, "side": "long"}, {"t": "TSLR", "x": 2, "side": "long"}, {"t": "TSLT", "x": 2, "side": "long"}], "products_other": [{"t": "TSLS", "x": -2, "side": "short"}, {"t": "TSLZ", "x": -2, "side": "short"}, {"t": "TSLQ", "x": -2, "side": "short"}], "price": 90.0200525225946, "change_pct": 1.9080697013872605, "er60": 0.08187818684757532, "r2": 0.08750489234273506, "decay_20d": 0.01386270804306758, "gain_20d": 0.030173624745688802, "regime_ok": false, "leverage": 2, "pick_leverage": null, "pick_net": null, "pick": null, "plan": null, "leverage_table": [{"L": 2, "gain": 0.030173624745688802, "decay": 0.01386270804306758, "ok": false, "net": 0.01631091670262122}], "asof": "2026-08-07", "reason": "미충족: 직진성, 경로 매끄러움 외 2건", "error": null}, {"id": "PLTR", "name": "팔란티어", "group": "미국 개별주", "market": "US", "direction": "long", "status": "flat", "passed": 6, "total": 10, "gates": [{"key": "trend", "label": "종가 > MA200", "mandatory": true, "passed": true, "detail": "MA200 대비 +13.5%"}, {"key": "align", "label": "정배열 + MA200 우상향", "mandatory": true, "passed": true, "detail": "MA50/MA200 이격 +12.9%"}, {"key": "near", "label": "종가 > MA20", "mandatory": true, "passed": false, "detail": "MA20 대비 -2.0%"}, {"key": "straight", "label": "직진성", "mandatory": true, "passed": false, "detail": "ER 0.04 — 절대 0.15 이상이거나, 0.10 이상이면서 자기 이력 상위 78%"}, {"key": "smooth", "label": "경로 매끄러움", "mandatory": true, "passed": false, "detail": "R² 0.43 — 절대 0.45 이상이거나, 0.30 이상이면서 자기 이력 상위 50%"}, {"key": "edge", "label": "감가 여유 (감가 ≤ 추세이익×35%)", "mandatory": true, "passed": true, "detail": "2배 기준 추세이익 +5.3% vs 감가 −0.8%"}, {"key": "vol", "label": "ATR20 ≤ 4.8%", "mandatory": true, "passed": true, "detail": "현재 1.9%"}, {"key": "not_hot", "label": "과열 아님", "mandatory": true, "passed": true, "detail": "RSI 47 · 이격 -2.0%"}, {"key": "momentum", "label": "MACD 정배열", "mandatory": false, "passed": false, "detail": "히스토그램 -1.28"}, {"key": "high_zone", "label": "고점권 유지", "mandatory": false, "passed": true, "detail": "52주 고점 대비 -6.8%"}], "products": [{"t": "PLTU", "x": 2, "side": "long"}], "products_other": [{"t": "PLTD", "x": -1, "side": "short"}], "price": 152.49382339249874, "change_pct": 3.100265840629346, "er60": 0.04160948402916446, "r2": 0.42744771746398813, "decay_20d": 0.00758157905103934, "gain_20d": 0.053491850204883847, "regime_ok": true, "leverage": 2, "pick_leverage": 2, "pick_net": 0.04591027115384451, "pick": null, "plan": null, "leverage_table": [{"L": 2, "gain": 0.053491850204883847, "decay": 0.00758157905103934, "ok": true, "net": 0.04591027115384451}], "asof": "2026-08-07", "reason": "미충족: 종가 > MA20, 직진성 외 2건", "error": null}, {"id": "MU", "name": "마이크론", "group": "미국 개별주", "market": "US", "direction": "long", "status": "flat", "passed": 5, "total": 10, "gates": [{"key": "trend", "label": "종가 > MA200", "mandatory": true, "passed": true, "detail": "MA200 대비 +2.5%"}, {"key": "align", "label": "정배열 + MA200 우상향", "mandatory": true, "passed": false, "detail": "MA50/MA200 이격 -1.5%"}, {"key": "near", "label": "종가 > MA20", "mandatory": true, "passed": true, "detail": "MA20 대비 +3.2%"}, {"key": "straight", "label": "직진성", "mandatory": true, "passed": false, "detail": "ER 0.02 — 절대 0.15 이상이거나, 0.10 이상이면서 자기 이력 상위 88%"}, {"key": "smooth", "label": "경로 매끄러움", "mandatory": true, "passed": false, "detail": "R² 0.01 — 절대 0.45 이상이거나, 0.30 이상이면서 자기 이력 상위 93%"}, {"key": "edge", "label": "감가 여유 (감가 ≤ 추세이익×35%)", "mandatory": true, "passed": false, "detail": "2배 기준 20일 추세이익 +0.8% vs 감가 −0.9% — 감당 가능한 배수 없음"}, {"key": "vol", "label": "ATR20 ≤ 4.2%", "mandatory": true, "passed": true, "detail": "현재 1.9%"}, {"key": "not_hot", "label": "과열 아님", "mandatory": true, "passed": true, "detail": "RSI 57 · 이격 +3.2%"}, {"key": "momentum", "label": "MACD 정배열", "mandatory": false, "passed": true, "detail": "히스토그램 +0.08"}, {"key": "high_zone", "label": "고점권 유지", "mandatory": false, "passed": false, "detail": "52주 고점 대비 -11.0%"}], "products": [{"t": "MUU", "x": 2, "side": "long"}], "products_other": [], "price": 93.41783880603914, "change_pct": 4.602563353776734, "er60": 0.016563178018840018, "r2": 0.008013300238634669, "decay_20d": 0.009089998793416454, "gain_20d": 0.0081424362711071, "regime_ok": true, "leverage": 2, "pick_leverage": null, "pick_net": null, "pick": null, "plan": null, "leverage_table": [{"L": 2, "gain": 0.0081424362711071, "decay": 0.009089998793416454, "ok": false, "net": -0.0009475625223093545}], "asof": "2026-08-07", "reason": "미충족: 정배열 + MA200 우상향, 직진성 외 3건", "error": null}, {"id": "GOOGL", "name": "알파벳", "group": "미국 개별주", "market": "US", "direction": "short", "status": "flat", "passed": 5, "total": 10, "gates": [{"key": "trend", "label": "종가 < MA200", "mandatory": true, "passed": true, "detail": "MA200 대비 -0.2%"}, {"key": "align", "label": "역배열 + MA200 우하향", "mandatory": true, "passed": false, "detail": "MA50/MA200 이격 -0.2%"}, {"key": "near", "label": "종가 < MA20", "mandatory": true, "passed": false, "detail": "MA20 대비 +3.4%"}, {"key": "straight", "label": "직진성", "mandatory": true, "passed": false, "detail": "ER 0.14 — 절대 0.15 이상이거나, 0.10 이상이면서 자기 이력 상위 45%"}, {"key": "smooth", "label": "경로 매끄러움", "mandatory": true, "passed": true, "detail": "R² 0.56 — 절대 0.45 이상이거나, 0.30 이상이면서 자기 이력 상위 48%"}, {"key": "edge", "label": "감가 여유 (감가 ≤ 추세이익×35%)", "mandatory": true, "passed": true, "detail": "1배 기준 추세이익 +6.2% vs 감가 −0.6%"}, {"key": "breakdown", "label": "60일 저점 이탈", "mandatory": true, "passed": false, "detail": "60일 저점 대비 +9.1%"}, {"key": "not_panic", "label": "투매 구간 아님", "mandatory": true, "passed": true, "detail": "RSI 55 · 이격 +3.4%"}, {"key": "vol", "label": "ATR20 ≤ 3.9%", "mandatory": false, "passed": true, "detail": "현재 1.9%"}, {"key": "momentum", "label": "MACD 역배열", "mandatory": false, "passed": false, "detail": "히스토그램 +0.70"}], "products": [{"t": "GGLS", "x": -1, "side": "short"}], "products_other": [{"t": "GGLL", "x": 2, "side": "long"}], "price": 95.47407686661646, "change_pct": 0.691659437810821, "er60": 0.13667647663800123, "r2": 0.5639291452889199, "decay_20d": 0.00593555417950303, "gain_20d": 0.06180693285572897, "regime_ok": false, "leverage": -1, "pick_leverage": -1, "pick_net": 0.055871378676225936, "pick": null, "plan": null, "leverage_table": [{"L": -1, "gain": 0.06180693285572897, "decay": 0.00593555417950303, "ok": true, "net": 0.055871378676225936}], "asof": "2026-08-07", "reason": "미충족: 역배열 + MA200 우하향, 종가 < MA20 외 3건", "error": null}, {"id": "000660.KS", "name": "SK하이닉스", "group": "한국 단일종목", "market": "KR", "direction": "long", "status": "flat", "passed": 5, "total": 10, "gates": [{"key": "trend", "label": "종가 > MA200", "mandatory": true, "passed": true, "detail": "MA200 대비 +1.1%"}, {"key": "align", "label": "정배열 + MA200 우상향", "mandatory": true, "passed": false, "detail": "MA50/MA200 이격 -1.5%"}, {"key": "near", "label": "종가 > MA20", "mandatory": true, "passed": false, "detail": "MA20 대비 -4.7%"}, {"key": "straight", "label": "직진성", "mandatory": true, "passed": false, "detail": "ER 0.14 — 절대 0.15 이상이거나, 0.10 이상이면서 자기 이력 상위 46%"}, {"key": "smooth", "label": "경로 매끄러움", "mandatory": true, "passed": true, "detail": "R² 0.87 — 절대 0.45 이상이거나, 0.30 이상이면서 자기 이력 상위 11%"}, {"key": "edge", "label": "감가 여유 (감가 ≤ 추세이익×35%)", "mandatory": true, "passed": true, "detail": "2배 기준 추세이익 +20.1% vs 감가 −0.9%"}, {"key": "vol", "label": "ATR20 ≤ 3.5%", "mandatory": true, "passed": true, "detail": "현재 1.8%"}, {"key": "not_hot", "label": "과열 아님", "mandatory": true, "passed": true, "detail": "RSI 44 · 이격 -4.7%"}, {"key": "momentum", "label": "MACD 정배열", "mandatory": false, "passed": false, "detail": "히스토그램 -0.95"}, {"key": "high_zone", "label": "고점권 유지", "mandatory": false, "passed": false, "detail": "52주 고점 대비 -23.5%"}], "products": [{"t": "0193T0.KS", "x": 2, "side": "long"}, {"t": "0195S0.KS", "x": 2, "side": "long"}, {"t": "0194T0.KS", "x": 2, "side": "long"}, {"t": "0192L0.KS", "x": 2, "side": "long"}, {"t": "0197W0.KS", "x": 2, "side": "long"}, {"t": "0194R0.KS", "x": 2, "side": "long"}, {"t": "0198D0.KS", "x": 2, "side": "long"}], "products_other": [{"t": "0197X0.KS", "x": -2, "side": "short"}], "price": 100.62198239672139, "change_pct": -2.1780284838652353, "er60": 0.14193837189615052, "r2": 0.8685466220518161, "decay_20d": 0.009249768009976204, "gain_20d": 0.20085519418569966, "regime_ok": false, "leverage": 2, "pick_leverage": 2, "pick_net": 0.19160542617572346, "pick": null, "plan": null, "leverage_table": [{"L": 2, "gain": 0.20085519418569966, "decay": 0.009249768009976204, "ok": true, "net": 0.19160542617572346}], "asof": "2026-08-07", "reason": "미충족: 정배열 + MA200 우상향, 종가 > MA20 외 3건", "error": null}, {"id": "AMZN", "name": "아마존", "group": "미국 개별주", "market": "US", "direction": "long", "status": "flat", "passed": 4, "total": 10, "gates": [{"key": "trend", "label": "종가 > MA200", "mandatory": true, "passed": true, "detail": "MA200 대비 +4.2%"}, {"key": "align", "label": "정배열 + MA200 우상향", "mandatory": true, "passed": true, "detail": "MA50/MA200 이격 +10.6%"}, {"key": "near", "label": "종가 > MA20", "mandatory": true, "passed": false, "detail": "MA20 대비 -2.4%"}, {"key": "straight", "label": "직진성", "mandatory": true, "passed": false, "detail": "ER 0.11 — 절대 0.15 이상이거나, 0.10 이상이면서 자기 이력 상위 39%"}, {"key": "smooth", "label": "경로 매끄러움", "mandatory": true, "passed": false, "detail": "R² 0.44 — 절대 0.45 이상이거나, 0.30 이상이면서 자기 이력 상위 35%"}, {"key": "edge", "label": "감가 여유 (감가 ≤ 추세이익×35%)", "mandatory": true, "passed": false, "detail": "2배 기준 20일 추세이익 -7.4% vs 감가 −0.5% — 감당 가능한 배수 없음"}, {"key": "vol", "label": "ATR20 ≤ 3.0%", "mandatory": true, "passed": true, "detail": "현재 1.8%"}, {"key": "not_hot", "label": "과열 아님", "mandatory": true, "passed": true, "detail": "RSI 42 · 이격 -2.4%"}, {"key": "momentum", "label": "MACD 정배열", "mandatory": false, "passed": false, "detail": "히스토그램 -0.08"}, {"key": "high_zone", "label": "고점권 유지", "mandatory": false, "passed": false, "detail": "52주 고점 대비 -15.2%"}], "products": [{"t": "AMZU", "x": 2, "side": "long"}, {"t": "AMZZ", "x": 2, "side": "long"}], "products_other": [{"t": "AMZD", "x": -1, "side": "short"}], "price": 91.96724087503056, "change_pct": -0.16661405473690216, "er60": 0.11433182219565359, "r2": 0.4402440294353249, "decay_20d": 0.005116556201818731, "gain_20d": -0.07403659537622859, "regime_ok": true, "leverage": 2, "pick_leverage": null, "pick_net": null, "pick": null, "plan": null, "leverage_table": [{"L": 2, "gain": -0.07403659537622859, "decay": 0.005116556201818731, "ok": false, "net": -0.07915315157804732}], "asof": "2026-08-07", "reason": "미충족: 종가 > MA20, 직진성 외 4건", "error": null}, {"id": "005930.KS", "name": "삼성전자", "group": "한국 단일종목", "market": "KR", "direction": "short", "status": "flat", "passed": 4, "total": 10, "gates": [{"key": "trend", "label": "종가 < MA200", "mandatory": true, "passed": true, "detail": "MA200 대비 -0.1%"}, {"key": "align", "label": "역배열 + MA200 우하향", "mandatory": true, "passed": true, "detail": "MA50/MA200 이격 -3.6%"}, {"key": "near", "label": "종가 < MA20", "mandatory": true, "passed": false, "detail": "MA20 대비 +1.8%"}, {"key": "straight", "label": "직진성", "mandatory": true, "passed": false, "detail": "ER 0.05 — 절대 0.15 이상이거나, 0.10 이상이면서 자기 이력 상위 75%"}, {"key": "smooth", "label": "경로 매끄러움", "mandatory": true, "passed": false, "detail": "R² 0.27 — 절대 0.45 이상이거나, 0.30 이상이면서 자기 이력 상위 57%"}, {"key": "edge", "label": "감가 여유 (감가 ≤ 추세이익×35%)", "mandatory": true, "passed": false, "detail": "2배 기준 20일 추세이익 -6.1% vs 감가 −2.7% — 감당 가능한 배수 없음"}, {"key": "breakdown", "label": "60일 저점 이탈", "mandatory": true, "passed": false, "detail": "60일 저점 대비 +16.5%"}, {"key": "not_panic", "label": "투매 구간 아님", "mandatory": true, "passed": true, "detail": "RSI 55 · 이격 +1.8%"}, {"key": "vol", "label": "ATR20 ≤ 3.9%", "mandatory": false, "passed": true, "detail": "현재 2.0%"}, {"key": "momentum", "label": "MACD 역배열", "mandatory": false, "passed": false, "detail": "히스토그램 +0.12"}], "products": [{"t": "0193L0.KS", "x": -2, "side": "short"}], "products_other": [{"t": "0193W0.KS", "x": 2, "side": "long"}, {"t": "0195R0.KS", "x": 2, "side": "long"}, {"t": "0194M0.KS", "x": 2, "side": "long"}, {"t": "0192M0.KS", "x": 2, "side": "long"}, {"t": "0193K0.KS", "x": 2, "side": "long"}, {"t": "0194N0.KS", "x": 2, "side": "long"}, {"t": "0198B0.KS", "x": 2, "side": "long"}], "price": 59.532083693388216, "change_pct": 1.5646977502249637, "er60": 0.05072481452810958, "r2": 0.26932551190349885, "decay_20d": 0.02672597912289062, "gain_20d": -0.06132155047713542, "regime_ok": true, "leverage": -2, "pick_leverage": null, "pick_net": null, "pick": null, "plan": null, "leverage_table": [{"L": -2, "gain": -0.06132155047713542, "decay": 0.02672597912289062, "ok": false, "net": -0.08804752960002604}], "asof": "2026-08-07", "reason": "미충족: 종가 < MA20, 직진성 외 4건", "error": null}], "history": [{"ts": "2026-08-07T04:29:03+00:00", "kind": "entry", "id": "AAPL", "name": "애플", "group": "미국 개별주", "direction": "long", "price": 154.6499462514473, "products": [{"t": "AAPU", "x": 2, "side": "long", "price": 78.78480239419467, "change_pct": 1.859384423503374, "turnover": 644877968.0918449}, {"t": "AAPB", "x": 2, "side": "long", "price": 115.26153551019087, "change_pct": 3.1244658865522856, "turnover": 905390708.0548713}], "pick": {"t": "AAPB", "x": 2, "price": 115.26153551019087, "change_pct": 3.1244658865522856, "turnover": 905390708.0548713, "thin": false, "no_price": false, "why": "2배 · 감가 감당 가능 · 같은 배수 2종 중 거래대금 1위 · 20일 기대 순이익 +31.9%"}, "plan": {"leverage": 2, "direction": "long", "entry": 115.26153551019087, "entry_note": "다음 거래일 시가 근처. 종가 판정이라 갭이 크면 건너뛰세요.", "stop_pct": -0.04975940978797122, "stop_price": 109.52618953194849, "stop_basis": "기초자산 MA20 이탈 기준", "u_stop": 150.80230122684054, "target_pct": 0.09951881957594244, "target_price": 126.73222746667564, "target_r": 2.0, "target_is_rule": false, "proj_pct": 0.31887916223259694, "proj_price": 152.01603739132327, "time_stop_days": 20, "rr": 2.0, "risk_per_trade": 0.02, "size_by_risk": 0.4019340278596869, "size_cap": 0.15, "position_pct": 0.15, "capped": true, "gap_risk": false}, "plan_lines": ["   매수      115.26  (다음 거래일 시가 근처)", "   손절      109.53   -5.0%  ← 기초자산 MA20 이탈 기준", "   목표      126.73   +10.0%  (손절폭의 2배)", "             ※ 자동 청산 아님. 추세가 꺾일 때까지 들고 갑니다.", "   추세 예상  152.02   +31.9%  (20거래일 기준)", "   시간 한도  20거래일 — 그때까지 못 벌면 청산", "   투입 비중  총자산의 15% 이하  (2배 상한. 손절폭 기준으로는 40% 까지 나오지만 줄였습니다)"], "passed": 9, "total": 10}, {"ts": "2026-08-07T04:29:03+00:00", "kind": "entry", "id": "NVDA", "name": "엔비디아", "group": "미국 개별주", "direction": "long", "price": 266.73560614391386, "products": [{"t": "NVDL", "x": 2, "side": "long", "price": 163.79114214242293, "change_pct": -1.2826324150489343, "turnover": 1255070975.1878648}, {"t": "NVDX", "x": 2, "side": "long", "price": 78.99989382749769, "change_pct": 4.187961402719154, "turnover": 630003543.2856871}, {"t": "NVDU", "x": 2, "side": "long", "price": 66.92815368167683, "change_pct": -1.249584264027559, "turnover": 526625922.54050875}], "pick": {"t": "NVDL", "x": 2, "price": 163.79114214242293, "change_pct": -1.2826324150489343, "turnover": 1255070975.1878648, "thin": false, "no_price": false, "why": "2배 · 감가 감당 가능 · 같은 배수 3종 중 거래대금 1위 · 20일 기대 순이익 +14.7%"}, "plan": {"leverage": 2, "direction": "long", "entry": 163.79114214242293, "entry_note": "다음 거래일 시가 근처. 종가 판정이라 갭이 크면 건너뛰세요.", "stop_pct": -0.042855662366757974, "stop_price": 156.7717642561016, "stop_basis": "기초자산 MA20 이탈 기준", "u_stop": 261.0200406048658, "target_pct": 0.08571132473351595, "target_price": 177.8298979150656, "target_r": 2.0, "target_is_rule": false, "proj_pct": 0.14674556201628033, "proj_price": 187.82676534940123, "time_stop_days": 20, "rr": 2.0, "risk_per_trade": 0.02, "size_by_risk": 0.4666827881188807, "size_cap": 0.15, "position_pct": 0.15, "capped": true, "gap_risk": false}, "plan_lines": ["   매수      163.79  (다음 거래일 시가 근처)", "   손절      156.77   -4.3%  ← 기초자산 MA20 이탈 기준", "   목표      177.83   +8.6%  (손절폭의 2배)", "             ※ 자동 청산 아님. 추세가 꺾일 때까지 들고 갑니다.", "   추세 예상  187.83   +14.7%  (20거래일 기준)", "   시간 한도  20거래일 — 그때까지 못 벌면 청산", "   투입 비중  총자산의 15% 이하  (2배 상한. 손절폭 기준으로는 47% 까지 나오지만 줄였습니다)"], "passed": 9, "total": 10}], "digest": [{"name": "엔비디아", "ticker": "NVDL", "leverage": 2, "ret": null, "to_stop": null, "to_target": null, "held": 0, "time_stop": 20, "action": "아직 파는 조건 없음"}, {"name": "애플", "ticker": "AAPB", "leverage": 2, "ret": null, "to_stop": null, "to_target": null, "held": 0, "time_stop": 20, "action": "아직 파는 조건 없음"}], "counts": {"exit": 0, "entry": 2, "holding": 0, "watch": 1, "flat": 17, "none": 0, "blocked": 0}, "product_count": 67};
+render(BAKED);
+document.getElementById('stamp').textContent =
+  new Date(BAKED.generated_at).toLocaleString('ko-KR',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}) + ' 점검 · v2026.08.07';
+const b = document.getElementById('scanBtn');
+b.textContent = '자동 갱신'; b.disabled = true;
+
+</script>
+</body>
+</html>
