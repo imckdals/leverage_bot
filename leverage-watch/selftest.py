@@ -23,7 +23,9 @@ def _frame(close: np.ndarray) -> pd.DataFrame:
     rng = np.random.default_rng(0)
     n = len(close)
     wig = np.abs(rng.normal(0, 0.003, n)) * close
-    idx = pd.bdate_range(end=pd.Timestamp.today().normalize(), periods=n)
+    # 고정 날짜를 쓴다. today() 로 잡으면 그날이 주말일 때 bdate_range 가
+    # 하나 모자라게 돌려줘서, 일요일마다 테스트가 깨졌다.
+    idx = pd.bdate_range(end=pd.Timestamp("2026-06-30"), periods=n)
     return enrich(pd.DataFrame({
         "open": np.r_[close[0], close[:-1]], "high": close + wig,
         "low": close - wig, "close": close, "volume": 1e6}, index=idx))

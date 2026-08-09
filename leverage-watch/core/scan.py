@@ -221,11 +221,17 @@ def audit(cfg: dict | None = None) -> dict:
             for t, x in (it.get(side) or []):
                 prods.append((t, it["name"]))
 
+    names = {it["u"]: it["name"] for it in cfg["universe"]}
     print(f"기초자산 {len(under)}건 확인 …")
-    ok_u, bad_u = [], []
+    ok_u, bad_u, thin_u = [], [], []
     for t in under:
         df = data.load(t, max_age_hours=24)
-        (ok_u if df is not None and len(df) >= 210 else bad_u).append(t)
+        if df is None or not len(df):
+            bad_u.append(t)              # 티커가 틀렸거나 상장폐지
+        elif len(df) < 210:
+            thin_u.append((t, len(df)))  # 신규 상장. 시간이 지나면 해결된다
+        else:
+            ok_u.append(t)
 
     print(f"레버리지 상품 {len(prods)}건 확인 …")
     ok_p, bad_p, thin_p = [], [], []
@@ -243,9 +249,16 @@ def audit(cfg: dict | None = None) -> dict:
             ok_p.append(t)
 
     print()
-    print(f"기초자산  정상 {len(ok_u)} · 실패 {len(bad_u)}")
+    print(f"기초자산  정상 {len(ok_u)} · 실패 {len(bad_u)} · 이력부족 {len(thin_u)}")
     if bad_u:
-        print("  실패: " + ", ".join(bad_u))
+        print("  데이터 없음 (티커 오류·상장폐지 의심) — 지우거나 고치세요:")
+        for t in bad_u:
+            print(f"    {t:10s} ← {names.get(t, '')}")
+    if thin_u:
+        print("  이력 부족 — 지우지 마세요. 210일이 쌓이면 자동으로 판정에 들어옵니다:")
+        for t, n in thin_u:
+            left = 210 - n
+            print(f"    {t:10s} ← {names.get(t, '')}  ({n}일, {left}일 더 필요)")
     print(f"상품      정상 {len(ok_p)} · 실패 {len(bad_p)} · 이력부족 {len(thin_p)}")
     if bad_p:
         print("  데이터 없음 (상장폐지·티커변경 의심):")
@@ -255,7 +268,9 @@ def audit(cfg: dict | None = None) -> dict:
         print("  이력 부족 (신규상장 의심):")
         for t, owner, n in thin_p:
             print(f"    {t:8s} ← {owner}  ({n}일)")
-    print("\n실패한 티커는 config.yaml 에서 지우거나 현재 티커로 바꾸세요.")
+    print()
+    print("'데이터 없음' 만 config.yaml 에서 지우면 됩니다.")
+    print("'이력 부족' 은 신규 상장이라 그런 것이니 그대로 두세요.")
     return {"bad_underlyings": bad_u, "bad_products": bad_p, "thin_products": thin_p}
 
 
