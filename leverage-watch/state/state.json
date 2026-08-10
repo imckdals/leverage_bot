@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-08-10T08:17:07+00:00",
+  "last_run": "2026-08-10T21:52:59+00:00",
   "tickers": {
     "005930.KS": {
       "status": "flat",
@@ -207,7 +207,7 @@
       "position": null
     },
     "DELL": {
-      "status": "watch",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
@@ -247,7 +247,7 @@
       "position": null
     },
     "PANW": {
-      "status": "watch",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
@@ -322,7 +322,7 @@
       "position": null
     },
     "RIVN": {
-      "status": "none",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
@@ -332,7 +332,7 @@
       "position": null
     },
     "UBER": {
-      "status": "none",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
