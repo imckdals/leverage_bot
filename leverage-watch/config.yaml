@@ -191,51 +191,27 @@ regime_exempt_groups:
   - "한국 단일종목"
 
 universe:
-
-# ══ 한국 ═══════════════════════════════════════════════════
-# 2026년 5월 27일 상장된 단일종목 레버리지·인버스2X.
-# 제도상 기초자산은 삼성전자·SK하이닉스 두 종목뿐이다.
-# 매수하려면 금융투자교육원 사전교육 이수 + 증권사 등록이 필요하다.
-
   - u: "005930.KS"
     name: "삼성전자"
     group: "한국 단일종목"
     market: KR
-    vol_max: 0.030
-    long:
-      - ["0193W0.KS", 2]     # KODEX 삼성전자단일종목레버리지 (현물)
-      - ["0195R0.KS", 2]     # TIGER 삼성전자단일종목레버리지 (현물)
-      - ["0194M0.KS", 2]     # ACE 삼성전자단일종목레버리지 (현물)
-      - ["0192M0.KS", 2]     # RISE 삼성전자단일종목레버리지 (현물)
-      - ["0193K0.KS", 2]     # PLUS 삼성전자단일종목레버리지 (현물)
-      - ["0194N0.KS", 2]     # KIWOOM 삼성전자선물단일종목레버리지 (선물)
-      - ["0198B0.KS", 2]     # 1Q 삼성전자선물단일종목레버리지 (선물)
-    short:
-      - ["0193L0.KS", -2]    # PLUS 삼성전자선물단일종목인버스2X (선물)
+    vol_max: 0.03
+    long:  [["0193W0.KS", 2], ["0195R0.KS", 2], ["0194M0.KS", 2], ["0192M0.KS", 2], ["0193K0.KS", 2], ["0194N0.KS", 2], ["0198B0.KS", 2]]
+    short: [["0193L0.KS", -2]]
 
   - u: "000660.KS"
     name: "SK하이닉스"
     group: "한국 단일종목"
     market: KR
     vol_max: 0.035
-    long:
-      - ["0193T0.KS", 2]     # KODEX SK하이닉스단일종목레버리지 (현물)
-      - ["0195S0.KS", 2]     # TIGER SK하이닉스단일종목레버리지 (현물)
-      - ["0194T0.KS", 2]     # ACE SK하이닉스단일종목레버리지 (현물)
-      - ["0192L0.KS", 2]     # RISE SK하이닉스단일종목레버리지 (현물)
-      - ["0197W0.KS", 2]     # SOL SK하이닉스단일종목레버리지 (현물)
-      - ["0194R0.KS", 2]     # KIWOOM SK하이닉스선물단일종목레버리지 (선물)
-      - ["0198D0.KS", 2]     # 1Q SK하이닉스선물단일종목레버리지 (선물)
-    short:
-      - ["0197X0.KS", -2]    # SOL SK하이닉스선물단일종목인버스2X (선물)
-
-# ══ 미국 지수 ══════════════════════════════════════════════
+    long:  [["0193T0.KS", 2], ["0195S0.KS", 2], ["0194T0.KS", 2], ["0192L0.KS", 2], ["0197W0.KS", 2], ["0194R0.KS", 2], ["0198D0.KS", 2]]
+    short: [["0197X0.KS", -2]]
 
   - u: "QQQ"
     name: "나스닥100"
     group: "미국 지수"
     market: US
-    vol_max: 0.020
+    vol_max: 0.02
     long:  [["TQQQ", 3], ["QLD", 2]]
     short: [["SQQQ", -3], ["QID", -2], ["PSQ", -1]]
 
@@ -279,8 +255,6 @@ universe:
     long:  [["HIBL", 3]]
     short: [["HIBS", -3]]
 
-# ══ 미국 섹터 ══════════════════════════════════════════════
-
   - u: "SOXX"
     name: "반도체"
     group: "미국 섹터"
@@ -317,7 +291,7 @@ universe:
     name: "헬스케어"
     group: "미국 섹터"
     market: US
-    vol_max: 0.020
+    vol_max: 0.02
     long:  [["CURE", 3], ["RXL", 2]]
     short: []
 
@@ -373,7 +347,7 @@ universe:
     name: "유틸리티"
     group: "미국 섹터"
     market: US
-    vol_max: 0.020
+    vol_max: 0.02
     long:  [["UTSL", 3]]
     short: []
 
@@ -425,8 +399,6 @@ universe:
     long:  [["JNUG", 2]]
     short: [["JDST", -2]]
 
-# ══ 미국 테마 ══════════════════════════════════════════════
-
   - u: "FNGS"
     name: "FANG+"
     group: "미국 테마"
@@ -434,8 +406,6 @@ universe:
     vol_max: 0.028
     long:  [["FNGU", 3]]
     short: [["FNGD", -3]]
-
-# ══ 미국 해외지수 ══════════════════════════════════════════
 
   - u: "EEM"
     name: "신흥국"
@@ -449,7 +419,7 @@ universe:
     name: "중국 대형주"
     group: "미국 해외지수"
     market: US
-    vol_max: 0.030
+    vol_max: 0.03
     long:  [["YINN", 3]]
     short: [["YANG", -3]]
 
@@ -457,7 +427,7 @@ universe:
     name: "한국 (MSCI)"
     group: "미국 해외지수"
     market: US
-    vol_max: 0.030
+    vol_max: 0.03
     long:  [["KORU", 3]]
     short: []
 
@@ -493,8 +463,6 @@ universe:
     long:  [["EURL", 3]]
     short: []
 
-# ══ 미국 채권 ══════════════════════════════════════════════
-
   - u: "TLT"
     name: "미국채 20년+"
     group: "미국 채권"
@@ -507,11 +475,9 @@ universe:
     name: "미국채 7-10년"
     group: "미국 채권"
     market: US
-    vol_max: 0.010
+    vol_max: 0.01
     long:  [["TYD", 3]]
     short: [["TYO", -3]]
-
-# ══ 미국 원자재 ════════════════════════════════════════════
 
   - u: "GLD"
     name: "금"
@@ -541,11 +507,9 @@ universe:
     name: "천연가스"
     group: "미국 원자재"
     market: US
-    vol_max: 0.050
+    vol_max: 0.05
     long:  [["BOIL", 2]]
     short: [["KOLD", -2]]
-
-# ══ 미국 크립토 ════════════════════════════════════════════
 
   - u: "IBIT"
     name: "비트코인"
@@ -563,144 +527,125 @@ universe:
     long:  [["ETHU", 2]]
     short: [["ETHD", -2]]
 
-# ══ 미국 개별주 ════════════════════════════════════════════
-
-  - u: "NVDA"
-    name: "엔비디아"
-    group: "미국 개별주"
-    market: US
-    vol_max: 0.038
-    long:  [["NVDL", 2], ["NVDX", 2], ["NVDU", 2]]
-    short: [["NVD", -1], ["NVDQ", -2]]
-
-  - u: "TSLA"
-    name: "테슬라"
-    group: "미국 개별주"
-    market: US
-    vol_max: 0.045
-    long:  [["TSLL", 2], ["TSLR", 2], ["TSLT", 2]]
-    short: [["TSLS", -2], ["TSLZ", -2], ["TSLQ", -2]]
-
   - u: "AAPL"
     name: "애플"
     group: "미국 개별주"
     market: US
-    vol_max: 0.028
-    long:  [["AAPU", 2], ["AAPB", 2]]
+    vol_max: 0.03
+    long:  [["AAPU", 2], ["AAPB", 2], ["AAPX", 2]]
     short: [["AAPD", -1]]
 
-  - u: "MSFT"
-    name: "마이크로소프트"
-    group: "미국 개별주"
-    market: US
-    vol_max: 0.026
-    long:  [["MSFU", 2], ["MSFL", 2]]
-    short: [["MSFD", -1]]
-
-  - u: "AMZN"
-    name: "아마존"
-    group: "미국 개별주"
-    market: US
-    vol_max: 0.030
-    long:  [["AMZU", 2], ["AMZZ", 2]]
-    short: [["AMZD", -1]]
-
-  - u: "GOOGL"
-    name: "알파벳"
-    group: "미국 개별주"
-    market: US
-    vol_max: 0.030
-    long:  [["GGLL", 2]]
-    short: [["GGLS", -1]]
-
-  - u: "META"
-    name: "메타"
+  - u: "ADBE"
+    name: "어도비"
     group: "미국 개별주"
     market: US
     vol_max: 0.034
-    long:  [["METU", 2], ["FBL", 2]]
-    short: [["METD", -1]]
+    long:  [["ADBU", 2]]
+    short: []
 
-  - u: "AVGO"
-    name: "브로드컴"
+  - u: "XOM"
+    name: "엑슨모빌"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.026
+    long:  [["XOMX", 2]]
+    short: []
+
+  - u: "LMT"
+    name: "록히드마틴"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.026
+    long:  [["LMTL", 2]]
+    short: []
+
+  - u: "UNH"
+    name: "유나이티드헬스"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.034
+    long:  [["UNHU", 2]]
+    short: []
+
+  - u: "TXN"
+    name: "텍사스 인스트루먼트"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.028
+    long:  [["TXNU", 2]]
+    short: []
+
+  - u: "ASML"
+    name: "ASML"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.034
+    long:  [["ASMU", 2]]
+    short: []
+
+  - u: "PANW"
+    name: "팔로알토 네트웍스"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.034
+    long:  [["PALU", 2]]
+    short: [["PALD", -1]]
+
+  - u: "CSCO"
+    name: "시스코"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.024
+    long:  [["CSCL", 2]]
+    short: [["CSCS", -1]]
+
+  - u: "PYPL"
+    name: "페이팔"
     group: "미국 개별주"
     market: US
     vol_max: 0.036
-    long:  [["AVL", 2]]
-    short: [["AVS", -1]]
+    long:  [["PYPU", 2]]
+    short: []
+
+  - u: "SOFI"
+    name: "소파이"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.05
+    long:  [["SOFA", 2]]
+    short: []
+
+  - u: "SHOP"
+    name: "쇼피파이"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.042
+    long:  [["SHPU", 2]]
+    short: []
+
+  - u: "ALB"
+    name: "앨버말 (리튬)"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.05
+    long:  [["ALBG", 2]]
+    short: []
 
   - u: "AMD"
     name: "AMD"
     group: "미국 개별주"
     market: US
     vol_max: 0.042
-    long:  [["AMDL", 2], ["AMUU", 2]]
+    long:  [["AMUU", 2], ["AMDL", 2]]
     short: [["AMDD", -1]]
 
-  - u: "MU"
-    name: "마이크론"
-    group: "미국 개별주"
-    market: US
-    vol_max: 0.042
-    long:  [["MUU", 2]]
-    short: []                 # 인버스 MU 상품은 확인되지 않음
-
-  - u: "NFLX"
-    name: "넷플릭스"
+  - u: "AMZN"
+    name: "아마존"
     group: "미국 개별주"
     market: US
     vol_max: 0.032
-    long:  [["NFXL", 2]]
-    short: [["NFXS", -1]]
-
-  - u: "PLTR"
-    name: "팔란티어"
-    group: "미국 개별주"
-    market: US
-    vol_max: 0.048
-    long:  [["PLTU", 2]]
-    short: [["PLTD", -1]]
-
-  - u: "COIN"
-    name: "코인베이스"
-    group: "미국 개별주"
-    market: US
-    vol_max: 0.050
-    long:  [["CONL", 2]]
-    short: [["CONI", -1]]
-
-  - u: "MSTR"
-    name: "스트래티지 (MSTR)"
-    group: "미국 개별주"
-    market: US
-    vol_max: 0.055
-    long:  [["MSTX", 2], ["MSTU", 2]]
-    short: [["MSTZ", -2], ["SMST", -2]]
-
-  - u: "BABA"
-    name: "알리바바"
-    group: "미국 개별주"
-    market: US
-    vol_max: 0.038
-    long:  [["BABX", 2]]
-    short: []
-
-  - u: "SMCI"
-    name: "슈퍼마이크로"
-    group: "미국 개별주"
-    market: US
-    vol_max: 0.055
-    long:  [["SMCL", 2]]
-    short: [["SMCZ", -2]]
-
-  # ── 반도체·AI (빅테크 밖) ────────────────────────────────
-  - u: "TSM"
-    name: "TSMC"
-    group: "미국 개별주"
-    market: US
-    vol_max: 0.034
-    long:  [["TSMX", 2], ["TSMG", 2]]
-    short: [["TSMZ", -2]]
+    long:  [["AMZU", 2], ["AMZZ", 2]]
+    short: [["AMZD", -1]]
 
   - u: "ARM"
     name: "ARM 홀딩스"
@@ -710,24 +655,38 @@ universe:
     long:  [["ARMG", 2]]
     short: []
 
-  # ── 소프트웨어 ─────────────────────────────────────────
-  - u: "ORCL"
-    name: "오라클"
+  - u: "AVGO"
+    name: "브로드컴"
     group: "미국 개별주"
     market: US
-    vol_max: 0.038
-    long:  [["ORCX", 2]]
-    short: []
+    vol_max: 0.036
+    long:  [["AVL", 2], ["AVGU", 2]]
+    short: [["AVS", -1]]
 
-  - u: "CRWD"
-    name: "크라우드스트라이크"
+  - u: "BA"
+    name: "보잉"
     group: "미국 개별주"
     market: US
-    vol_max: 0.040
-    long:  [["CRWL", 2]]
+    vol_max: 0.032
+    long:  [["BOEU", 2]]
+    short: [["BOED", -1]]
+
+  - u: "BABA"
+    name: "알리바바"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.04
+    long:  [["BABU", 2], ["BABX", 2]]
     short: []
 
-  # ── 금융 ──────────────────────────────────────────────
+  - u: "BB"
+    name: "블랙베리"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.045
+    long:  [["BBUL", 2]]
+    short: []
+
   - u: "BRK-B"
     name: "버크셔 해서웨이"
     group: "미국 개별주"
@@ -736,64 +695,60 @@ universe:
     long:  [["BRKU", 2]]
     short: []
 
+  - u: "BTDR"
+    name: "비트디어"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.07
+    long:  [["BTDL", 2]]
+    short: []
+
+  - u: "COIN"
+    name: "코인베이스"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.05
+    long:  [["CONX", 2], ["CONL", 2]]
+    short: [["CONI", -2]]
+
+  - u: "CRWD"
+    name: "크라우드스트라이크"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.04
+    long:  [["CRWL", 2]]
+    short: []
+
+  - u: "DELL"
+    name: "델 테크놀로지스"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.04
+    long:  [["DLLL", 2]]
+    short: []
+
+  - u: "GOOGL"
+    name: "알파벳"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.03
+    long:  [["GGLL", 2], ["GOU", 2], ["GOOX", 2]]
+    short: [["GGLS", -1]]
+
   - u: "HOOD"
     name: "로빈후드"
     group: "미국 개별주"
     market: US
-    vol_max: 0.050
-    long:  [["HOOX", 2]]
+    vol_max: 0.05
+    long:  [["HODU", 2], ["HOOX", 2], ["ROBN", 2]]
     short: []
 
-  # ── 헬스케어 ───────────────────────────────────────────
-  - u: "LLY"
-    name: "일라이릴리"
-    group: "미국 개별주"
-    market: US
-    vol_max: 0.030
-    long:  [["ELIL", 2]]
-    short: []
-
-  # ── 크립토 채굴 ────────────────────────────────────────
-  - u: "MARA"
-    name: "마라 홀딩스"
-    group: "미국 개별주"
-    market: US
-    vol_max: 0.060
-    long:  [["MRAL", 2]]
-    short: []
-
-  # 스페이스X — 2026년 6월 12일 나스닥 상장 (SPCX).
-  # 상장 직후라 200거래일 이력이 없어 당분간 '보류'로 표시됩니다.
-  # 이력이 쌓이면 아무것도 안 해도 자동으로 판정에 들어갑니다.
-  # 신규 상장주는 변동성이 극단적이라 vol_max 를 높게 잡아뒀습니다.
-  - u: "SPCX"
-    name: "스페이스X"
-    group: "미국 개별주"
-    market: US
-    vol_max: 0.070
-    long:
-      - ["LOFF", 2]
-      - ["SPAX", 2]
-      - ["SPAL", 2]
-      - ["SPCF", 2]
-    short:
-      - ["SNK", -2]
-
-  # ── GraniteShares 공식 목록에서 확인 ────────────────────
   - u: "INTC"
     name: "인텔"
     group: "미국 개별주"
     market: US
     vol_max: 0.045
-    long:  [["INTW", 2]]
-    short: []
-
-  - u: "MRVL"
-    name: "마벨 테크놀로지"
-    group: "미국 개별주"
-    market: US
-    vol_max: 0.045
-    long:  [["MVLL", 2]]
+    long:  [["LINT", 2], ["INTW", 2]]
     short: []
 
   - u: "IONQ"
@@ -808,22 +763,384 @@ universe:
     name: "인튜이티브 서지컬"
     group: "미국 개별주"
     market: US
-    vol_max: 0.030
+    vol_max: 0.03
     long:  [["ISUL", 2]]
     short: []
 
-  - u: "DELL"
-    name: "델 테크놀로지스"
+  - u: "LLY"
+    name: "일라이릴리"
     group: "미국 개별주"
     market: US
-    vol_max: 0.040
-    long:  [["DLLL", 2]]
+    vol_max: 0.03
+    long:  [["ELIL", 2]]
     short: []
 
-  - u: "ALB"
-    name: "앨버말 (리튬)"
+  - u: "MARA"
+    name: "마라 홀딩스"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.06
+    long:  [["MRAL", 2]]
+    short: []
+
+  - u: "META"
+    name: "메타"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.034
+    long:  [["METU", 2], ["FBL", 2]]
+    short: [["METD", -1]]
+
+  - u: "MRVL"
+    name: "마벨 테크놀로지"
     group: "미국 개별주"
     market: US
     vol_max: 0.045
-    long:  [["ALBG", 2]]
+    long:  [["MRVU", 2], ["MVLL", 2]]
     short: []
+
+  - u: "MSFT"
+    name: "마이크로소프트"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.028
+    long:  [["MSFU", 2], ["MSFL", 2], ["MSFX", 2]]
+    short: [["MSFD", -1]]
+
+  - u: "MSTR"
+    name: "스트래티지 (MSTR)"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.055
+    long:  [["MSTX", 2], ["MSTU", 2], ["MSTP", 2]]
+    short: [["MSTZ", -2], ["SMST", -2]]
+
+  - u: "MU"
+    name: "마이크론"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.042
+    long:  [["MUU", 2], ["MULL", 2]]
+    short: [["MUD", -1]]
+
+  - u: "NBIS"
+    name: "네비우스 그룹"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.06
+    long:  [["NBIL", 2]]
+    short: []
+
+  - u: "NFLX"
+    name: "넷플릭스"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.034
+    long:  [["NFXL", 2], ["NFLU", 2]]
+    short: [["NFXS", -1]]
+
+  - u: "NOW"
+    name: "서비스나우"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.034
+    long:  [["NOWL", 2]]
+    short: []
+
+  - u: "NTAP"
+    name: "넷앱"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.036
+    long:  [["NTAL", 2]]
+    short: []
+
+  - u: "NVDA"
+    name: "엔비디아"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.038
+    long:  [["NVDU", 2], ["NVDL", 2], ["NVDX", 2]]
+    short: [["NVDD", -1], ["NVD", -2], ["NVDQ", -2]]
+
+  - u: "ORCL"
+    name: "오라클"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.038
+    long:  [["ORCU", 2], ["ORCX", 2]]
+    short: [["ORCS", -1]]
+
+  - u: "P"
+    name: "에버퓨어"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.05
+    long:  [["PUL", 2]]
+    short: []
+
+  - u: "PDD"
+    name: "핀둬둬 (테무)"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.045
+    long:  [["PDDL", 2]]
+    short: []
+
+  - u: "PLTR"
+    name: "팔란티어"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.05
+    long:  [["PLTU", 2], ["PTIR", 2]]
+    short: [["PLTD", -1]]
+
+  - u: "QCOM"
+    name: "퀄컴"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.034
+    long:  [["QCMU", 2], ["QCML", 2]]
+    short: [["QCMD", -1]]
+
+  - u: "RDDT"
+    name: "레딧"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.055
+    long:  [["RDTL", 2]]
+    short: []
+
+  - u: "RIVN"
+    name: "리비안"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.055
+    long:  [["RVNL", 2]]
+    short: []
+
+  - u: "SMCI"
+    name: "슈퍼마이크로"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.06
+    long:  [["SMCL", 2]]
+    short: [["SMCZ", -2]]
+
+  - u: "SPCX"
+    name: "스페이스X"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.07
+    long:  [["LOFF", 2], ["SPAX", 2], ["SPAL", 2], ["SPCF", 2]]
+    short: [["SNK", -2], ["LOFD", -2]]
+
+  - u: "TDC"
+    name: "테라데이타"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.045
+    long:  [["TDCL", 2]]
+    short: []
+
+  - u: "TSLA"
+    name: "테슬라"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.045
+    long:  [["TSLL", 2], ["TSLR", 2], ["TSLT", 2]]
+    short: [["TSLS", -1], ["TSLZ", -2], ["TSLQ", -2], ["TSDD", -2]]
+
+  - u: "TSM"
+    name: "TSMC"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.034
+    long:  [["TSMX", 2], ["TSMU", 2], ["TSMG", 2]]
+    short: [["TSMZ", -1]]
+
+  - u: "UBER"
+    name: "우버"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.034
+    long:  [["UBRL", 2]]
+    short: []
+
+  - u: "VRT"
+    name: "버티브"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.05
+    long:  [["VRTL", 2]]
+    short: []
+
+  - u: "KTOS"
+    name: "크라토스 (방산)"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.045
+    long:  [["KTUP", 2]]
+    short: []
+
+  - u: "RDW"
+    name: "레드와이어 (우주)"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.07
+    long:  [["RDWU", 2]]
+    short: []
+
+  - u: "ASTS"
+    name: "AST 스페이스모바일 (위성)"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.07
+    long:  [["ASUP", 2]]
+    short: []
+
+  - u: "SMR"
+    name: "뉴스케일파워 (원전)"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.065
+    long:  [["SMUP", 2]]
+    short: []
+
+  - u: "EOSE"
+    name: "이오스에너지 (에너지저장)"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.075
+    long:  [["EOSU", 2]]
+    short: []
+
+  - u: "APH"
+    name: "암페놀 (산업재)"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.028
+    long:  [["APHU", 2]]
+    short: []
+
+  - u: "GME"
+    name: "게임스톱"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.055
+    long:  [["GMEU", 2]]
+    short: []
+
+  - u: "RBLX"
+    name: "로블록스"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.045
+    long:  [["RBLU", 2]]
+    short: []
+
+  - u: "SNOW"
+    name: "스노우플레이크"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.04
+    long:  [["SNOU", 2]]
+    short: []
+
+  - u: "TTD"
+    name: "트레이드 데스크"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.045
+    long:  [["TTDU", 2]]
+    short: []
+
+  - u: "AFRM"
+    name: "어펌 (핀테크)"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.055
+    long:  [["AFRU", 2]]
+    short: []
+
+  - u: "CRCL"
+    name: "서클 (스테이블코인)"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.07
+    long:  [["CCUP", 2]]
+    short: []
+
+  - u: "GLXY"
+    name: "갤럭시 디지털"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.065
+    long:  [["GLXU", 2]]
+    short: []
+
+  - u: "CIFR"
+    name: "사이퍼 마이닝"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.07
+    long:  [["CIFU", 2]]
+    short: []
+
+  - u: "CRWV"
+    name: "코어위브"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.065
+    long:  [["CRWU", 2]]
+    short: []
+
+  - u: "AKAM"
+    name: "아카마이"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.028
+    long:  [["AKAL", 2]]
+    short: []
+
+  - u: "DOCN"
+    name: "디지털오션"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.045
+    long:  [["OCNL", 2]]
+    short: []
+
+  - u: "LITE"
+    name: "루멘텀"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.05
+    long:  [["LITU", 2]]
+    short: []
+
+  - u: "SNDK"
+    name: "샌디스크"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.055
+    long:  [["SNDU", 2]]
+    short: []
+
+  - u: "DJT"
+    name: "트럼프 미디어"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.07
+    long:  [["DJTU", 2]]
+    short: []
+
+  - u: "SKHY"
+    name: "SK하이닉스 (미국 ADR)"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.04
+    signal_from: "000660.KS"   # 판정은 본주, 매매는 ADR 상품
+    long:  [["HYNX", 2], ["SKHL", 2], ["SKUU", 2]]
+    short: [["SKDD", -2]]
+

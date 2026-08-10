@@ -15,6 +15,7 @@ import pandas as pd
 from core.engine import evaluate, evaluate_regime, check_exit
 from core.indicators import enrich, decay_estimate
 from core.scan import load_config
+from core.validate import report as validate_report
 
 N = 520
 
@@ -71,6 +72,13 @@ def show(title, ok, extra=""):
 
 def main():
     cfg = load_config()
+
+    print("=" * 72)
+    if not validate_report(cfg):
+        print("=" * 72)
+        print("설정이 깨져 있어 검사를 중단합니다. config.yaml 을 고치세요.")
+        return 1
+
     print("─" * 72)
     print("■ 핵심: 같은 수익률, 다른 경로")
     print("─" * 72)

@@ -65,7 +65,7 @@ def apply(verdicts: list[Verdict], frames: dict, cfg: dict,
 
         if pos:
             held = pos.get("direction", "long")
-            df = frames.get(v.id)
+            df = frames.get(v.signal_u or v.id)
             reason = check_exit(df, held, pos, cfg) if df is not None else None
             if reason:
                 v.status, v.direction, v.reason = "exit", held, reason
@@ -94,7 +94,7 @@ def apply(verdicts: list[Verdict], frames: dict, cfg: dict,
                                    "price": v.price, "products": v.products,
                                    "pick": v.pick, "leverage": v.pick_leverage,
                                    "plan": v.plan,
-                                   "atr_pct": _atr_of(frames, v.id)}
+                                   "atr_pct": _atr_of(frames, v.signal_u or v.id)}
                 rec["last_alert_date"] = today
                 if notify.get("entry", True):
                     events.append({"kind": "entry", "id": v.id, "name": v.name,

@@ -53,6 +53,7 @@ class Verdict:
     pick: dict | None = None              # 최종 추천 종목 1개
     plan: dict | None = None              # 매수·손절·목표·시간한도
     event: dict | None = None             # 실적·거시 일정
+    signal_u: str = ""                    # 판정에 쓴 가격 시계열
     leverage_table: list = field(default_factory=list)
     asof: str | None = None
     reason: str = ""
@@ -354,6 +355,16 @@ def check_exit(df: pd.DataFrame, direction: str, entry: dict, cfg: dict) -> str 
 
 
 # ── 기초자산 1건 평가 ───────────────────────────────────────
+
+def signal_ticker(item: dict) -> str:
+    """판정에 쓸 가격 시계열을 고른다.
+
+    해외 ADR 처럼 상품은 거래되는데 자기 이력이 짧은 경우가 있다.
+    그때 signal_from 으로 본주를 지정하면 그 가격으로 판정한다.
+    같은 회사라 추세는 같지만 환율 차이는 남는다.
+    """
+    return item.get("signal_from") or item["u"]
+
 
 def evaluate(item: dict, df: pd.DataFrame | None, regimes: dict, cfg: dict) -> Verdict:
     v = Verdict(id=item["u"], name=item["name"], group=item["group"],

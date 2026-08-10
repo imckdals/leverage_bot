@@ -68,7 +68,7 @@ def run_scan(cfg: dict | None = None, quiet: bool = False,
     universe = cfg["universe"]
 
     tickers = [cfg["regime"]["us"]["index"], cfg["regime"]["us"]["vix"],
-               cfg["regime"]["kr"]["index"]] + [it["u"] for it in universe]
+               cfg["regime"]["kr"]["index"]] + [engine.signal_ticker(it) for it in universe]
 
     want = sorted(set(tickers))
     if not quiet:
@@ -84,7 +84,12 @@ def run_scan(cfg: dict | None = None, quiet: bool = False,
             print("  대부분 실패했습니다. 인터넷 연결이나 방화벽을 확인하세요.")
 
     regimes = engine.evaluate_regime(cfg, frames)
-    verdicts = [engine.evaluate(it, frames.get(it["u"]), regimes, cfg) for it in universe]
+    verdicts = []
+    for it in universe:
+        sig = engine.signal_ticker(it)
+        v = engine.evaluate(it, frames.get(sig), regimes, cfg)
+        v.signal_u = sig
+        verdicts.append(v)
 
     # 알림보다 먼저 상품 시세를 받는다. 알림에 "이거 사라"고 티커를 하나
     # 찍어 보내려면 가격과 거래대금이 있어야 한다.
@@ -111,7 +116,7 @@ def run_scan(cfg: dict | None = None, quiet: bool = False,
                     p["missing"] = True
             _pick_product(v)
             if v.status == "entry" and v.pick:
-                v.plan = plan_mod.make_plan(v, frames.get(v.id), cfg)
+                v.plan = plan_mod.make_plan(v, frames.get(v.signal_u or v.id), cfg)
 
     # 일정 회피: 종목 조건이 다 맞아도 실적이 코앞이면 진입시키지 않는다.
     # 실적은 갭으로 움직여서 손절가에 팔 수가 없다.
@@ -214,14 +219,14 @@ def run_scan(cfg: dict | None = None, quiet: bool = False,
 def audit(cfg: dict | None = None) -> dict:
     """설정에 적힌 티커가 실제로 데이터를 주는지 전수 확인한다."""
     cfg = cfg or load_config()
-    under = [it["u"] for it in cfg["universe"]]
+    under = [engine.signal_ticker(it) for it in cfg["universe"]]
     prods: list[tuple[str, str]] = []
     for it in cfg["universe"]:
         for side in ("long", "short"):
             for t, x in (it.get(side) or []):
                 prods.append((t, it["name"]))
 
-    names = {it["u"]: it["name"] for it in cfg["universe"]}
+    names = {engine.signal_ticker(it): it["name"] for it in cfg["universe"]}
     print(f"기초자산 {len(under)}건 확인 …")
     ok_u, bad_u, thin_u = [], [], []
     for t in under:
@@ -283,13 +288,13 @@ def calibrate(cfg: dict | None = None) -> None:
     import numpy as np
 
     cfg = cfg or load_config()
-    tickers = [it["u"] for it in cfg["universe"]]
+    tickers = [engine.signal_ticker(it) for it in cfg["universe"]]
     print(f"기초자산 {len(tickers)}건의 최근 지표 수집 …")
     frames = data.load_many(tickers)
 
     rows = []
     for it in cfg["universe"]:
-        df = frames.get(it["u"])
+        df = frames.get(engine.signal_ticker(it))
         if df is None or len(df) < 210:
             continue
         r = df.iloc[-1]
@@ -422,7 +427,7 @@ def build_digest(verdicts, frames, cfg, st) -> list[dict]:
         pos = rec.get("position")
         if not pos:
             continue
-        df = frames.get(v.id)
+        df = frames.get(v.signal_u or v.id)
         if df is None:
             continue
         ret = engine.position_return(df, pos)
