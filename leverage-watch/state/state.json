@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-08-10T00:00:39+00:00",
+  "last_run": "2026-08-10T08:17:07+00:00",
   "tickers": {
     "005930.KS": {
       "status": "flat",
@@ -17,7 +17,7 @@
       "position": null
     },
     "TSLA": {
-      "status": "flat",
+      "status": "watch",
       "last_alert_date": null,
       "position": null
     },
@@ -102,7 +102,7 @@
       "position": null
     },
     "ORCL": {
-      "status": "none",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
@@ -213,6 +213,236 @@
     },
     "ALB": {
       "status": "none",
+      "last_alert_date": null,
+      "position": null
+    },
+    "ADBE": {
+      "status": "none",
+      "last_alert_date": null,
+      "position": null
+    },
+    "XOM": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "LMT": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "UNH": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "TXN": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "ASML": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "PANW": {
+      "status": "watch",
+      "last_alert_date": null,
+      "position": null
+    },
+    "CSCO": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "PYPL": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "SOFI": {
+      "status": "none",
+      "last_alert_date": null,
+      "position": null
+    },
+    "SHOP": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "BA": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "BB": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "BTDR": {
+      "status": "none",
+      "last_alert_date": null,
+      "position": null
+    },
+    "NBIS": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "NOW": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "NTAP": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "P": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "PDD": {
+      "status": "none",
+      "last_alert_date": null,
+      "position": null
+    },
+    "QCOM": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "RDDT": {
+      "status": "none",
+      "last_alert_date": null,
+      "position": null
+    },
+    "RIVN": {
+      "status": "none",
+      "last_alert_date": null,
+      "position": null
+    },
+    "TDC": {
+      "status": "none",
+      "last_alert_date": null,
+      "position": null
+    },
+    "UBER": {
+      "status": "none",
+      "last_alert_date": null,
+      "position": null
+    },
+    "VRT": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "KTOS": {
+      "status": "none",
+      "last_alert_date": null,
+      "position": null
+    },
+    "RDW": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "ASTS": {
+      "status": "none",
+      "last_alert_date": null,
+      "position": null
+    },
+    "SMR": {
+      "status": "none",
+      "last_alert_date": null,
+      "position": null
+    },
+    "EOSE": {
+      "status": "none",
+      "last_alert_date": null,
+      "position": null
+    },
+    "APH": {
+      "status": "watch",
+      "last_alert_date": null,
+      "position": null
+    },
+    "GME": {
+      "status": "none",
+      "last_alert_date": null,
+      "position": null
+    },
+    "RBLX": {
+      "status": "none",
+      "last_alert_date": null,
+      "position": null
+    },
+    "SNOW": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "TTD": {
+      "status": "none",
+      "last_alert_date": null,
+      "position": null
+    },
+    "AFRM": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "CRCL": {
+      "status": "none",
+      "last_alert_date": null,
+      "position": null
+    },
+    "GLXY": {
+      "status": "none",
+      "last_alert_date": null,
+      "position": null
+    },
+    "CIFR": {
+      "status": "none",
+      "last_alert_date": null,
+      "position": null
+    },
+    "CRWV": {
+      "status": "none",
+      "last_alert_date": null,
+      "position": null
+    },
+    "AKAM": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "DOCN": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "LITE": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "SNDK": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "DJT": {
+      "status": "none",
+      "last_alert_date": null,
+      "position": null
+    },
+    "SKHY": {
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     }
