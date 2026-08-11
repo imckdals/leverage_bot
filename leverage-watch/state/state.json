@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-08-11T07:57:04+00:00",
+  "last_run": "2026-08-11T21:58:24+00:00",
   "tickers": {
     "005930.KS": {
       "status": "flat",
@@ -77,7 +77,7 @@
       "position": null
     },
     "MSTR": {
-      "status": "flat",
+      "status": "watch",
       "last_alert_date": null,
       "position": null
     },
