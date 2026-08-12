@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-11T21:58:24+00:00",
+  "generated_at": "2026-08-12T00:08:56+00:00",
   "regime": {
     "US": {
       "long_ok": true,
@@ -163,7 +163,7 @@
         "earnings": null,
         "d_earnings": null,
         "macro": "FOMC",
-        "d_macro": 36,
+        "d_macro": 35,
         "estimated": false
       },
       "signal_u": "BRK-B",
@@ -177,7 +177,7 @@
         }
       ],
       "asof": "2026-08-11",
-      "reason": "보유 중 · 2일차 · 이탈 조건 없음",
+      "reason": "보유 중 · 3일차 · 이탈 조건 없음",
       "error": null
     },
     {
