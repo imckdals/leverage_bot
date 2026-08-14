@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-08-14T08:03:05+00:00",
+  "last_run": "2026-08-14T21:35:01+00:00",
   "tickers": {
     "005930.KS": {
       "status": "flat",
@@ -77,7 +77,7 @@
       "position": null
     },
     "MSTR": {
-      "status": "flat",
+      "status": "watch",
       "last_alert_date": null,
       "position": null
     },
@@ -107,72 +107,22 @@
       "position": null
     },
     "CRWD": {
-      "status": "flat",
+      "status": "watch",
       "last_alert_date": null,
       "position": null
     },
     "BRK-B": {
-      "status": "holding",
-      "last_alert_date": "2026-08-09",
-      "position": {
-        "opened": "2026-08-09",
-        "direction": "long",
-        "price": 521.7999877929688,
-        "products": [
-          {
-            "t": "BRKU",
-            "x": 2,
-            "side": "long",
-            "price": 24.6299991607666,
-            "change_pct": -1.5115173870909548,
-            "turnover": 2112132.674512863
-          }
-        ],
-        "pick": {
-          "t": "BRKU",
-          "x": 2,
-          "price": 24.6299991607666,
-          "change_pct": -1.5115173870909548,
-          "turnover": 2112132.674512863,
-          "thin": true,
-          "no_price": false,
-          "why": "2배 · 감가 감당 가능 · 20일 기대 순이익 +4.4%"
-        },
-        "leverage": 2,
-        "plan": {
-          "leverage": 2,
-          "direction": "long",
-          "entry": 24.6299991607666,
-          "entry_note": "다음 거래일 시가 근처. 종가 판정이라 갭이 크면 건너뛰세요.",
-          "stop_pct": -0.08708491675549701,
-          "stop_price": 22.48509773416328,
-          "stop_basis": "기초자산 MA20 이탈 기준",
-          "u_stop": 499.0795335429837,
-          "target_pct": 0.17416983351099402,
-          "target_price": 28.919802013973243,
-          "target_r": 2.0,
-          "target_is_rule": false,
-          "proj_pct": 0.04382766312778963,
-          "proj_price": 25.70947446682242,
-          "time_stop_days": 20,
-          "rr": 2.0,
-          "risk_per_trade": 0.02,
-          "size_by_risk": 0.2296608958834143,
-          "size_cap": 0.15,
-          "position_pct": 0.15,
-          "capped": true,
-          "gap_risk": false
-        },
-        "atr_pct": 0.013997152978758113
-      }
+      "status": "exit",
+      "last_alert_date": "2026-08-14",
+      "position": null
     },
     "HOOD": {
-      "status": "flat",
+      "status": "none",
       "last_alert_date": null,
       "position": null
     },
     "LLY": {
-      "status": "watch",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
@@ -197,7 +147,7 @@
       "position": null
     },
     "IONQ": {
-      "status": "none",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
@@ -227,7 +177,7 @@
       "position": null
     },
     "LMT": {
-      "status": "flat",
+      "status": "watch",
       "last_alert_date": null,
       "position": null
     },
@@ -317,7 +267,7 @@
       "position": null
     },
     "RDDT": {
-      "status": "none",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
@@ -520,6 +470,28 @@
       ],
       "passed": 10,
       "total": 10
+    },
+    {
+      "ts": "2026-08-14T21:35:01+00:00",
+      "kind": "exit",
+      "id": "BRK-B",
+      "name": "버크셔 해서웨이",
+      "pick": null,
+      "group": "미국 개별주",
+      "direction": "long",
+      "reason": "MA20 2일 연속 하회",
+      "price": 504.0299987792969,
+      "products": [
+        {
+          "t": "BRKU",
+          "x": 2,
+          "side": "long",
+          "price": 24.6299991607666,
+          "change_pct": -1.5115173870909548,
+          "turnover": 2112132.674512863
+        }
+      ],
+      "held_days": 5
     }
   ]
 }
