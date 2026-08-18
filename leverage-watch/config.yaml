@@ -645,7 +645,7 @@ universe:
     market: US
     vol_max: 0.042
     long:  [["AMUU", 2], ["AMDL", 2]]
-    short: [["AMDD", -1], ["AMDS", -2]]
+    short: [["AMDD", -1]]
 
   - u: "AMZN"
     name: "아마존"
@@ -677,7 +677,7 @@ universe:
     market: US
     vol_max: 0.032
     long:  [["BOEU", 2]]
-    short: [["BOED", -1]]
+    short: []
 
   - u: "BABA"
     name: "알리바바"
@@ -687,28 +687,12 @@ universe:
     long:  [["BABU", 2], ["BABX", 2]]
     short: []
 
-  - u: "BB"
-    name: "블랙베리"
-    group: "미국 개별주"
-    market: US
-    vol_max: 0.045
-    long:  [["BBUL", 2]]
-    short: []
-
   - u: "BRK-B"
     name: "버크셔 해서웨이"
     group: "미국 개별주"
     market: US
     vol_max: 0.022
     long:  [["BRKU", 2]]
-    short: []
-
-  - u: "BTDR"
-    name: "비트디어"
-    group: "미국 개별주"
-    market: US
-    vol_max: 0.07
-    long:  [["BTDL", 2]]
     short: []
 
   - u: "COIN"
@@ -855,14 +839,6 @@ universe:
     long:  [["NOWL", 2]]
     short: []
 
-  - u: "NTAP"
-    name: "넷앱"
-    group: "미국 개별주"
-    market: US
-    vol_max: 0.036
-    long:  [["NTAL", 2]]
-    short: []
-
   - u: "NVDA"
     name: "엔비디아"
     group: "미국 개별주"
@@ -878,14 +854,6 @@ universe:
     vol_max: 0.038
     long:  [["ORCU", 2], ["ORCX", 2]]
     short: [["ORCS", -1]]
-
-  - u: "P"
-    name: "에버퓨어"
-    group: "미국 개별주"
-    market: US
-    vol_max: 0.05
-    long:  [["PUL", 2]]
-    short: []
 
   - u: "PDD"
     name: "핀둬둬 (테무)"
@@ -941,15 +909,7 @@ universe:
     market: US
     vol_max: 0.07
     long:  [["LOFF", 2], ["SPAX", 2], ["SPAL", 2], ["SPCF", 2]]
-    short: [["SNK", -2], ["LOFD", -2]]
-
-  - u: "TDC"
-    name: "테라데이타"
-    group: "미국 개별주"
-    market: US
-    vol_max: 0.045
-    long:  [["TDCL", 2]]
-    short: []
+    short: [["SNK", -2]]
 
   - u: "TSLA"
     name: "테슬라"
@@ -1103,22 +1063,6 @@ universe:
     long:  [["CRWU", 2]]
     short: []
 
-  - u: "AKAM"
-    name: "아카마이"
-    group: "미국 개별주"
-    market: US
-    vol_max: 0.028
-    long:  [["AKAL", 2]]
-    short: []
-
-  - u: "DOCN"
-    name: "디지털오션"
-    group: "미국 개별주"
-    market: US
-    vol_max: 0.045
-    long:  [["OCNL", 2]]
-    short: []
-
   - u: "LITE"
     name: "루멘텀"
     group: "미국 개별주"
@@ -1148,7 +1092,7 @@ universe:
     group: "미국 개별주"
     market: US
     vol_max: 0.04
-    signal_from: "000660.KS"   # 판정은 본주, 매매는 ADR 상품
-    long:  [["HYNX", 2], ["SKHL", 2], ["SKUU", 2]]
-    short: [["SKDD", -2]]
+    signal_from: "000660.KS"   # 판정은 국내 본주, 매매는 ADR 상품
+    long:  [["SKHU", 2], ["SKHX", 2], ["SKHA", 2], ["SK", 2]]
+    short: [["SKHN", -2], ["SKHZ", -1]]
 
