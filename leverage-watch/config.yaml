@@ -645,7 +645,7 @@ universe:
     market: US
     vol_max: 0.042
     long:  [["AMUU", 2], ["AMDL", 2]]
-    short: [["AMDD", -1], ["AMDS", -2]]
+    short: [["AMDD", -1]]
 
   - u: "AMZN"
     name: "아마존"
@@ -677,7 +677,7 @@ universe:
     market: US
     vol_max: 0.032
     long:  [["BOEU", 2]]
-    short: [["BOED", -1]]
+    short: []
 
   - u: "BABA"
     name: "알리바바"
