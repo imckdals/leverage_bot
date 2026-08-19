@@ -95,6 +95,11 @@ def format_event(e: dict, style: str = "simple") -> str:
                 + (f"  ({e['name']})" if t else "")
                 + f"\n\n{e['reason']}\n지금 파세요. 보유 {e.get('held_days', 0)}일차.")
 
+    if kind == "no_product":
+        return (f"[참고] {e['name']} 하락 추세\n"
+                f"이 종목엔 인버스 상품이 없습니다.\n"
+                f"직진성 {e.get('er', 0):.2f} · 조건 {e['passed']}/{e['total']}")
+
     return f"[관심] {e['name']}\n조건 {e['passed']}/{e['total']} · {e.get('reason', '')}"
 
 

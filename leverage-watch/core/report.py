@@ -98,14 +98,18 @@ def write(payload: dict, digest: list[dict], near: list[dict],
     # ── 전체 ────────────────────────────────────────────
     L.append("## 전체 종목")
     L.append("")
-    L.append("| 종목 | 방향 | 상태 | 조건 | 직진성 | 20일 추세 vs 감가 |")
-    L.append("|---|---|---|---|---|---|")
+    L.append("| 종목 | 방향 | 양방향 | 상태 | 조건 | 직진성 | 20일 추세 vs 감가 |")
+    L.append("|---|---|---|---|---|---|---|")
     for i in items:
         d = "▲" if i.get("direction") == "long" else "▼"
+        prods = i.get("products") or []
+        has_s = any(int(p.get("x", 0)) < 0 for p in prods)
+        has_l = any(int(p.get("x", 0)) > 0 for p in prods)
+        both = "○" if (has_s and has_l) else ("롱만" if has_l else "인버스만")
         er = "—" if i.get("er60") is None else f"{i['er60']:.2f}"
         g, dc = i.get("gain_20d"), i.get("decay_20d")
         edge = "—" if (g is None or dc is None) else f"{g * 100:+.1f}% / −{dc * 100:.1f}%"
-        L.append(f"| {i['name']} | {d} | {LABEL.get(i['status'], i['status'])} "
+        L.append(f"| {i['name']} | {d} | {both} | {LABEL.get(i['status'], i['status'])} "
                  f"| {i['passed']}/{i['total']} | {er} | {edge} |")
     L.append("")
 

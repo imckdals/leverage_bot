@@ -65,6 +65,7 @@ def run_scan(cfg: dict | None = None, quiet: bool = False,
         print("watch_groups 에 맞는 종목이 없습니다. config.yaml 을 확인하세요.")
         universe = cfg["universe"]
     cfg = dict(cfg, universe=universe)
+    CFG_CACHE.clear(); CFG_CACHE.update(cfg)
     universe = cfg["universe"]
 
     tickers = [cfg["regime"]["us"]["index"], cfg["regime"]["us"]["vix"],
@@ -248,7 +249,7 @@ def audit(cfg: dict | None = None) -> dict:
         df = data.load(t, years=1, max_age_hours=24)
         if df is None or not len(df):
             bad_p.append((t, owner))
-        elif len(df) < 60:
+        elif len(df) < 40:
             thin_p.append((t, owner, len(df)))
         else:
             ok_p.append(t)
@@ -341,6 +342,9 @@ def calibrate(cfg: dict | None = None) -> None:
 THIN = {"US": 5e6, "KR": 1e9}
 
 
+CFG_CACHE: dict = {}
+
+
 def _pick_product(v) -> None:
     """살 종목을 하나로 좁힌다.
 
@@ -360,6 +364,16 @@ def _pick_product(v) -> None:
         return
 
     priced = [p for p in same if not p.get("missing") and p.get("turnover")]
+
+    # 가격 상한. 소액으로 나눠 담으려면 1주 단가가 낮아야 한다.
+    # 단, 판정에는 쓰지 않는다. 레버리지 ETF 가격이 낮다는 건
+    # 대개 '싸다'가 아니라 '이미 많이 녹았다'는 뜻이기 때문이다.
+    cap = (CFG_CACHE.get("portfolio") or {}).get("max_share_price")
+    if cap and priced:
+        cheap = [p for p in priced if (p.get("price") or 0) <= float(cap)]
+        if cheap:
+            priced = cheap        # 조건 맞는 게 있으면 그 안에서만 고른다
+
     if priced:
         priced.sort(key=lambda p: -(p.get("turnover") or 0))
         top, no_price = priced[0], False

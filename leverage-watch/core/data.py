@@ -41,7 +41,10 @@ CACHE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file_
                          "state", "cache")
 COLS = ["open", "high", "low", "close", "volume"]
 BATCH = 40
-MIN_ROWS = 30
+# 상품 시세는 표시·유동성 확인용이라 며칠치만 있어도 쓸모가 있다.
+# 30일로 잡아뒀더니 신규 상장 상품이 전부 '데이터 없음' 으로 버려졌다.
+# 판정에 필요한 210일 기준은 engine 쪽에서 따로 본다.
+MIN_ROWS = 3
 
 
 def _cache_path(ticker: str) -> str:

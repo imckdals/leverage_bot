@@ -645,7 +645,7 @@ universe:
     market: US
     vol_max: 0.042
     long:  [["AMUU", 2], ["AMDL", 2]]
-    short: [["AMDD", -1]]
+    short: [["AMDD", -1], ["AMDS", -2]]
 
   - u: "AMZN"
     name: "아마존"
@@ -677,7 +677,7 @@ universe:
     market: US
     vol_max: 0.032
     long:  [["BOEU", 2]]
-    short: []
+    short: [["BOED", -1]]
 
   - u: "BABA"
     name: "알리바바"
@@ -909,7 +909,7 @@ universe:
     market: US
     vol_max: 0.07
     long:  [["LOFF", 2], ["SPAX", 2], ["SPAL", 2], ["SPCF", 2]]
-    short: [["SNK", -2]]
+    short: [["SNK", -2], ["LOFD", -2]]
 
   - u: "TSLA"
     name: "테슬라"
@@ -1093,6 +1093,62 @@ universe:
     market: US
     vol_max: 0.04
     signal_from: "000660.KS"   # 판정은 국내 본주, 매매는 ADR 상품
-    long:  [["SKHU", 2], ["SKHX", 2], ["SKHA", 2], ["SK", 2]]
-    short: [["SKHN", -2], ["SKHZ", -1]]
+    long:  [["SKHU", 2], ["SKHX", 2], ["SKHA", 2], ["SK", 2], ["SKUU", 2], ["SKHL", 2]]
+    short: [["SKHN", -2], ["SKHZ", -1], ["SKDD", -2]]
+
+  - u: "BB"
+    name: "블랙베리"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.045
+    long:  [["BBUL", 2]]
+    short: []
+
+  - u: "BTDR"
+    name: "비트디어"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.07
+    long:  [["BTDL", 2]]
+    short: []
+
+  - u: "NTAP"
+    name: "넷앱"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.036
+    long:  [["NTAL", 2]]
+    short: []
+
+  - u: "P"
+    name: "에버퓨어"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.05
+    long:  [["PUL", 2]]
+    short: []
+
+  - u: "TDC"
+    name: "테라데이타"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.045
+    long:  [["TDCL", 2]]
+    short: []
+
+  - u: "AKAM"
+    name: "아카마이"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.028
+    long:  [["AKAL", 2]]
+    short: []
+
+  - u: "DOCN"
+    name: "디지털오션"
+    group: "미국 개별주"
+    market: US
+    vol_max: 0.045
+    long:  [["OCNL", 2]]
+    short: []
 
