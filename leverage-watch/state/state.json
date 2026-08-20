@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-08-20T07:28:07+00:00",
+  "last_run": "2026-08-20T21:37:27+00:00",
   "tickers": {
     "005930.KS": {
       "status": "flat",
@@ -122,12 +122,12 @@
       "position": null
     },
     "LLY": {
-      "status": "watch",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
     "MARA": {
-      "status": "none",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
@@ -172,7 +172,7 @@
       "position": null
     },
     "XOM": {
-      "status": "flat",
+      "status": "watch",
       "last_alert_date": null,
       "position": null
     },
@@ -197,7 +197,7 @@
       "position": null
     },
     "PANW": {
-      "status": "watch",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
@@ -222,7 +222,7 @@
       "position": null
     },
     "BA": {
-      "status": "flat",
+      "status": "none",
       "last_alert_date": null,
       "position": null
     },
