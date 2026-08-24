@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-08-24T21:38:41+00:00",
+  "last_run": "2026-08-24T23:49:26+00:00",
   "tickers": {
     "005930.KS": {
       "status": "flat",
@@ -172,7 +172,7 @@
       "position": null
     },
     "XOM": {
-      "status": "entry",
+      "status": "holding",
       "last_alert_date": "2026-08-24",
       "position": {
         "opened": "2026-08-24",
