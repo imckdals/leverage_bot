@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-09-03T11:44:06+00:00",
+  "last_run": "2026-09-03T23:13:38+00:00",
   "tickers": {
     "005930.KS": {
       "status": "flat",
@@ -127,7 +127,7 @@
       "position": null
     },
     "MARA": {
-      "status": "none",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
@@ -352,7 +352,7 @@
       "position": null
     },
     "GLXY": {
-      "status": "none",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
