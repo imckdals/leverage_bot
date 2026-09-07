@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-09-04T22:59:24+00:00",
+  "last_run": "2026-09-07T01:16:09+00:00",
   "tickers": {
     "005930.KS": {
       "status": "flat",
@@ -317,7 +317,7 @@
       "position": null
     },
     "APH": {
-      "status": "none",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
