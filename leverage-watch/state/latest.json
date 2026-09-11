@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-10T23:05:37+00:00",
+  "generated_at": "2026-09-11T01:23:10+00:00",
   "regime": {
     "US": {
       "long_ok": true,
@@ -161,9 +161,9 @@
         "block": false,
         "reason": "",
         "earnings": "2026-10-30",
-        "d_earnings": 50,
+        "d_earnings": 49,
         "macro": "FOMC",
-        "d_macro": 6,
+        "d_macro": 5,
         "estimated": false
       },
       "signal_u": "XOM",
@@ -177,7 +177,7 @@
         }
       ],
       "asof": "2026-09-10",
-      "reason": "보유 중 · 1일차 · 이탈 조건 없음",
+      "reason": "보유 중 · 2일차 · 이탈 조건 없음",
       "error": null
     },
     {
