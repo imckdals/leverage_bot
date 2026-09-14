@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-09-14T13:22:34+00:00",
+  "last_run": "2026-09-14T23:50:01+00:00",
   "tickers": {
     "005930.KS": {
       "status": "flat",
@@ -267,7 +267,7 @@
       "position": null
     },
     "SHOP": {
-      "status": "none",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
@@ -297,7 +297,7 @@
       "position": null
     },
     "NTAP": {
-      "status": "watch",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
