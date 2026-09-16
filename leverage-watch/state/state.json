@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-09-16T12:05:47+00:00",
+  "last_run": "2026-09-16T23:37:59+00:00",
   "tickers": {
     "005930.KS": {
       "status": "flat",
@@ -297,7 +297,7 @@
       "position": null
     },
     "NTAP": {
-      "status": "flat",
+      "status": "watch",
       "last_alert_date": null,
       "position": null
     },
@@ -382,7 +382,7 @@
       "position": null
     },
     "SNOW": {
-      "status": "flat",
+      "status": "watch",
       "last_alert_date": "2026-08-27",
       "position": null
     },
@@ -397,7 +397,7 @@
       "position": null
     },
     "CRCL": {
-      "status": "flat",
+      "status": "none",
       "last_alert_date": null,
       "position": null
     },
