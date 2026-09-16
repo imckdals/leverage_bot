@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-15T23:30:31+00:00",
+  "generated_at": "2026-09-16T01:34:56+00:00",
   "regime": {
     "US": {
       "long_ok": true,
@@ -127,11 +127,11 @@
       "plan": null,
       "event": {
         "block": true,
-        "reason": "FOMC 1일 전 — 진입 보류",
+        "reason": "FOMC 당일 — 진입 보류",
         "earnings": "2026-10-30",
-        "d_earnings": 45,
+        "d_earnings": 44,
         "macro": "FOMC",
-        "d_macro": 1,
+        "d_macro": 0,
         "estimated": false
       },
       "signal_u": "XOM",
@@ -145,7 +145,7 @@
         }
       ],
       "asof": "2026-09-15",
-      "reason": "보유 중 · 6일차 · 이탈 조건 없음",
+      "reason": "보유 중 · 7일차 · 이탈 조건 없음",
       "error": null
     },
     {
