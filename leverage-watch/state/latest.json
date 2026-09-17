@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-16T23:38:00+00:00",
+  "generated_at": "2026-09-17T01:39:00+00:00",
   "regime": {
     "US": {
       "long_ok": true,
@@ -123,15 +123,47 @@
       "leverage": 2,
       "pick_leverage": 2,
       "pick_net": 0.1410976023052849,
-      "pick": null,
-      "plan": null,
+      "pick": {
+        "t": "XOMX",
+        "x": 2,
+        "price": 48.5349006652832,
+        "change_pct": -7.039070070166753,
+        "turnover": 924419.3889636993,
+        "thin": true,
+        "no_price": false,
+        "why": "2배 · 감가 감당 가능 · 20일 기대 순이익 +14.1%"
+      },
+      "plan": {
+        "leverage": 2,
+        "direction": "long",
+        "entry": 48.5349006652832,
+        "entry_note": "다음 거래일 시가 근처. 종가 판정이라 갭이 크면 건너뛰세요.",
+        "stop_pct": -0.02911937828196498,
+        "stop_price": 47.12159453293323,
+        "stop_basis": "기초자산 MA20 이탈 기준",
+        "u_stop": 160.94211878707515,
+        "target_pct": 0.05823875656392996,
+        "target_price": 51.36151292998316,
+        "target_r": 2.0,
+        "target_is_rule": false,
+        "proj_pct": 0.1410976023052849,
+        "proj_price": 55.38305877727984,
+        "time_stop_days": 20,
+        "rr": 2.0,
+        "risk_per_trade": 0.02,
+        "size_by_risk": 0.6868278507301426,
+        "size_cap": 0.15,
+        "position_pct": 0.15,
+        "capped": true,
+        "gap_risk": false
+      },
       "event": {
-        "block": true,
-        "reason": "FOMC 당일 — 진입 보류",
+        "block": false,
+        "reason": "",
         "earnings": "2026-10-30",
-        "d_earnings": 44,
+        "d_earnings": 43,
         "macro": "FOMC",
-        "d_macro": 0,
+        "d_macro": 41,
         "estimated": false
       },
       "signal_u": "XOM",
@@ -145,7 +177,7 @@
         }
       ],
       "asof": "2026-09-16",
-      "reason": "보유 중 · 7일차 · 이탈 조건 없음",
+      "reason": "보유 중 · 8일차 · 이탈 조건 없음",
       "error": null
     },
     {
