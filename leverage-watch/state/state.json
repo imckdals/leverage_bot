@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-09-17T12:07:41+00:00",
+  "last_run": "2026-09-17T23:30:33+00:00",
   "tickers": {
     "005930.KS": {
       "status": "flat",
@@ -12,7 +12,7 @@
       "position": null
     },
     "NVDA": {
-      "status": "flat",
+      "status": "watch",
       "last_alert_date": null,
       "position": null
     },
@@ -22,14 +22,80 @@
       "position": null
     },
     "AAPL": {
-      "status": "flat",
+      "status": "watch",
       "last_alert_date": null,
       "position": null
     },
     "MSFT": {
-      "status": "watch",
-      "last_alert_date": null,
-      "position": null
+      "status": "entry",
+      "last_alert_date": "2026-09-17",
+      "position": {
+        "opened": "2026-09-17",
+        "direction": "long",
+        "price": 497.75,
+        "products": [
+          {
+            "t": "MSFU",
+            "x": 2,
+            "side": "long",
+            "price": 37.52999877929688,
+            "change_pct": 2.991218972738885,
+            "turnover": 93728907.29976349
+          },
+          {
+            "t": "MSFL",
+            "x": 2,
+            "side": "long",
+            "price": 24.989999771118164,
+            "change_pct": 3.264458608565568,
+            "turnover": 6461197.047339534
+          },
+          {
+            "t": "MSFX",
+            "x": 2,
+            "side": "long",
+            "price": 24.799999237060547,
+            "change_pct": 2.990030380546971,
+            "turnover": 1216039.7334140777
+          }
+        ],
+        "pick": {
+          "t": "MSFU",
+          "x": 2,
+          "price": 37.52999877929688,
+          "change_pct": 2.991218972738885,
+          "turnover": 93728907.29976349,
+          "thin": false,
+          "no_price": false,
+          "why": "2배 · 감가 감당 가능 · 같은 배수 3종 중 거래대금 1위 · 20일 기대 순이익 +25.5%"
+        },
+        "leverage": 2,
+        "plan": {
+          "leverage": 2,
+          "direction": "long",
+          "entry": 37.52999877929688,
+          "entry_note": "다음 거래일 시가 근처. 종가 판정이라 갭이 크면 건너뛰세요.",
+          "stop_pct": -0.026101369514796913,
+          "stop_price": 36.55041441326858,
+          "stop_basis": "기초자산 MA20 이탈 기준",
+          "u_stop": 491.2540216620049,
+          "target_pct": 0.052202739029593825,
+          "target_price": 39.48916751135349,
+          "target_r": 2.0,
+          "target_is_rule": false,
+          "proj_pct": 0.2548363923413288,
+          "proj_price": 47.09400827278738,
+          "time_stop_days": 20,
+          "rr": 2.0,
+          "risk_per_trade": 0.02,
+          "size_by_risk": 0.7662433187140608,
+          "size_cap": 0.15,
+          "position_pct": 0.15,
+          "capped": true,
+          "gap_risk": false
+        },
+        "atr_pct": 0.022639251648282756
+      }
     },
     "AMZN": {
       "status": "flat",
@@ -112,7 +178,7 @@
       "position": null
     },
     "BRK-B": {
-      "status": "watch",
+      "status": "flat",
       "last_alert_date": "2026-08-14",
       "position": null
     },
@@ -372,7 +438,7 @@
       "position": null
     },
     "GME": {
-      "status": "none",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
@@ -802,6 +868,95 @@
         "   추세 예상  56.37   +14.1%  (20거래일 기준)",
         "   시간 한도  20거래일 — 그때까지 못 벌면 청산",
         "   투입 비중  총자산의 15% 이하  (2배 상한. 손절폭 기준으로는 37% 까지 나오지만 줄였습니다)"
+      ],
+      "passed": 9,
+      "total": 10
+    },
+    {
+      "ts": "2026-09-17T23:30:33+00:00",
+      "kind": "entry",
+      "id": "MSFT",
+      "name": "마이크로소프트",
+      "group": "미국 개별주",
+      "direction": "long",
+      "price": 497.75,
+      "products": [
+        {
+          "t": "MSFU",
+          "x": 2,
+          "side": "long",
+          "price": 37.52999877929688,
+          "change_pct": 2.991218972738885,
+          "turnover": 93728907.29976349
+        },
+        {
+          "t": "MSFL",
+          "x": 2,
+          "side": "long",
+          "price": 24.989999771118164,
+          "change_pct": 3.264458608565568,
+          "turnover": 6461197.047339534
+        },
+        {
+          "t": "MSFX",
+          "x": 2,
+          "side": "long",
+          "price": 24.799999237060547,
+          "change_pct": 2.990030380546971,
+          "turnover": 1216039.7334140777
+        }
+      ],
+      "pick": {
+        "t": "MSFU",
+        "x": 2,
+        "price": 37.52999877929688,
+        "change_pct": 2.991218972738885,
+        "turnover": 93728907.29976349,
+        "thin": false,
+        "no_price": false,
+        "why": "2배 · 감가 감당 가능 · 같은 배수 3종 중 거래대금 1위 · 20일 기대 순이익 +25.5%"
+      },
+      "plan": {
+        "leverage": 2,
+        "direction": "long",
+        "entry": 37.52999877929688,
+        "entry_note": "다음 거래일 시가 근처. 종가 판정이라 갭이 크면 건너뛰세요.",
+        "stop_pct": -0.026101369514796913,
+        "stop_price": 36.55041441326858,
+        "stop_basis": "기초자산 MA20 이탈 기준",
+        "u_stop": 491.2540216620049,
+        "target_pct": 0.052202739029593825,
+        "target_price": 39.48916751135349,
+        "target_r": 2.0,
+        "target_is_rule": false,
+        "proj_pct": 0.2548363923413288,
+        "proj_price": 47.09400827278738,
+        "time_stop_days": 20,
+        "rr": 2.0,
+        "risk_per_trade": 0.02,
+        "size_by_risk": 0.7662433187140608,
+        "size_cap": 0.15,
+        "position_pct": 0.15,
+        "capped": true,
+        "gap_risk": false
+      },
+      "event": {
+        "block": false,
+        "reason": "",
+        "earnings": "2026-10-28",
+        "d_earnings": 41,
+        "macro": "FOMC",
+        "d_macro": 41,
+        "estimated": false
+      },
+      "plan_lines": [
+        "   매수      37.53  (다음 거래일 시가 근처)",
+        "   손절      36.55   -2.6%  ← 기초자산 MA20 이탈 기준",
+        "   목표      39.49   +5.2%  (손절폭의 2배)",
+        "             ※ 자동 청산 아님. 추세가 꺾일 때까지 들고 갑니다.",
+        "   추세 예상  47.09   +25.5%  (20거래일 기준)",
+        "   시간 한도  20거래일 — 그때까지 못 벌면 청산",
+        "   투입 비중  총자산의 15% 이하  (2배 상한. 손절폭 기준으로는 77% 까지 나오지만 줄였습니다)"
       ],
       "passed": 9,
       "total": 10
