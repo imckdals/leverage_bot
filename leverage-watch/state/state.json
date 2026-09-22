@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-09-22T01:45:53+00:00",
+  "last_run": "2026-09-22T12:03:52+00:00",
   "tickers": {
     "005930.KS": {
       "status": "flat",
@@ -333,7 +333,7 @@
       "position": null
     },
     "SHOP": {
-      "status": "none",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
@@ -413,7 +413,7 @@
       "position": null
     },
     "RDW": {
-      "status": "none",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
@@ -468,12 +468,12 @@
       "position": null
     },
     "GLXY": {
-      "status": "none",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
     "CIFR": {
-      "status": "none",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
@@ -483,7 +483,7 @@
       "position": null
     },
     "AKAM": {
-      "status": "none",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
