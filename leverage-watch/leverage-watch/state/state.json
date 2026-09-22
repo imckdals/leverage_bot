@@ -1,0 +1,327 @@
+{
+  "last_run": "2026-09-22T23:34:35+00:00",
+  "tickers": {
+    "005930.KS": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "000660.KS": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "NVDA": {
+      "status": "entry",
+      "last_alert_date": "2026-09-22",
+      "position": {
+        "opened": "2026-09-22",
+        "direction": "long",
+        "price": 228.8699951171875,
+        "products": [
+          {
+            "t": "NVDL",
+            "x": 2,
+            "side": "long",
+            "price": 36.959999084472656,
+            "change_pct": 1.2602714643086488,
+            "turnover": 542244173.1830238
+          },
+          {
+            "t": "NVDX",
+            "x": 2,
+            "side": "long",
+            "price": 20.850000381469727,
+            "change_pct": 1.3612089975672648,
+            "turnover": 114924073.46281958
+          },
+          {
+            "t": "NVDU",
+            "x": 2,
+            "side": "long",
+            "price": 146.5,
+            "change_pct": 0.6872852233676952,
+            "turnover": 49020809.12963257
+          }
+        ],
+        "pick": {
+          "t": "NVDL",
+          "x": 2,
+          "price": 36.959999084472656,
+          "change_pct": 1.2602714643086488,
+          "turnover": 542244173.1830238,
+          "thin": false,
+          "no_price": false,
+          "why": "2배 · 감가 감당 가능 · 같은 배수 3종 중 거래대금 1위 · 20일 기대 순이익 +7.0%"
+        },
+        "leverage": 2,
+        "plan": {
+          "leverage": 2,
+          "direction": "long",
+          "entry": 36.959999084472656,
+          "entry_note": "다음 거래일 시가 근처. 종가 판정이라 갭이 크면 건너뛰세요.",
+          "stop_pct": -0.10129063986770226,
+          "stop_price": 33.216297127696734,
+          "stop_basis": "기초자산 MA20 이탈 기준",
+          "u_stop": 217.2788009912186,
+          "target_pct": 0.20258127973540452,
+          "target_price": 44.44740299802451,
+          "target_r": 2.0,
+          "target_is_rule": false,
+          "proj_pct": 0.06959515050630825,
+          "proj_price": 39.532235783469545,
+          "time_stop_days": 20,
+          "rr": 2.0,
+          "risk_per_trade": 0.02,
+          "size_by_risk": 0.197451610791702,
+          "size_cap": 0.15,
+          "position_pct": 0.15,
+          "capped": true,
+          "gap_risk": false
+        },
+        "atr_pct": 0.028275535594945982
+      }
+    },
+    "TSLA": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "AAPL": {
+      "status": "watch",
+      "last_alert_date": null,
+      "position": null
+    },
+    "MSFT": {
+      "status": "watch",
+      "last_alert_date": null,
+      "position": null
+    },
+    "AMZN": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "GOOGL": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "META": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "AVGO": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "AMD": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "MU": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "NFLX": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "PLTR": {
+      "status": "watch",
+      "last_alert_date": null,
+      "position": null
+    },
+    "COIN": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "MSTR": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "BABA": {
+      "status": "none",
+      "last_alert_date": null,
+      "position": null
+    },
+    "SMCI": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "TSM": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "ARM": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "ORCL": {
+      "status": "none",
+      "last_alert_date": null,
+      "position": null
+    },
+    "CRWD": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "BRK-B": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "HOOD": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "LLY": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "MARA": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "SPCX": {
+      "status": "blocked",
+      "last_alert_date": null,
+      "position": null
+    },
+    "INTC": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "MRVL": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "IONQ": {
+      "status": "none",
+      "last_alert_date": null,
+      "position": null
+    },
+    "ISRG": {
+      "status": "none",
+      "last_alert_date": null,
+      "position": null
+    },
+    "DELL": {
+      "status": "flat",
+      "last_alert_date": null,
+      "position": null
+    },
+    "ALB": {
+      "status": "none",
+      "last_alert_date": null,
+      "position": null
+    }
+  },
+  "history": [
+    {
+      "ts": "2026-09-22T23:34:35+00:00",
+      "kind": "entry",
+      "id": "NVDA",
+      "name": "엔비디아",
+      "group": "미국 개별주",
+      "direction": "long",
+      "price": 228.8699951171875,
+      "products": [
+        {
+          "t": "NVDL",
+          "x": 2,
+          "side": "long",
+          "price": 36.959999084472656,
+          "change_pct": 1.2602714643086488,
+          "turnover": 542244173.1830238
+        },
+        {
+          "t": "NVDX",
+          "x": 2,
+          "side": "long",
+          "price": 20.850000381469727,
+          "change_pct": 1.3612089975672648,
+          "turnover": 114924073.46281958
+        },
+        {
+          "t": "NVDU",
+          "x": 2,
+          "side": "long",
+          "price": 146.5,
+          "change_pct": 0.6872852233676952,
+          "turnover": 49020809.12963257
+        }
+      ],
+      "pick": {
+        "t": "NVDL",
+        "x": 2,
+        "price": 36.959999084472656,
+        "change_pct": 1.2602714643086488,
+        "turnover": 542244173.1830238,
+        "thin": false,
+        "no_price": false,
+        "why": "2배 · 감가 감당 가능 · 같은 배수 3종 중 거래대금 1위 · 20일 기대 순이익 +7.0%"
+      },
+      "plan": {
+        "leverage": 2,
+        "direction": "long",
+        "entry": 36.959999084472656,
+        "entry_note": "다음 거래일 시가 근처. 종가 판정이라 갭이 크면 건너뛰세요.",
+        "stop_pct": -0.10129063986770226,
+        "stop_price": 33.216297127696734,
+        "stop_basis": "기초자산 MA20 이탈 기준",
+        "u_stop": 217.2788009912186,
+        "target_pct": 0.20258127973540452,
+        "target_price": 44.44740299802451,
+        "target_r": 2.0,
+        "target_is_rule": false,
+        "proj_pct": 0.06959515050630825,
+        "proj_price": 39.532235783469545,
+        "time_stop_days": 20,
+        "rr": 2.0,
+        "risk_per_trade": 0.02,
+        "size_by_risk": 0.197451610791702,
+        "size_cap": 0.15,
+        "position_pct": 0.15,
+        "capped": true,
+        "gap_risk": false
+      },
+      "event": {
+        "block": false,
+        "reason": "",
+        "earnings": "2026-11-17",
+        "d_earnings": 56,
+        "macro": "FOMC",
+        "d_macro": 36,
+        "estimated": false
+      },
+      "plan_lines": [
+        "   매수      36.96  (다음 거래일 시가 근처)",
+        "   손절      33.22   -10.1%  ← 기초자산 MA20 이탈 기준",
+        "   목표      44.45   +20.3%  (손절폭의 2배)",
+        "             ※ 자동 청산 아님. 추세가 꺾일 때까지 들고 갑니다.",
+        "   추세 예상  39.53   +7.0%  (20거래일 기준)",
+        "   시간 한도  20거래일 — 그때까지 못 벌면 청산",
+        "   투입 비중  총자산의 15% 이하  (2배 상한. 손절폭 기준으로는 20% 까지 나오지만 줄였습니다)"
+      ],
+      "passed": 10,
+      "total": 10
+    }
+  ]
+}
