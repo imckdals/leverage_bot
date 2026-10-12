@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-10-12T02:36:13+00:00",
+  "last_run": "2026-10-12T16:09:08+00:00",
   "tickers": {
     "005930.KS": {
       "status": "flat",
@@ -166,7 +166,7 @@
       "position": null
     },
     "META": {
-      "status": "flat",
+      "status": "watch",
       "last_alert_date": null,
       "position": null
     },
@@ -176,7 +176,7 @@
       "position": null
     },
     "AMD": {
-      "status": "watch",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
@@ -316,7 +316,7 @@
       }
     },
     "TSM": {
-      "status": "watch",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
@@ -366,7 +366,7 @@
       "position": null
     },
     "MRVL": {
-      "status": "watch",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
