@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-10-13T14:35:53+00:00",
+  "last_run": "2026-10-14T00:15:07+00:00",
   "tickers": {
     "005930.KS": {
       "status": "flat",
@@ -12,7 +12,7 @@
       "position": null
     },
     "NVDA": {
-      "status": "exit",
+      "status": "flat",
       "last_alert_date": "2026-10-13",
       "position": null
     },
@@ -100,7 +100,7 @@
       "position": null
     },
     "META": {
-      "status": "entry",
+      "status": "holding",
       "last_alert_date": "2026-10-13",
       "position": {
         "opened": "2026-10-13",
@@ -253,7 +253,7 @@
       "position": null
     },
     "SMCI": {
-      "status": "exit",
+      "status": "flat",
       "last_alert_date": "2026-10-13",
       "position": null
     },
