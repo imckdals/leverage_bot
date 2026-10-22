@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-10-22T12:28:56+00:00",
+  "last_run": "2026-10-22T23:57:28+00:00",
   "tickers": {
     "005930.KS": {
       "status": "flat",
@@ -205,7 +205,7 @@
       "position": null
     },
     "ARM": {
-      "status": "flat",
+      "status": "none",
       "last_alert_date": null,
       "position": null
     },
@@ -245,7 +245,7 @@
       "position": null
     },
     "INTC": {
-      "status": "flat",
+      "status": "none",
       "last_alert_date": null,
       "position": null
     },
@@ -260,7 +260,7 @@
       "position": null
     },
     "ISRG": {
-      "status": "none",
+      "status": "watch",
       "last_alert_date": null,
       "position": null
     },
