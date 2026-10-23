@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-22T23:57:28+00:00",
+  "generated_at": "2026-10-23T01:48:55+00:00",
   "regime": {
     "US": {
       "long_ok": true,
@@ -151,7 +151,7 @@
         }
       ],
       "asof": "2026-10-22",
-      "reason": "보유 중 · 6일차 · 이탈 조건 없음",
+      "reason": "보유 중 · 7일차 · 이탈 조건 없음",
       "error": null
     },
     {
@@ -292,7 +292,7 @@
         }
       ],
       "asof": "2026-10-22",
-      "reason": "보유 중 · 28일차 · 이탈 조건 없음",
+      "reason": "보유 중 · 29일차 · 이탈 조건 없음",
       "error": null
     },
     {
@@ -582,9 +582,9 @@
         "block": false,
         "reason": "",
         "earnings": "2026-11-02",
-        "d_earnings": 11,
+        "d_earnings": 10,
         "macro": "FOMC",
-        "d_macro": 6,
+        "d_macro": 5,
         "estimated": false
       },
       "leverage_table": [
