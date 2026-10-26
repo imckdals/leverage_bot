@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-10-26T01:33:04+00:00",
+  "last_run": "2026-10-26T13:36:13+00:00",
   "tickers": {
     "005930.KS": {
       "status": "flat",
@@ -17,14 +17,72 @@
       "position": null
     },
     "TSLA": {
-      "status": "flat",
+      "status": "watch",
       "last_alert_date": null,
       "position": null
     },
     "AAPL": {
-      "status": "watch",
-      "last_alert_date": null,
-      "position": null
+      "status": "entry",
+      "last_alert_date": "2026-10-26",
+      "position": {
+        "opened": "2026-10-26",
+        "direction": "long",
+        "price": 344.0625,
+        "products": [
+          {
+            "t": "AAPU",
+            "x": 2,
+            "side": "long",
+            "price": 46.80500030517578,
+            "change_pct": -2.1225416062859104,
+            "turnover": 36427995.09915352
+          },
+          {
+            "t": "AAPB",
+            "x": 2,
+            "side": "long",
+            "price": 46.025001525878906,
+            "change_pct": -2.064043894142409,
+            "turnover": 1081521.2038516998
+          }
+        ],
+        "pick": {
+          "t": "AAPU",
+          "x": 2,
+          "price": 46.80500030517578,
+          "change_pct": -2.1225416062859104,
+          "turnover": 36427995.09915352,
+          "thin": false,
+          "no_price": false,
+          "why": "2배 · 감가 감당 가능 · 같은 배수 2종 중 거래대금 1위 · 20일 기대 순이익 +8.9%"
+        },
+        "leverage": 2,
+        "plan": {
+          "leverage": 2,
+          "direction": "long",
+          "entry": 46.80500030517578,
+          "entry_note": "다음 거래일 시가 근처. 종가 판정이라 갭이 크면 건너뛰세요.",
+          "stop_pct": -0.04709154165880469,
+          "stop_price": 44.60088068346423,
+          "stop_basis": "기초자산 MA20 이탈 기준",
+          "u_stop": 335.96128322400875,
+          "target_pct": 0.09418308331760938,
+          "target_price": 51.213239548598885,
+          "target_r": 2.0,
+          "target_is_rule": false,
+          "proj_pct": 0.08940359563626127,
+          "proj_price": 50.9895356262148,
+          "time_stop_days": 20,
+          "rr": 2.0,
+          "risk_per_trade": 0.02,
+          "size_by_risk": 0.42470471969058177,
+          "size_cap": 0.15,
+          "position_pct": 0.15,
+          "capped": true,
+          "gap_risk": false
+        },
+        "atr_pct": 0.019032705413557758
+      }
     },
     "MSFT": {
       "status": "watch",
@@ -167,7 +225,7 @@
       "position": null
     },
     "HOOD": {
-      "status": "flat",
+      "status": "none",
       "last_alert_date": null,
       "position": null
     },
@@ -847,6 +905,87 @@
         }
       ],
       "held_days": 29
+    },
+    {
+      "ts": "2026-10-26T13:36:13+00:00",
+      "kind": "entry",
+      "id": "AAPL",
+      "name": "애플",
+      "group": "미국 개별주",
+      "direction": "long",
+      "price": 344.0625,
+      "products": [
+        {
+          "t": "AAPU",
+          "x": 2,
+          "side": "long",
+          "price": 46.80500030517578,
+          "change_pct": -2.1225416062859104,
+          "turnover": 36427995.09915352
+        },
+        {
+          "t": "AAPB",
+          "x": 2,
+          "side": "long",
+          "price": 46.025001525878906,
+          "change_pct": -2.064043894142409,
+          "turnover": 1081521.2038516998
+        }
+      ],
+      "pick": {
+        "t": "AAPU",
+        "x": 2,
+        "price": 46.80500030517578,
+        "change_pct": -2.1225416062859104,
+        "turnover": 36427995.09915352,
+        "thin": false,
+        "no_price": false,
+        "why": "2배 · 감가 감당 가능 · 같은 배수 2종 중 거래대금 1위 · 20일 기대 순이익 +8.9%"
+      },
+      "plan": {
+        "leverage": 2,
+        "direction": "long",
+        "entry": 46.80500030517578,
+        "entry_note": "다음 거래일 시가 근처. 종가 판정이라 갭이 크면 건너뛰세요.",
+        "stop_pct": -0.04709154165880469,
+        "stop_price": 44.60088068346423,
+        "stop_basis": "기초자산 MA20 이탈 기준",
+        "u_stop": 335.96128322400875,
+        "target_pct": 0.09418308331760938,
+        "target_price": 51.213239548598885,
+        "target_r": 2.0,
+        "target_is_rule": false,
+        "proj_pct": 0.08940359563626127,
+        "proj_price": 50.9895356262148,
+        "time_stop_days": 20,
+        "rr": 2.0,
+        "risk_per_trade": 0.02,
+        "size_by_risk": 0.42470471969058177,
+        "size_cap": 0.15,
+        "position_pct": 0.15,
+        "capped": true,
+        "gap_risk": false
+      },
+      "event": {
+        "block": false,
+        "reason": "",
+        "earnings": "2026-11-02",
+        "d_earnings": 7,
+        "macro": "FOMC",
+        "d_macro": 2,
+        "estimated": false
+      },
+      "plan_lines": [
+        "   매수      46.81  (다음 거래일 시가 근처)",
+        "   손절      44.60   -4.7%  ← 기초자산 MA20 이탈 기준",
+        "   목표      51.21   +9.4%  (손절폭의 2배)",
+        "             ※ 자동 청산 아님. 추세가 꺾일 때까지 들고 갑니다.",
+        "   추세 예상  50.99   +8.9%  (20거래일 기준)",
+        "   시간 한도  20거래일 — 그때까지 못 벌면 청산",
+        "   투입 비중  총자산의 15% 이하  (2배 상한. 손절폭 기준으로는 42% 까지 나오지만 줄였습니다)"
+      ],
+      "passed": 10,
+      "total": 10
     }
   ]
 }
