@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-10-28T02:32:14+00:00",
+  "last_run": "2026-10-28T13:33:32+00:00",
   "tickers": {
     "005930.KS": {
       "status": "flat",
@@ -17,7 +17,7 @@
       "position": null
     },
     "TSLA": {
-      "status": "watch",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
@@ -205,7 +205,7 @@
       "position": null
     },
     "ARM": {
-      "status": "none",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
@@ -215,12 +215,12 @@
       "position": null
     },
     "CRWD": {
-      "status": "watch",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
     "BRK-B": {
-      "status": "flat",
+      "status": "watch",
       "last_alert_date": null,
       "position": null
     },
@@ -230,7 +230,7 @@
       "position": null
     },
     "LLY": {
-      "status": "flat",
+      "status": "watch",
       "last_alert_date": null,
       "position": null
     },
