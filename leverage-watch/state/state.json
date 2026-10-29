@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-10-27T12:41:43+00:00",
+  "last_run": "2026-10-29T00:47:20+00:00",
   "tickers": {
     "005930.KS": {
       "status": "flat",
@@ -17,7 +17,7 @@
       "position": null
     },
     "TSLA": {
-      "status": "watch",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
@@ -114,7 +114,7 @@
       "position": null
     },
     "AVGO": {
-      "status": "watch",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
@@ -154,7 +154,7 @@
       "position": null
     },
     "SMCI": {
-      "status": "exit",
+      "status": "flat",
       "last_alert_date": "2026-10-27",
       "position": null
     },
@@ -179,17 +179,17 @@
       "position": null
     },
     "BRK-B": {
-      "status": "flat",
+      "status": "watch",
       "last_alert_date": "2026-08-14",
       "position": null
     },
     "HOOD": {
-      "status": "none",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
     "LLY": {
-      "status": "flat",
+      "status": "watch",
       "last_alert_date": null,
       "position": null
     },
@@ -234,7 +234,7 @@
       "position": null
     },
     "ADBE": {
-      "status": "flat",
+      "status": "none",
       "last_alert_date": null,
       "position": null
     },
