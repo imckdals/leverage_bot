@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-10-30T13:36:40+00:00",
+  "last_run": "2026-10-31T00:41:13+00:00",
   "tickers": {
     "005930.KS": {
       "status": "flat",
@@ -27,7 +27,7 @@
       "position": null
     },
     "MSFT": {
-      "status": "exit",
+      "status": "flat",
       "last_alert_date": "2026-10-30",
       "position": null
     },
@@ -117,7 +117,7 @@
       }
     },
     "PLTR": {
-      "status": "flat",
+      "status": "watch",
       "last_alert_date": null,
       "position": null
     },
@@ -147,7 +147,7 @@
       "position": null
     },
     "ARM": {
-      "status": "none",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
@@ -187,7 +187,7 @@
       "position": null
     },
     "INTC": {
-      "status": "none",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
@@ -217,14 +217,64 @@
       "position": null
     },
     "ADBE": {
-      "status": "flat",
+      "status": "none",
       "last_alert_date": null,
       "position": null
     },
     "XOM": {
-      "status": "watch",
-      "last_alert_date": "2026-09-23",
-      "position": null
+      "status": "entry",
+      "last_alert_date": "2026-10-31",
+      "position": {
+        "opened": "2026-10-31",
+        "direction": "long",
+        "price": 183.2899932861328,
+        "products": [
+          {
+            "t": "XOMX",
+            "x": 2,
+            "side": "long",
+            "price": 59.69300079345703,
+            "change_pct": 0.9180038099247723,
+            "turnover": 873208.934211731
+          }
+        ],
+        "pick": {
+          "t": "XOMX",
+          "x": 2,
+          "price": 59.69300079345703,
+          "change_pct": 0.9180038099247723,
+          "turnover": 873208.934211731,
+          "thin": true,
+          "no_price": false,
+          "why": "2배 · 감가 감당 가능 · 20일 기대 순이익 +8.4%"
+        },
+        "leverage": 2,
+        "plan": {
+          "leverage": 2,
+          "direction": "long",
+          "entry": 59.69300079345703,
+          "entry_note": "다음 거래일 시가 근처. 종가 판정이라 갭이 크면 건너뛰세요.",
+          "stop_pct": -0.11229150503518737,
+          "stop_price": 52.989983894293104,
+          "stop_basis": "기초자산 MA20 이탈 기준",
+          "u_stop": 172.99903868413818,
+          "target_pct": 0.22458301007037473,
+          "target_price": 73.09903459178489,
+          "target_r": 2.0,
+          "target_is_rule": false,
+          "proj_pct": 0.08448451207382937,
+          "proj_price": 64.73613483971495,
+          "time_stop_days": 20,
+          "rr": 2.0,
+          "risk_per_trade": 0.02,
+          "size_by_risk": 0.1781078630456761,
+          "size_cap": 0.15,
+          "position_pct": 0.15,
+          "capped": true,
+          "gap_risk": false
+        },
+        "atr_pct": 0.02078144884219076
+      }
     },
     "LMT": {
       "status": "flat",
@@ -327,7 +377,7 @@
       "position": null
     },
     "TDC": {
-      "status": "entry",
+      "status": "holding",
       "last_alert_date": "2026-10-30",
       "position": {
         "opened": "2026-10-30",
@@ -482,7 +532,7 @@
       "position": null
     },
     "SNDK": {
-      "status": "none",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
@@ -1251,6 +1301,79 @@
         "   추세 예상  24.09   +13.8%  (20거래일 기준)",
         "   시간 한도  20거래일 — 그때까지 못 벌면 청산",
         "   투입 비중  총자산의 12% 이하  (한 번에 2% 잃는 기준)"
+      ],
+      "passed": 10,
+      "total": 10
+    },
+    {
+      "ts": "2026-10-31T00:41:13+00:00",
+      "kind": "entry",
+      "id": "XOM",
+      "name": "엑슨모빌",
+      "group": "미국 개별주",
+      "direction": "long",
+      "price": 183.2899932861328,
+      "products": [
+        {
+          "t": "XOMX",
+          "x": 2,
+          "side": "long",
+          "price": 59.69300079345703,
+          "change_pct": 0.9180038099247723,
+          "turnover": 873208.934211731
+        }
+      ],
+      "pick": {
+        "t": "XOMX",
+        "x": 2,
+        "price": 59.69300079345703,
+        "change_pct": 0.9180038099247723,
+        "turnover": 873208.934211731,
+        "thin": true,
+        "no_price": false,
+        "why": "2배 · 감가 감당 가능 · 20일 기대 순이익 +8.4%"
+      },
+      "plan": {
+        "leverage": 2,
+        "direction": "long",
+        "entry": 59.69300079345703,
+        "entry_note": "다음 거래일 시가 근처. 종가 판정이라 갭이 크면 건너뛰세요.",
+        "stop_pct": -0.11229150503518737,
+        "stop_price": 52.989983894293104,
+        "stop_basis": "기초자산 MA20 이탈 기준",
+        "u_stop": 172.99903868413818,
+        "target_pct": 0.22458301007037473,
+        "target_price": 73.09903459178489,
+        "target_r": 2.0,
+        "target_is_rule": false,
+        "proj_pct": 0.08448451207382937,
+        "proj_price": 64.73613483971495,
+        "time_stop_days": 20,
+        "rr": 2.0,
+        "risk_per_trade": 0.02,
+        "size_by_risk": 0.1781078630456761,
+        "size_cap": 0.15,
+        "position_pct": 0.15,
+        "capped": true,
+        "gap_risk": false
+      },
+      "event": {
+        "block": false,
+        "reason": "",
+        "earnings": null,
+        "d_earnings": null,
+        "macro": "FOMC",
+        "d_macro": 39,
+        "estimated": false
+      },
+      "plan_lines": [
+        "   매수      59.69  (다음 거래일 시가 근처)",
+        "   손절      52.99   -11.2%  ← 기초자산 MA20 이탈 기준",
+        "   목표      73.10   +22.5%  (손절폭의 2배)",
+        "             ※ 자동 청산 아님. 추세가 꺾일 때까지 들고 갑니다.",
+        "   추세 예상  64.74   +8.4%  (20거래일 기준)",
+        "   시간 한도  20거래일 — 그때까지 못 벌면 청산",
+        "   투입 비중  총자산의 15% 이하  (2배 상한. 손절폭 기준으로는 18% 까지 나오지만 줄였습니다)"
       ],
       "passed": 10,
       "total": 10
