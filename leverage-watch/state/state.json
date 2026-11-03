@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-11-03T03:59:42+00:00",
+  "last_run": "2026-11-03T14:40:39+00:00",
   "tickers": {
     "005930.KS": {
       "status": "flat",
@@ -47,7 +47,7 @@
       "position": null
     },
     "AVGO": {
-      "status": "flat",
+      "status": "watch",
       "last_alert_date": null,
       "position": null
     },
@@ -217,7 +217,7 @@
       "position": null
     },
     "ADBE": {
-      "status": "flat",
+      "status": "none",
       "last_alert_date": null,
       "position": null
     },
