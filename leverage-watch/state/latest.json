@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-05T01:25:46+00:00",
+  "generated_at": "2026-11-05T03:40:21+00:00",
   "regime": {
     "US": {
       "long_ok": true,
@@ -21,147 +21,6 @@
     "미국 개별주"
   ],
   "items": [
-    {
-      "id": "AAPL",
-      "name": "애플",
-      "group": "미국 개별주",
-      "market": "US",
-      "direction": "long",
-      "status": "exit",
-      "passed": 7,
-      "total": 10,
-      "gates": [
-        {
-          "key": "trend",
-          "label": "종가 > MA200",
-          "mandatory": true,
-          "passed": true,
-          "detail": "MA200 대비 +11.7%"
-        },
-        {
-          "key": "align",
-          "label": "정배열 + MA200 우상향",
-          "mandatory": true,
-          "passed": true,
-          "detail": "MA50/MA200 이격 +12.5%"
-        },
-        {
-          "key": "near",
-          "label": "종가 > MA20",
-          "mandatory": true,
-          "passed": false,
-          "detail": "MA20 대비 -3.0%"
-        },
-        {
-          "key": "straight",
-          "label": "직진성",
-          "mandatory": true,
-          "passed": false,
-          "detail": "ER 0.12 — 절대 0.15 이상이거나, 0.10 이상이면서 자기 이력 상위 53%"
-        },
-        {
-          "key": "smooth",
-          "label": "경로 매끄러움",
-          "mandatory": true,
-          "passed": true,
-          "detail": "R² 0.82 — 절대 0.45 이상이거나, 0.30 이상이면서 자기 이력 상위 11%"
-        },
-        {
-          "key": "edge",
-          "label": "감가 여유 (감가 ≤ 추세이익×35%)",
-          "mandatory": true,
-          "passed": true,
-          "detail": "2배 기준 추세이익 +8.5% vs 감가 −0.2%"
-        },
-        {
-          "key": "vol",
-          "label": "ATR20 ≤ 3.0%",
-          "mandatory": true,
-          "passed": true,
-          "detail": "현재 2.2%"
-        },
-        {
-          "key": "not_hot",
-          "label": "과열 아님",
-          "mandatory": true,
-          "passed": true,
-          "detail": "RSI 42 · 이격 -3.0%"
-        },
-        {
-          "key": "momentum",
-          "label": "MACD 정배열",
-          "mandatory": false,
-          "passed": false,
-          "detail": "히스토그램 -1.55"
-        },
-        {
-          "key": "high_zone",
-          "label": "고점권 유지",
-          "mandatory": false,
-          "passed": true,
-          "detail": "52주 고점 대비 -4.9%"
-        }
-      ],
-      "products": [
-        {
-          "t": "AAPU",
-          "x": 2,
-          "side": "long",
-          "price": 48.11370086669922,
-          "change_pct": 10.963330695186336,
-          "turnover": 31650647.65363159
-        },
-        {
-          "t": "AAPB",
-          "x": 2,
-          "side": "long",
-          "price": 47.36000061035156,
-          "change_pct": 11.043373777172683,
-          "turnover": 881074.6154632568
-        },
-        {
-          "t": "AAPX",
-          "x": 2,
-          "side": "long",
-          "price": 43.41999816894531,
-          "change_pct": 10.793568998375736,
-          "turnover": 1495866.8454338075
-        }
-      ],
-      "products_other": [
-        {
-          "t": "AAPD",
-          "x": -1,
-          "side": "short"
-        }
-      ],
-      "price": 331.8999938964844,
-      "change_pct": -1.8976156564048385,
-      "er60": 0.12200657570925127,
-      "r2": 0.8178144864659536,
-      "decay_20d": 0.0024669302745481234,
-      "gain_20d": 0.0854372336537538,
-      "regime_ok": true,
-      "leverage": 2,
-      "pick_leverage": 2,
-      "pick_net": 0.08297030337920568,
-      "pick": null,
-      "plan": null,
-      "event": null,
-      "signal_u": "AAPL",
-      "leverage_table": [
-        {
-          "L": 2,
-          "gain": 0.0854372336537538,
-          "decay": 0.0024669302745481234,
-          "ok": true,
-          "net": 0.08297030337920568
-        }
-      ],
-      "asof": "2026-11-03",
-      "reason": "MA20 2일 연속 하회",
-      "error": null
-    },
     {
       "id": "NFLX",
       "name": "넷플릭스",
@@ -1493,6 +1352,138 @@
           "decay": 0.004602571856233906,
           "ok": true,
           "net": 0.06111122429534345
+        }
+      ],
+      "asof": "2026-11-03",
+      "reason": "미충족: 종가 > MA20, 직진성 외 1건",
+      "error": null
+    },
+    {
+      "id": "AAPL",
+      "name": "애플",
+      "group": "미국 개별주",
+      "market": "US",
+      "direction": "long",
+      "status": "flat",
+      "passed": 7,
+      "total": 10,
+      "gates": [
+        {
+          "key": "trend",
+          "label": "종가 > MA200",
+          "mandatory": true,
+          "passed": true,
+          "detail": "MA200 대비 +11.7%"
+        },
+        {
+          "key": "align",
+          "label": "정배열 + MA200 우상향",
+          "mandatory": true,
+          "passed": true,
+          "detail": "MA50/MA200 이격 +12.5%"
+        },
+        {
+          "key": "near",
+          "label": "종가 > MA20",
+          "mandatory": true,
+          "passed": false,
+          "detail": "MA20 대비 -3.0%"
+        },
+        {
+          "key": "straight",
+          "label": "직진성",
+          "mandatory": true,
+          "passed": false,
+          "detail": "ER 0.12 — 절대 0.15 이상이거나, 0.10 이상이면서 자기 이력 상위 53%"
+        },
+        {
+          "key": "smooth",
+          "label": "경로 매끄러움",
+          "mandatory": true,
+          "passed": true,
+          "detail": "R² 0.82 — 절대 0.45 이상이거나, 0.30 이상이면서 자기 이력 상위 11%"
+        },
+        {
+          "key": "edge",
+          "label": "감가 여유 (감가 ≤ 추세이익×35%)",
+          "mandatory": true,
+          "passed": true,
+          "detail": "2배 기준 추세이익 +8.5% vs 감가 −0.2%"
+        },
+        {
+          "key": "vol",
+          "label": "ATR20 ≤ 3.0%",
+          "mandatory": true,
+          "passed": true,
+          "detail": "현재 2.2%"
+        },
+        {
+          "key": "not_hot",
+          "label": "과열 아님",
+          "mandatory": true,
+          "passed": true,
+          "detail": "RSI 42 · 이격 -3.0%"
+        },
+        {
+          "key": "momentum",
+          "label": "MACD 정배열",
+          "mandatory": false,
+          "passed": false,
+          "detail": "히스토그램 -1.55"
+        },
+        {
+          "key": "high_zone",
+          "label": "고점권 유지",
+          "mandatory": false,
+          "passed": true,
+          "detail": "52주 고점 대비 -4.9%"
+        }
+      ],
+      "products": [
+        {
+          "t": "AAPU",
+          "x": 2,
+          "side": "long"
+        },
+        {
+          "t": "AAPB",
+          "x": 2,
+          "side": "long"
+        },
+        {
+          "t": "AAPX",
+          "x": 2,
+          "side": "long"
+        }
+      ],
+      "products_other": [
+        {
+          "t": "AAPD",
+          "x": -1,
+          "side": "short"
+        }
+      ],
+      "price": 331.8999938964844,
+      "change_pct": -1.8976156564048385,
+      "er60": 0.12200657570925127,
+      "r2": 0.8178144864659536,
+      "decay_20d": 0.0024669302745481234,
+      "gain_20d": 0.0854372336537538,
+      "regime_ok": true,
+      "leverage": 2,
+      "pick_leverage": 2,
+      "pick_net": 0.08297030337920568,
+      "pick": null,
+      "plan": null,
+      "event": null,
+      "signal_u": "AAPL",
+      "leverage_table": [
+        {
+          "L": 2,
+          "gain": 0.0854372336537538,
+          "decay": 0.0024669302745481234,
+          "ok": true,
+          "net": 0.08297030337920568
         }
       ],
       "asof": "2026-11-03",
@@ -6789,45 +6780,7 @@
       "error": "상장 100거래일차 — 판정에 210일 필요. 110거래일 더 쌓이면 자동으로 들어옵니다 (대략 2027-04-11)"
     }
   ],
-  "events": [
-    {
-      "kind": "exit",
-      "id": "AAPL",
-      "name": "애플",
-      "pick": null,
-      "group": "미국 개별주",
-      "direction": "long",
-      "reason": "MA20 2일 연속 하회",
-      "price": 331.8999938964844,
-      "products": [
-        {
-          "t": "AAPU",
-          "x": 2,
-          "side": "long",
-          "price": 48.11370086669922,
-          "change_pct": 10.963330695186336,
-          "turnover": 31650647.65363159
-        },
-        {
-          "t": "AAPB",
-          "x": 2,
-          "side": "long",
-          "price": 47.36000061035156,
-          "change_pct": 11.043373777172683,
-          "turnover": 881074.6154632568
-        },
-        {
-          "t": "AAPX",
-          "x": 2,
-          "side": "long",
-          "price": 43.41999816894531,
-          "change_pct": 10.793568998375736,
-          "turnover": 1495866.8454338075
-        }
-      ],
-      "held_days": 1
-    }
-  ],
+  "events": [],
   "history": [
     {
       "ts": "2026-11-05T01:25:45+00:00",
@@ -7823,11 +7776,11 @@
     }
   ],
   "counts": {
-    "exit": 1,
+    "exit": 0,
     "entry": 0,
     "holding": 3,
     "watch": 3,
-    "flat": 35,
+    "flat": 36,
     "none": 36,
     "blocked": 1
   },
