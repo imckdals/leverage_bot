@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-11-05T14:58:34+00:00",
+  "last_run": "2026-11-06T01:28:56+00:00",
   "tickers": {
     "005930.KS": {
       "status": "flat",
@@ -207,7 +207,7 @@
       "position": null
     },
     "DELL": {
-      "status": "none",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
@@ -222,7 +222,7 @@
       "position": null
     },
     "XOM": {
-      "status": "exit",
+      "status": "flat",
       "last_alert_date": "2026-11-05",
       "position": null
     },
@@ -418,7 +418,7 @@
       "position": null
     },
     "APH": {
-      "status": "none",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
