@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-11-10T04:44:48+00:00",
+  "last_run": "2026-11-10T15:15:27+00:00",
   "tickers": {
     "005930.KS": {
       "status": "flat",
@@ -27,9 +27,75 @@
       "position": null
     },
     "MSFT": {
-      "status": "watch",
-      "last_alert_date": "2026-10-30",
-      "position": null
+      "status": "entry",
+      "last_alert_date": "2026-11-10",
+      "position": {
+        "opened": "2026-11-10",
+        "direction": "long",
+        "price": 542.3800048828125,
+        "products": [
+          {
+            "t": "MSFU",
+            "x": 2,
+            "side": "long",
+            "price": 43.06499862670898,
+            "change_pct": -1.0455005199190515,
+            "turnover": 94408910.52098712
+          },
+          {
+            "t": "MSFL",
+            "x": 2,
+            "side": "long",
+            "price": 28.86000061035156,
+            "change_pct": -0.448427601907464,
+            "turnover": 5034617.438423539
+          },
+          {
+            "t": "MSFX",
+            "x": 2,
+            "side": "long",
+            "price": 28.3799991607666,
+            "change_pct": -1.6018303458238514,
+            "turnover": 1167734.4793836593
+          }
+        ],
+        "pick": {
+          "t": "MSFU",
+          "x": 2,
+          "price": 43.06499862670898,
+          "change_pct": -1.0455005199190515,
+          "turnover": 94408910.52098712,
+          "thin": false,
+          "no_price": false,
+          "why": "2배 · 감가 감당 가능 · 같은 배수 3종 중 거래대금 1위 · 20일 기대 순이익 +6.2%"
+        },
+        "leverage": 2,
+        "plan": {
+          "leverage": 2,
+          "direction": "long",
+          "entry": 43.06499862670898,
+          "entry_note": "다음 거래일 시가 근처. 종가 판정이라 갭이 크면 건너뛰세요.",
+          "stop_pct": -0.06553097298654231,
+          "stop_price": 40.24290736503663,
+          "stop_basis": "기초자산 MA20 이탈 기준",
+          "u_stop": 524.6086601586044,
+          "target_pct": 0.13106194597308463,
+          "target_price": 48.70918115005367,
+          "target_r": 2.0,
+          "target_is_rule": false,
+          "proj_pct": 0.06236802013519621,
+          "proj_price": 45.75087732818176,
+          "time_stop_days": 20,
+          "rr": 2.0,
+          "risk_per_trade": 0.02,
+          "size_by_risk": 0.30519919190132083,
+          "size_cap": 0.15,
+          "position_pct": 0.15,
+          "capped": true,
+          "gap_risk": false
+        },
+        "atr_pct": 0.02613777533501465
+      }
     },
     "AMZN": {
       "status": "flat",
@@ -427,7 +493,7 @@
       }
     },
     "RBLX": {
-      "status": "flat",
+      "status": "none",
       "last_alert_date": null,
       "position": null
     },
@@ -1570,6 +1636,95 @@
         "   투입 비중  총자산의 15% 이하  (2배 상한. 손절폭 기준으로는 35% 까지 나오지만 줄였습니다)"
       ],
       "passed": 9,
+      "total": 10
+    },
+    {
+      "ts": "2026-11-10T15:15:27+00:00",
+      "kind": "entry",
+      "id": "MSFT",
+      "name": "마이크로소프트",
+      "group": "미국 개별주",
+      "direction": "long",
+      "price": 542.3800048828125,
+      "products": [
+        {
+          "t": "MSFU",
+          "x": 2,
+          "side": "long",
+          "price": 43.06499862670898,
+          "change_pct": -1.0455005199190515,
+          "turnover": 94408910.52098712
+        },
+        {
+          "t": "MSFL",
+          "x": 2,
+          "side": "long",
+          "price": 28.86000061035156,
+          "change_pct": -0.448427601907464,
+          "turnover": 5034617.438423539
+        },
+        {
+          "t": "MSFX",
+          "x": 2,
+          "side": "long",
+          "price": 28.3799991607666,
+          "change_pct": -1.6018303458238514,
+          "turnover": 1167734.4793836593
+        }
+      ],
+      "pick": {
+        "t": "MSFU",
+        "x": 2,
+        "price": 43.06499862670898,
+        "change_pct": -1.0455005199190515,
+        "turnover": 94408910.52098712,
+        "thin": false,
+        "no_price": false,
+        "why": "2배 · 감가 감당 가능 · 같은 배수 3종 중 거래대금 1위 · 20일 기대 순이익 +6.2%"
+      },
+      "plan": {
+        "leverage": 2,
+        "direction": "long",
+        "entry": 43.06499862670898,
+        "entry_note": "다음 거래일 시가 근처. 종가 판정이라 갭이 크면 건너뛰세요.",
+        "stop_pct": -0.06553097298654231,
+        "stop_price": 40.24290736503663,
+        "stop_basis": "기초자산 MA20 이탈 기준",
+        "u_stop": 524.6086601586044,
+        "target_pct": 0.13106194597308463,
+        "target_price": 48.70918115005367,
+        "target_r": 2.0,
+        "target_is_rule": false,
+        "proj_pct": 0.06236802013519621,
+        "proj_price": 45.75087732818176,
+        "time_stop_days": 20,
+        "rr": 2.0,
+        "risk_per_trade": 0.02,
+        "size_by_risk": 0.30519919190132083,
+        "size_cap": 0.15,
+        "position_pct": 0.15,
+        "capped": true,
+        "gap_risk": false
+      },
+      "event": {
+        "block": false,
+        "reason": "",
+        "earnings": "2027-01-27",
+        "d_earnings": 78,
+        "macro": "FOMC",
+        "d_macro": 29,
+        "estimated": false
+      },
+      "plan_lines": [
+        "   매수      43.06  (다음 거래일 시가 근처)",
+        "   손절      40.24   -6.6%  ← 기초자산 MA20 이탈 기준",
+        "   목표      48.71   +13.1%  (손절폭의 2배)",
+        "             ※ 자동 청산 아님. 추세가 꺾일 때까지 들고 갑니다.",
+        "   추세 예상  45.75   +6.2%  (20거래일 기준)",
+        "   시간 한도  20거래일 — 그때까지 못 벌면 청산",
+        "   투입 비중  총자산의 15% 이하  (2배 상한. 손절폭 기준으로는 31% 까지 나오지만 줄였습니다)"
+      ],
+      "passed": 10,
       "total": 10
     }
   ]
