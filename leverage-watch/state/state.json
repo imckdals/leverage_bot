@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-11-09T16:52:49+00:00",
+  "last_run": "2026-11-10T03:26:03+00:00",
   "tickers": {
     "005930.KS": {
       "status": "flat",
@@ -372,7 +372,7 @@
       "position": null
     },
     "GME": {
-      "status": "entry",
+      "status": "holding",
       "last_alert_date": "2026-11-09",
       "position": {
         "opened": "2026-11-09",
@@ -427,7 +427,7 @@
       }
     },
     "RBLX": {
-      "status": "none",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
