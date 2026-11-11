@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-11-11T02:57:01+00:00",
+  "last_run": "2026-11-11T14:44:21+00:00",
   "tickers": {
     "005930.KS": {
       "status": "flat",
@@ -228,9 +228,59 @@
       "position": null
     },
     "BRK-B": {
-      "status": "watch",
-      "last_alert_date": "2026-08-14",
-      "position": null
+      "status": "entry",
+      "last_alert_date": "2026-11-11",
+      "position": {
+        "opened": "2026-11-11",
+        "direction": "long",
+        "price": 579.934326171875,
+        "products": [
+          {
+            "t": "BRKU",
+            "x": 2,
+            "side": "long",
+            "price": 29.489999771118164,
+            "change_pct": -1.2391186593115,
+            "turnover": 2779738.839124584
+          }
+        ],
+        "pick": {
+          "t": "BRKU",
+          "x": 2,
+          "price": 29.489999771118164,
+          "change_pct": -1.2391186593115,
+          "turnover": 2779738.839124584,
+          "thin": true,
+          "no_price": false,
+          "why": "2배 · 감가 감당 가능 · 20일 기대 순이익 +8.6%"
+        },
+        "leverage": 2,
+        "plan": {
+          "leverage": 2,
+          "direction": "long",
+          "entry": 29.489999771118164,
+          "entry_note": "다음 거래일 시가 근처. 종가 판정이라 갭이 크면 건너뛰세요.",
+          "stop_pct": -0.10959815380809768,
+          "stop_price": 26.25795024040239,
+          "stop_basis": "기초자산 MA20 이탈 기준",
+          "u_stop": 548.1544604326847,
+          "target_pct": 0.21919630761619535,
+          "target_price": 35.95409883254971,
+          "target_r": 2.0,
+          "target_is_rule": false,
+          "proj_pct": 0.08648748243872517,
+          "proj_price": 32.04051560844076,
+          "time_stop_days": 20,
+          "rr": 2.0,
+          "risk_per_trade": 0.02,
+          "size_by_risk": 0.18248482574824446,
+          "size_cap": 0.15,
+          "position_pct": 0.15,
+          "capped": true,
+          "gap_risk": false
+        },
+        "atr_pct": 0.015416948747978042
+      }
     },
     "HOOD": {
       "status": "none",
@@ -238,7 +288,7 @@
       "position": null
     },
     "LLY": {
-      "status": "flat",
+      "status": "watch",
       "last_alert_date": null,
       "position": null
     },
@@ -1723,6 +1773,79 @@
         "   추세 예상  45.75   +6.2%  (20거래일 기준)",
         "   시간 한도  20거래일 — 그때까지 못 벌면 청산",
         "   투입 비중  총자산의 15% 이하  (2배 상한. 손절폭 기준으로는 31% 까지 나오지만 줄였습니다)"
+      ],
+      "passed": 10,
+      "total": 10
+    },
+    {
+      "ts": "2026-11-11T14:44:21+00:00",
+      "kind": "entry",
+      "id": "BRK-B",
+      "name": "버크셔 해서웨이",
+      "group": "미국 개별주",
+      "direction": "long",
+      "price": 579.934326171875,
+      "products": [
+        {
+          "t": "BRKU",
+          "x": 2,
+          "side": "long",
+          "price": 29.489999771118164,
+          "change_pct": -1.2391186593115,
+          "turnover": 2779738.839124584
+        }
+      ],
+      "pick": {
+        "t": "BRKU",
+        "x": 2,
+        "price": 29.489999771118164,
+        "change_pct": -1.2391186593115,
+        "turnover": 2779738.839124584,
+        "thin": true,
+        "no_price": false,
+        "why": "2배 · 감가 감당 가능 · 20일 기대 순이익 +8.6%"
+      },
+      "plan": {
+        "leverage": 2,
+        "direction": "long",
+        "entry": 29.489999771118164,
+        "entry_note": "다음 거래일 시가 근처. 종가 판정이라 갭이 크면 건너뛰세요.",
+        "stop_pct": -0.10959815380809768,
+        "stop_price": 26.25795024040239,
+        "stop_basis": "기초자산 MA20 이탈 기준",
+        "u_stop": 548.1544604326847,
+        "target_pct": 0.21919630761619535,
+        "target_price": 35.95409883254971,
+        "target_r": 2.0,
+        "target_is_rule": false,
+        "proj_pct": 0.08648748243872517,
+        "proj_price": 32.04051560844076,
+        "time_stop_days": 20,
+        "rr": 2.0,
+        "risk_per_trade": 0.02,
+        "size_by_risk": 0.18248482574824446,
+        "size_cap": 0.15,
+        "position_pct": 0.15,
+        "capped": true,
+        "gap_risk": false
+      },
+      "event": {
+        "block": false,
+        "reason": "",
+        "earnings": "2027-03-01",
+        "d_earnings": 110,
+        "macro": "FOMC",
+        "d_macro": 28,
+        "estimated": false
+      },
+      "plan_lines": [
+        "   매수      29.49  (다음 거래일 시가 근처)",
+        "   손절      26.26   -11.0%  ← 기초자산 MA20 이탈 기준",
+        "   목표      35.95   +21.9%  (손절폭의 2배)",
+        "             ※ 자동 청산 아님. 추세가 꺾일 때까지 들고 갑니다.",
+        "   추세 예상  32.04   +8.6%  (20거래일 기준)",
+        "   시간 한도  20거래일 — 그때까지 못 벌면 청산",
+        "   투입 비중  총자산의 15% 이하  (2배 상한. 손절폭 기준으로는 18% 까지 나오지만 줄였습니다)"
       ],
       "passed": 10,
       "total": 10
