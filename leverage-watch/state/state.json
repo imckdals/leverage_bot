@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-11-12T15:37:13+00:00",
+  "last_run": "2026-11-13T01:45:59+00:00",
   "tickers": {
     "005930.KS": {
       "status": "flat",
@@ -27,7 +27,7 @@
       "position": null
     },
     "MSFT": {
-      "status": "exit",
+      "status": "flat",
       "last_alert_date": "2026-11-12",
       "position": null
     },
@@ -222,7 +222,7 @@
       "position": null
     },
     "LLY": {
-      "status": "entry",
+      "status": "holding",
       "last_alert_date": "2026-11-12",
       "position": {
         "opened": "2026-11-12",
@@ -337,7 +337,7 @@
       "position": null
     },
     "TXN": {
-      "status": "watch",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
@@ -542,7 +542,7 @@
       "position": null
     },
     "AFRM": {
-      "status": "none",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
