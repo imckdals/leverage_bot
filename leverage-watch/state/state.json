@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-11-19T04:25:46+00:00",
+  "last_run": "2026-11-19T16:05:19+00:00",
   "tickers": {
     "005930.KS": {
       "status": "flat",
@@ -698,7 +698,7 @@
       "position": null
     },
     "SNDK": {
-      "status": "none",
+      "status": "blocked",
       "last_alert_date": null,
       "position": null
     },
