@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-11-20T15:46:43+00:00",
+  "last_run": "2026-11-21T02:06:18+00:00",
   "tickers": {
     "005930.KS": {
       "status": "flat",
@@ -103,9 +103,59 @@
       "position": null
     },
     "GOOGL": {
-      "status": "watch",
-      "last_alert_date": null,
-      "position": null
+      "status": "entry",
+      "last_alert_date": "2026-11-21",
+      "position": {
+        "opened": "2026-11-21",
+        "direction": "short",
+        "price": 272.6600036621094,
+        "products": [
+          {
+            "t": "GGLS",
+            "x": -1,
+            "side": "short",
+            "price": 72.02999877929688,
+            "change_pct": 3.4913798253592088,
+            "turnover": 5044013.342227936
+          }
+        ],
+        "pick": {
+          "t": "GGLS",
+          "x": -1,
+          "price": 72.02999877929688,
+          "change_pct": 3.4913798253592088,
+          "turnover": 5044013.342227936,
+          "thin": false,
+          "no_price": false,
+          "why": "1배 · 감가 감당 가능 · 20일 기대 순이익 +5.0%"
+        },
+        "leverage": -1,
+        "plan": {
+          "leverage": -1,
+          "direction": "short",
+          "entry": 72.02999877929688,
+          "entry_note": "다음 거래일 시가 근처. 종가 판정이라 갭이 크면 건너뛰세요.",
+          "stop_pct": -0.09206667217681619,
+          "stop_price": 65.39843649478688,
+          "stop_basis": "기초자산 MA20 이탈 기준",
+          "u_stop": 297.76290283499833,
+          "target_pct": 0.18413334435363238,
+          "target_price": 85.29312334831687,
+          "target_r": 2.0,
+          "target_is_rule": false,
+          "proj_pct": 0.04955215743922457,
+          "proj_price": 75.59924061915575,
+          "time_stop_days": 20,
+          "rr": 2.0,
+          "risk_per_trade": 0.02,
+          "size_by_risk": 0.21723387548525197,
+          "size_cap": 0.3,
+          "position_pct": 0.21723387548525197,
+          "capped": false,
+          "gap_risk": false
+        },
+        "atr_pct": 0.038107381177355515
+      }
     },
     "META": {
       "status": "flat",
@@ -188,7 +238,7 @@
       "position": null
     },
     "COIN": {
-      "status": "watch",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
@@ -288,7 +338,7 @@
       "position": null
     },
     "LLY": {
-      "status": "exit",
+      "status": "flat",
       "last_alert_date": "2026-11-20",
       "position": null
     },
@@ -383,7 +433,7 @@
       "position": null
     },
     "SHOP": {
-      "status": "none",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
@@ -533,7 +583,7 @@
       "position": null
     },
     "APH": {
-      "status": "none",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
@@ -2194,6 +2244,79 @@
         }
       ],
       "held_days": 8
+    },
+    {
+      "ts": "2026-11-21T02:06:18+00:00",
+      "kind": "entry",
+      "id": "GOOGL",
+      "name": "알파벳",
+      "group": "미국 개별주",
+      "direction": "short",
+      "price": 272.6600036621094,
+      "products": [
+        {
+          "t": "GGLS",
+          "x": -1,
+          "side": "short",
+          "price": 72.02999877929688,
+          "change_pct": 3.4913798253592088,
+          "turnover": 5044013.342227936
+        }
+      ],
+      "pick": {
+        "t": "GGLS",
+        "x": -1,
+        "price": 72.02999877929688,
+        "change_pct": 3.4913798253592088,
+        "turnover": 5044013.342227936,
+        "thin": false,
+        "no_price": false,
+        "why": "1배 · 감가 감당 가능 · 20일 기대 순이익 +5.0%"
+      },
+      "plan": {
+        "leverage": -1,
+        "direction": "short",
+        "entry": 72.02999877929688,
+        "entry_note": "다음 거래일 시가 근처. 종가 판정이라 갭이 크면 건너뛰세요.",
+        "stop_pct": -0.09206667217681619,
+        "stop_price": 65.39843649478688,
+        "stop_basis": "기초자산 MA20 이탈 기준",
+        "u_stop": 297.76290283499833,
+        "target_pct": 0.18413334435363238,
+        "target_price": 85.29312334831687,
+        "target_r": 2.0,
+        "target_is_rule": false,
+        "proj_pct": 0.04955215743922457,
+        "proj_price": 75.59924061915575,
+        "time_stop_days": 20,
+        "rr": 2.0,
+        "risk_per_trade": 0.02,
+        "size_by_risk": 0.21723387548525197,
+        "size_cap": 0.3,
+        "position_pct": 0.21723387548525197,
+        "capped": false,
+        "gap_risk": false
+      },
+      "event": {
+        "block": false,
+        "reason": "",
+        "earnings": "2027-02-03",
+        "d_earnings": 74,
+        "macro": "FOMC",
+        "d_macro": 18,
+        "estimated": false
+      },
+      "plan_lines": [
+        "   매수      72.03  (다음 거래일 시가 근처)",
+        "   손절      65.40   -9.2%  ← 기초자산 MA20 이탈 기준",
+        "   목표      85.29   +18.4%  (손절폭의 2배)",
+        "             ※ 자동 청산 아님. 추세가 꺾일 때까지 들고 갑니다.",
+        "   추세 예상  75.60   +5.0%  (20거래일 기준)",
+        "   시간 한도  20거래일 — 그때까지 못 벌면 청산",
+        "   투입 비중  총자산의 22% 이하  (한 번에 2% 잃는 기준)"
+      ],
+      "passed": 9,
+      "total": 10
     }
   ]
 }
