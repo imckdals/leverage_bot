@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-11-23T03:55:51+00:00",
+  "last_run": "2026-11-23T18:46:29+00:00",
   "tickers": {
     "005930.KS": {
       "status": "flat",
@@ -403,7 +403,7 @@
       "position": null
     },
     "TXN": {
-      "status": "none",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
@@ -433,7 +433,7 @@
       "position": null
     },
     "SHOP": {
-      "status": "none",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
@@ -583,7 +583,7 @@
       "position": null
     },
     "APH": {
-      "status": "none",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
@@ -643,7 +643,7 @@
       }
     },
     "RBLX": {
-      "status": "none",
+      "status": "flat",
       "last_alert_date": null,
       "position": null
     },
