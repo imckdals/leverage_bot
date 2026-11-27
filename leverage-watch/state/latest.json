@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-26T17:20:31+00:00",
+  "generated_at": "2026-11-27T03:35:39+00:00",
   "regime": {
     "US": {
       "long_ok": false,
@@ -11,8 +11,8 @@
     "KR": {
       "long_ok": false,
       "short_ok": true,
-      "detail": "코스피200 MA200 아래 · 실현변동성 61%",
-      "vix": 0.6130650676314915,
+      "detail": "코스피200 MA200 아래 · 실현변동성 63%",
+      "vix": 0.6256197787414649,
       "index_above_ma200": false
     }
   },
@@ -161,9 +161,9 @@
         "block": false,
         "reason": "",
         "earnings": "2026-12-08",
-        "d_earnings": 12,
+        "d_earnings": 11,
         "macro": "FOMC",
-        "d_macro": 13,
+        "d_macro": 12,
         "estimated": false
       },
       "signal_u": "GME",
@@ -177,7 +177,7 @@
         }
       ],
       "asof": "2026-11-25",
-      "reason": "보유 중 · 17일차 · 이탈 조건 없음",
+      "reason": "보유 중 · 18일차 · 이탈 조건 없음",
       "error": null
     },
     {
@@ -316,7 +316,7 @@
         }
       ],
       "asof": "2026-11-25",
-      "reason": "보유 중 · 28일차 · 이탈 조건 없음",
+      "reason": "보유 중 · 29일차 · 이탈 조건 없음",
       "error": null
     },
     {
@@ -459,9 +459,9 @@
         "block": false,
         "reason": "",
         "earnings": "2027-03-01",
-        "d_earnings": 95,
+        "d_earnings": 94,
         "macro": "FOMC",
-        "d_macro": 13,
+        "d_macro": 12,
         "estimated": false
       },
       "signal_u": "BRK-B",
@@ -475,7 +475,7 @@
         }
       ],
       "asof": "2026-11-25",
-      "reason": "보유 중 · 15일차 · 이탈 조건 없음",
+      "reason": "보유 중 · 16일차 · 이탈 조건 없음",
       "error": null
     },
     {
@@ -603,7 +603,7 @@
         }
       ],
       "asof": "2026-11-25",
-      "reason": "보유 중 · 9일차 · 이탈 조건 없음",
+      "reason": "보유 중 · 10일차 · 이탈 조건 없음",
       "error": null
     },
     {
@@ -753,7 +753,7 @@
         }
       ],
       "asof": "2026-11-25",
-      "reason": "보유 중 · 10일차 · 이탈 조건 없음",
+      "reason": "보유 중 · 11일차 · 이탈 조건 없음",
       "error": null
     },
     {
@@ -868,12 +868,12 @@
       "change_pct": -2.1322278981311005,
       "er60": 0.19866616700659664,
       "r2": 0.688604681954742,
-      "decay_20d": 0.029271511718235534,
+      "decay_20d": 0.029271511718235547,
       "gain_20d": 0.08841640785590338,
       "regime_ok": true,
       "leverage": -1,
       "pick_leverage": -1,
-      "pick_net": 0.059144896137667845,
+      "pick_net": 0.05914489613766783,
       "pick": null,
       "plan": null,
       "event": null,
@@ -882,13 +882,13 @@
         {
           "L": -1,
           "gain": 0.08841640785590338,
-          "decay": 0.029271511718235534,
+          "decay": 0.029271511718235547,
           "ok": true,
-          "net": 0.059144896137667845
+          "net": 0.05914489613766783
         }
       ],
       "asof": "2026-11-25",
-      "reason": "보유 중 · 5일차 · 이탈 조건 없음",
+      "reason": "보유 중 · 6일차 · 이탈 조건 없음",
       "error": null
     },
     {
@@ -984,12 +984,12 @@
       "change_pct": -1.0919369624967645,
       "er60": 0.22621783938337664,
       "r2": 0.8501481279468796,
-      "decay_20d": 0.011685602725758257,
+      "decay_20d": 0.011685602725758278,
       "gain_20d": 0.18623462415097744,
       "regime_ok": true,
       "leverage": 2,
       "pick_leverage": 2,
-      "pick_net": 0.1745490214252192,
+      "pick_net": 0.17454902142521916,
       "pick": null,
       "plan": null,
       "event": null,
@@ -998,9 +998,9 @@
         {
           "L": 2,
           "gain": 0.18623462415097744,
-          "decay": 0.011685602725758257,
+          "decay": 0.011685602725758278,
           "ok": true,
-          "net": 0.1745490214252192
+          "net": 0.17454902142521916
         }
       ],
       "asof": "2026-11-25",
@@ -1100,12 +1100,12 @@
       "change_pct": 2.9197138291031877,
       "er60": 0.10736970098148606,
       "r2": 0.5461303071804051,
-      "decay_20d": 0.011147967012591034,
+      "decay_20d": 0.011147967012590973,
       "gain_20d": 0.06932117647167348,
       "regime_ok": true,
       "leverage": 2,
       "pick_leverage": 2,
-      "pick_net": 0.05817320945908244,
+      "pick_net": 0.058173209459082505,
       "pick": null,
       "plan": null,
       "event": null,
@@ -1114,177 +1114,13 @@
         {
           "L": 2,
           "gain": 0.06932117647167348,
-          "decay": 0.011147967012591034,
+          "decay": 0.011147967012590973,
           "ok": true,
-          "net": 0.05817320945908244
+          "net": 0.058173209459082505
         }
       ],
       "asof": "2026-11-25",
       "reason": "미충족: 종가 > MA20, 직진성 외 1건",
-      "error": null
-    },
-    {
-      "id": "SKHY",
-      "name": "SK하이닉스 (미국 ADR)",
-      "group": "미국 개별주",
-      "market": "US",
-      "direction": "short",
-      "status": "flat",
-      "passed": 6,
-      "total": 10,
-      "gates": [
-        {
-          "key": "trend",
-          "label": "종가 < MA200",
-          "mandatory": true,
-          "passed": true,
-          "detail": "MA200 대비 -32.8%"
-        },
-        {
-          "key": "align",
-          "label": "역배열 + MA200 우하향",
-          "mandatory": true,
-          "passed": false,
-          "detail": "MA50/MA200 이격 -5.6%"
-        },
-        {
-          "key": "near",
-          "label": "종가 < MA20",
-          "mandatory": true,
-          "passed": true,
-          "detail": "MA20 대비 -16.4%"
-        },
-        {
-          "key": "straight",
-          "label": "직진성",
-          "mandatory": true,
-          "passed": true,
-          "detail": "ER 0.21 — 절대 0.15 이상이거나, 0.10 이상이면서 자기 이력 상위 36%"
-        },
-        {
-          "key": "smooth",
-          "label": "경로 매끄러움",
-          "mandatory": true,
-          "passed": true,
-          "detail": "R² 0.74 — 절대 0.45 이상이거나, 0.30 이상이면서 자기 이력 상위 26%"
-        },
-        {
-          "key": "edge",
-          "label": "감가 여유 (감가 ≤ 추세이익×35%)",
-          "mandatory": true,
-          "passed": false,
-          "detail": "2배 기준 20일 추세이익 +36.5% vs 감가 −20.8% — 감당 가능한 배수 없음"
-        },
-        {
-          "key": "breakdown",
-          "label": "60일 저점 이탈",
-          "mandatory": true,
-          "passed": true,
-          "detail": "60일 저점 대비 -5.1%"
-        },
-        {
-          "key": "not_panic",
-          "label": "투매 구간 아님",
-          "mandatory": true,
-          "passed": false,
-          "detail": "RSI 36 · 이격 -16.4%"
-        },
-        {
-          "key": "vol",
-          "label": "ATR20 ≤ 5.2%",
-          "mandatory": false,
-          "passed": false,
-          "detail": "현재 10.0%"
-        },
-        {
-          "key": "momentum",
-          "label": "MACD 역배열",
-          "mandatory": false,
-          "passed": true,
-          "detail": "히스토그램 -2267.33"
-        }
-      ],
-      "products": [
-        {
-          "t": "SKHN",
-          "x": -2,
-          "side": "short"
-        },
-        {
-          "t": "SKHZ",
-          "x": -1,
-          "side": "short"
-        },
-        {
-          "t": "SKDD",
-          "x": -2,
-          "side": "short"
-        }
-      ],
-      "products_other": [
-        {
-          "t": "SKHU",
-          "x": 2,
-          "side": "long"
-        },
-        {
-          "t": "SKHX",
-          "x": 2,
-          "side": "long"
-        },
-        {
-          "t": "SKHA",
-          "x": 2,
-          "side": "long"
-        },
-        {
-          "t": "SK",
-          "x": 2,
-          "side": "long"
-        },
-        {
-          "t": "SKUU",
-          "x": 2,
-          "side": "long"
-        },
-        {
-          "t": "SKHL",
-          "x": 2,
-          "side": "long"
-        }
-      ],
-      "price": 1030000.0,
-      "change_pct": -11.053540587219345,
-      "er60": 0.20725791520088874,
-      "r2": 0.7430289653023253,
-      "decay_20d": 0.20815122209075576,
-      "gain_20d": 0.36529349348384355,
-      "regime_ok": true,
-      "leverage": -2,
-      "pick_leverage": null,
-      "pick_net": null,
-      "pick": null,
-      "plan": null,
-      "event": null,
-      "signal_u": "000660.KS",
-      "leverage_table": [
-        {
-          "L": -2,
-          "gain": 0.36529349348384355,
-          "decay": 0.20815122209075576,
-          "ok": false,
-          "net": 0.15714227139308778
-        },
-        {
-          "L": -1,
-          "gain": 0.18264674674192177,
-          "decay": 0.06938374069691859,
-          "ok": false,
-          "net": 0.11326300604500318
-        }
-      ],
-      "asof": "2026-11-25",
-      "reason": "미충족: 역배열 + MA200 우하향, 감가 여유 (감가 ≤ 추세이익×35%) 외 2건",
       "error": null
     },
     {
@@ -1569,158 +1405,6 @@
       "error": null
     },
     {
-      "id": "000660.KS",
-      "name": "SK하이닉스",
-      "group": "한국 단일종목",
-      "market": "KR",
-      "direction": "short",
-      "status": "flat",
-      "passed": 6,
-      "total": 10,
-      "gates": [
-        {
-          "key": "trend",
-          "label": "종가 < MA200",
-          "mandatory": true,
-          "passed": true,
-          "detail": "MA200 대비 -32.8%"
-        },
-        {
-          "key": "align",
-          "label": "역배열 + MA200 우하향",
-          "mandatory": true,
-          "passed": false,
-          "detail": "MA50/MA200 이격 -5.6%"
-        },
-        {
-          "key": "near",
-          "label": "종가 < MA20",
-          "mandatory": true,
-          "passed": true,
-          "detail": "MA20 대비 -16.4%"
-        },
-        {
-          "key": "straight",
-          "label": "직진성",
-          "mandatory": true,
-          "passed": true,
-          "detail": "ER 0.21 — 절대 0.15 이상이거나, 0.10 이상이면서 자기 이력 상위 36%"
-        },
-        {
-          "key": "smooth",
-          "label": "경로 매끄러움",
-          "mandatory": true,
-          "passed": true,
-          "detail": "R² 0.74 — 절대 0.45 이상이거나, 0.30 이상이면서 자기 이력 상위 26%"
-        },
-        {
-          "key": "edge",
-          "label": "감가 여유 (감가 ≤ 추세이익×35%)",
-          "mandatory": true,
-          "passed": false,
-          "detail": "2배 기준 20일 추세이익 +36.5% vs 감가 −20.8% — 감당 가능한 배수 없음"
-        },
-        {
-          "key": "breakdown",
-          "label": "60일 저점 이탈",
-          "mandatory": true,
-          "passed": true,
-          "detail": "60일 저점 대비 -5.1%"
-        },
-        {
-          "key": "not_panic",
-          "label": "투매 구간 아님",
-          "mandatory": true,
-          "passed": false,
-          "detail": "RSI 36 · 이격 -16.4%"
-        },
-        {
-          "key": "vol",
-          "label": "ATR20 ≤ 4.6%",
-          "mandatory": false,
-          "passed": false,
-          "detail": "현재 10.0%"
-        },
-        {
-          "key": "momentum",
-          "label": "MACD 역배열",
-          "mandatory": false,
-          "passed": true,
-          "detail": "히스토그램 -2267.33"
-        }
-      ],
-      "products": [
-        {
-          "t": "0197X0.KS",
-          "x": -2,
-          "side": "short"
-        }
-      ],
-      "products_other": [
-        {
-          "t": "0193T0.KS",
-          "x": 2,
-          "side": "long"
-        },
-        {
-          "t": "0195S0.KS",
-          "x": 2,
-          "side": "long"
-        },
-        {
-          "t": "0194T0.KS",
-          "x": 2,
-          "side": "long"
-        },
-        {
-          "t": "0192L0.KS",
-          "x": 2,
-          "side": "long"
-        },
-        {
-          "t": "0197W0.KS",
-          "x": 2,
-          "side": "long"
-        },
-        {
-          "t": "0194R0.KS",
-          "x": 2,
-          "side": "long"
-        },
-        {
-          "t": "0198D0.KS",
-          "x": 2,
-          "side": "long"
-        }
-      ],
-      "price": 1030000.0,
-      "change_pct": -11.053540587219345,
-      "er60": 0.20725791520088874,
-      "r2": 0.7430289653023253,
-      "decay_20d": 0.20815122209075576,
-      "gain_20d": 0.36529349348384355,
-      "regime_ok": true,
-      "leverage": -2,
-      "pick_leverage": null,
-      "pick_net": null,
-      "pick": null,
-      "plan": null,
-      "event": null,
-      "signal_u": "000660.KS",
-      "leverage_table": [
-        {
-          "L": -2,
-          "gain": 0.36529349348384355,
-          "decay": 0.20815122209075576,
-          "ok": false,
-          "net": 0.15714227139308778
-        }
-      ],
-      "asof": "2026-11-25",
-      "reason": "미충족: 역배열 + MA200 우하향, 감가 여유 (감가 ≤ 추세이익×35%) 외 2건",
-      "error": null
-    },
-    {
       "id": "005930.KS",
       "name": "삼성전자",
       "group": "한국 단일종목",
@@ -1735,70 +1419,70 @@
           "label": "종가 < MA200",
           "mandatory": true,
           "passed": true,
-          "detail": "MA200 대비 -28.4%"
+          "detail": "MA200 대비 -25.8%"
         },
         {
           "key": "align",
           "label": "역배열 + MA200 우하향",
           "mandatory": true,
           "passed": false,
-          "detail": "MA50/MA200 이격 -4.3%"
+          "detail": "MA50/MA200 이격 -5.7%"
         },
         {
           "key": "near",
           "label": "종가 < MA20",
           "mandatory": true,
           "passed": true,
-          "detail": "MA20 대비 -15.1%"
+          "detail": "MA20 대비 -9.5%"
         },
         {
           "key": "straight",
           "label": "직진성",
           "mandatory": true,
           "passed": true,
-          "detail": "ER 0.21 — 절대 0.15 이상이거나, 0.10 이상이면서 자기 이력 상위 40%"
+          "detail": "ER 0.19 — 절대 0.15 이상이거나, 0.10 이상이면서 자기 이력 상위 46%"
         },
         {
           "key": "smooth",
           "label": "경로 매끄러움",
           "mandatory": true,
           "passed": true,
-          "detail": "R² 0.72 — 절대 0.45 이상이거나, 0.30 이상이면서 자기 이력 상위 40%"
+          "detail": "R² 0.76 — 절대 0.45 이상이거나, 0.30 이상이면서 자기 이력 상위 34%"
         },
         {
           "key": "edge",
           "label": "감가 여유 (감가 ≤ 추세이익×35%)",
           "mandatory": true,
           "passed": false,
-          "detail": "2배 기준 20일 추세이익 +25.8% vs 감가 −12.0% — 감당 가능한 배수 없음"
+          "detail": "2배 기준 20일 추세이익 +28.1% vs 감가 −12.5% — 감당 가능한 배수 없음"
         },
         {
           "key": "breakdown",
           "label": "60일 저점 이탈",
           "mandatory": true,
-          "passed": true,
-          "detail": "60일 저점 대비 -3.8%"
+          "passed": false,
+          "detail": "60일 저점 대비 +3.7%"
         },
         {
           "key": "not_panic",
           "label": "투매 구간 아님",
           "mandatory": true,
-          "passed": false,
-          "detail": "RSI 34 · 이격 -15.1%"
+          "passed": true,
+          "detail": "RSI 38 · 이격 -9.5%"
         },
         {
           "key": "vol",
           "label": "ATR20 ≤ 3.9%",
           "mandatory": false,
           "passed": false,
-          "detail": "현재 7.9%"
+          "detail": "현재 7.2%"
         },
         {
           "key": "momentum",
           "label": "MACD 역배열",
           "mandatory": false,
           "passed": true,
-          "detail": "히스토그램 -1262.75"
+          "detail": "히스토그램 -1076.65"
         }
       ],
       "products": [
@@ -1845,12 +1529,12 @@
           "side": "long"
         }
       ],
-      "price": 170700.0,
-      "change_pct": -9.873284054910247,
-      "er60": 0.21334084341023254,
-      "r2": 0.7230295386817958,
-      "decay_20d": 0.12003304685358096,
-      "gain_20d": 0.25769945064673466,
+      "price": 177100.0,
+      "change_pct": 3.3858727378867526,
+      "er60": 0.18680495523711607,
+      "r2": 0.7615678257367012,
+      "decay_20d": 0.12517221975400422,
+      "gain_20d": 0.28080098610055393,
       "regime_ok": true,
       "leverage": -2,
       "pick_leverage": null,
@@ -1862,14 +1546,178 @@
       "leverage_table": [
         {
           "L": -2,
-          "gain": 0.25769945064673466,
-          "decay": 0.12003304685358096,
+          "gain": 0.28080098610055393,
+          "decay": 0.12517221975400422,
           "ok": false,
-          "net": 0.1376664037931537
+          "net": 0.1556287663465497
         }
       ],
-      "asof": "2026-11-25",
+      "asof": "2026-11-27",
       "reason": "미충족: 역배열 + MA200 우하향, 감가 여유 (감가 ≤ 추세이익×35%) 외 2건",
+      "error": null
+    },
+    {
+      "id": "SKHY",
+      "name": "SK하이닉스 (미국 ADR)",
+      "group": "미국 개별주",
+      "market": "US",
+      "direction": "short",
+      "status": "flat",
+      "passed": 5,
+      "total": 10,
+      "gates": [
+        {
+          "key": "trend",
+          "label": "종가 < MA200",
+          "mandatory": true,
+          "passed": true,
+          "detail": "MA200 대비 -27.7%"
+        },
+        {
+          "key": "align",
+          "label": "역배열 + MA200 우하향",
+          "mandatory": true,
+          "passed": false,
+          "detail": "MA50/MA200 이격 -7.5%"
+        },
+        {
+          "key": "near",
+          "label": "종가 < MA20",
+          "mandatory": true,
+          "passed": true,
+          "detail": "MA20 대비 -7.0%"
+        },
+        {
+          "key": "straight",
+          "label": "직진성",
+          "mandatory": true,
+          "passed": true,
+          "detail": "ER 0.17 — 절대 0.15 이상이거나, 0.10 이상이면서 자기 이력 상위 46%"
+        },
+        {
+          "key": "smooth",
+          "label": "경로 매끄러움",
+          "mandatory": true,
+          "passed": true,
+          "detail": "R² 0.78 — 절대 0.45 이상이거나, 0.30 이상이면서 자기 이력 상위 24%"
+        },
+        {
+          "key": "edge",
+          "label": "감가 여유 (감가 ≤ 추세이익×35%)",
+          "mandatory": true,
+          "passed": false,
+          "detail": "2배 기준 20일 추세이익 +38.7% vs 감가 −21.1% — 감당 가능한 배수 없음"
+        },
+        {
+          "key": "breakdown",
+          "label": "60일 저점 이탈",
+          "mandatory": true,
+          "passed": false,
+          "detail": "60일 저점 대비 +7.7%"
+        },
+        {
+          "key": "not_panic",
+          "label": "투매 구간 아님",
+          "mandatory": true,
+          "passed": true,
+          "detail": "RSI 42 · 이격 -7.0%"
+        },
+        {
+          "key": "vol",
+          "label": "ATR20 ≤ 5.2%",
+          "mandatory": false,
+          "passed": false,
+          "detail": "현재 9.0%"
+        },
+        {
+          "key": "momentum",
+          "label": "MACD 역배열",
+          "mandatory": false,
+          "passed": false,
+          "detail": "히스토그램 +1833.02"
+        }
+      ],
+      "products": [
+        {
+          "t": "SKHN",
+          "x": -2,
+          "side": "short"
+        },
+        {
+          "t": "SKHZ",
+          "x": -1,
+          "side": "short"
+        },
+        {
+          "t": "SKDD",
+          "x": -2,
+          "side": "short"
+        }
+      ],
+      "products_other": [
+        {
+          "t": "SKHU",
+          "x": 2,
+          "side": "long"
+        },
+        {
+          "t": "SKHX",
+          "x": 2,
+          "side": "long"
+        },
+        {
+          "t": "SKHA",
+          "x": 2,
+          "side": "long"
+        },
+        {
+          "t": "SK",
+          "x": 2,
+          "side": "long"
+        },
+        {
+          "t": "SKUU",
+          "x": 2,
+          "side": "long"
+        },
+        {
+          "t": "SKHL",
+          "x": 2,
+          "side": "long"
+        }
+      ],
+      "price": 1088000.0,
+      "change_pct": 5.324298160696994,
+      "er60": 0.1682824455962262,
+      "r2": 0.779717900717581,
+      "decay_20d": 0.21081382840471743,
+      "gain_20d": 0.38730704706942676,
+      "regime_ok": true,
+      "leverage": -2,
+      "pick_leverage": null,
+      "pick_net": null,
+      "pick": null,
+      "plan": null,
+      "event": null,
+      "signal_u": "000660.KS",
+      "leverage_table": [
+        {
+          "L": -2,
+          "gain": 0.38730704706942676,
+          "decay": 0.21081382840471743,
+          "ok": false,
+          "net": 0.17649321866470932
+        },
+        {
+          "L": -1,
+          "gain": 0.19365352353471338,
+          "decay": 0.07027127613490582,
+          "ok": false,
+          "net": 0.12338224739980756
+        }
+      ],
+      "asof": "2026-11-27",
+      "reason": "미충족: 역배열 + MA200 우하향, 감가 여유 (감가 ≤ 추세이익×35%) 외 3건",
       "error": null
     },
     {
@@ -2097,12 +1945,12 @@
       "change_pct": 2.149563651126485,
       "er60": 0.10141915117351907,
       "r2": 0.4835646357344905,
-      "decay_20d": 0.01227831344714594,
+      "decay_20d": 0.012278313447145955,
       "gain_20d": 0.12046516896496405,
       "regime_ok": true,
       "leverage": 2,
       "pick_leverage": 2,
-      "pick_net": 0.1081868555178181,
+      "pick_net": 0.10818685551781809,
       "pick": null,
       "plan": null,
       "event": null,
@@ -2111,9 +1959,9 @@
         {
           "L": 2,
           "gain": 0.12046516896496405,
-          "decay": 0.01227831344714594,
+          "decay": 0.012278313447145955,
           "ok": true,
-          "net": 0.1081868555178181
+          "net": 0.10818685551781809
         }
       ],
       "asof": "2026-11-25",
@@ -2224,7 +2072,7 @@
       "change_pct": -4.531665955806085,
       "er60": 0.160996544912439,
       "r2": 0.6670444589386325,
-      "decay_20d": 0.14210693665121643,
+      "decay_20d": 0.14210693665121657,
       "gain_20d": 0.15561715627649558,
       "regime_ok": true,
       "leverage": -1,
@@ -2238,9 +2086,9 @@
         {
           "L": -1,
           "gain": 0.15561715627649558,
-          "decay": 0.14210693665121643,
+          "decay": 0.14210693665121657,
           "ok": false,
-          "net": 0.013510219625279152
+          "net": 0.013510219625279013
         }
       ],
       "asof": "2026-11-25",
@@ -2351,7 +2199,7 @@
       "change_pct": 3.4027342367154434,
       "er60": 0.03526974914142701,
       "r2": 0.2170364624105775,
-      "decay_20d": 0.018870525336322413,
+      "decay_20d": 0.018870525336322403,
       "gain_20d": 0.04474317364085384,
       "regime_ok": true,
       "leverage": -1,
@@ -2365,9 +2213,9 @@
         {
           "L": -1,
           "gain": 0.04474317364085384,
-          "decay": 0.018870525336322413,
+          "decay": 0.018870525336322403,
           "ok": false,
-          "net": 0.025872648304531426
+          "net": 0.025872648304531436
         }
       ],
       "asof": "2026-11-25",
@@ -2478,7 +2326,7 @@
       "change_pct": -0.07307068902446812,
       "er60": 0.1265526828312335,
       "r2": 0.4048782738626182,
-      "decay_20d": 0.05757854992309041,
+      "decay_20d": 0.0575785499230905,
       "gain_20d": 0.043062141875265025,
       "regime_ok": true,
       "leverage": -1,
@@ -2492,9 +2340,9 @@
         {
           "L": -1,
           "gain": 0.043062141875265025,
-          "decay": 0.05757854992309041,
+          "decay": 0.0575785499230905,
           "ok": false,
-          "net": -0.014516408047825384
+          "net": -0.014516408047825474
         }
       ],
       "asof": "2026-11-25",
@@ -2722,7 +2570,7 @@
       "change_pct": 0.22342705526716689,
       "er60": 0.12565548856186118,
       "r2": 0.48560809172797315,
-      "decay_20d": 0.02533927833440625,
+      "decay_20d": 0.02533927833440624,
       "gain_20d": 0.05171987856401061,
       "regime_ok": true,
       "leverage": -1,
@@ -2736,9 +2584,9 @@
         {
           "L": -1,
           "gain": 0.05171987856401061,
-          "decay": 0.02533927833440625,
+          "decay": 0.02533927833440624,
           "ok": false,
-          "net": 0.026380600229604364
+          "net": 0.026380600229604374
         }
       ],
       "asof": "2026-11-25",
@@ -2965,12 +2813,12 @@
       "change_pct": -0.09479485592772674,
       "er60": 0.043160753055994275,
       "r2": 0.06101724867009439,
-      "decay_20d": 0.0077341816562652745,
+      "decay_20d": 0.007734181656265258,
       "gain_20d": 0.02591080442856581,
       "regime_ok": true,
       "leverage": 2,
       "pick_leverage": 2,
-      "pick_net": 0.018176622772300536,
+      "pick_net": 0.018176622772300553,
       "pick": null,
       "plan": null,
       "event": null,
@@ -2979,9 +2827,9 @@
         {
           "L": 2,
           "gain": 0.02591080442856581,
-          "decay": 0.0077341816562652745,
+          "decay": 0.007734181656265258,
           "ok": true,
-          "net": 0.018176622772300536
+          "net": 0.018176622772300553
         }
       ],
       "asof": "2026-11-25",
@@ -3107,7 +2955,7 @@
       "change_pct": -3.912988569951603,
       "er60": 0.22225740844541936,
       "r2": 0.6240268256586138,
-      "decay_20d": 0.385501420694563,
+      "decay_20d": 0.3855014206945631,
       "gain_20d": 0.2756087098212133,
       "regime_ok": true,
       "leverage": -2,
@@ -3121,16 +2969,16 @@
         {
           "L": -2,
           "gain": 0.2756087098212133,
-          "decay": 0.385501420694563,
+          "decay": 0.3855014206945631,
           "ok": false,
-          "net": -0.10989271087334967
+          "net": -0.10989271087334979
         },
         {
           "L": -1,
           "gain": 0.13780435491060666,
-          "decay": 0.12850047356485433,
+          "decay": 0.1285004735648544,
           "ok": false,
-          "net": 0.00930388134575233
+          "net": 0.009303881345752274
         }
       ],
       "asof": "2026-11-25",
@@ -3241,7 +3089,7 @@
       "change_pct": -5.132422599618303,
       "er60": 0.1353134551249624,
       "r2": 0.811411176616647,
-      "decay_20d": 0.05935797644050601,
+      "decay_20d": 0.05935797644050607,
       "gain_20d": 0.11029385655072539,
       "regime_ok": true,
       "leverage": -1,
@@ -3255,9 +3103,9 @@
         {
           "L": -1,
           "gain": 0.11029385655072539,
-          "decay": 0.05935797644050601,
+          "decay": 0.05935797644050607,
           "ok": false,
-          "net": 0.05093588011021938
+          "net": 0.05093588011021932
         }
       ],
       "asof": "2026-11-25",
@@ -3384,6 +3232,158 @@
       ],
       "asof": "2026-11-25",
       "reason": "미충족: 직진성, 경로 매끄러움 외 3건",
+      "error": null
+    },
+    {
+      "id": "000660.KS",
+      "name": "SK하이닉스",
+      "group": "한국 단일종목",
+      "market": "KR",
+      "direction": "short",
+      "status": "flat",
+      "passed": 5,
+      "total": 10,
+      "gates": [
+        {
+          "key": "trend",
+          "label": "종가 < MA200",
+          "mandatory": true,
+          "passed": true,
+          "detail": "MA200 대비 -27.7%"
+        },
+        {
+          "key": "align",
+          "label": "역배열 + MA200 우하향",
+          "mandatory": true,
+          "passed": false,
+          "detail": "MA50/MA200 이격 -7.5%"
+        },
+        {
+          "key": "near",
+          "label": "종가 < MA20",
+          "mandatory": true,
+          "passed": true,
+          "detail": "MA20 대비 -7.0%"
+        },
+        {
+          "key": "straight",
+          "label": "직진성",
+          "mandatory": true,
+          "passed": true,
+          "detail": "ER 0.17 — 절대 0.15 이상이거나, 0.10 이상이면서 자기 이력 상위 46%"
+        },
+        {
+          "key": "smooth",
+          "label": "경로 매끄러움",
+          "mandatory": true,
+          "passed": true,
+          "detail": "R² 0.78 — 절대 0.45 이상이거나, 0.30 이상이면서 자기 이력 상위 24%"
+        },
+        {
+          "key": "edge",
+          "label": "감가 여유 (감가 ≤ 추세이익×35%)",
+          "mandatory": true,
+          "passed": false,
+          "detail": "2배 기준 20일 추세이익 +38.7% vs 감가 −21.1% — 감당 가능한 배수 없음"
+        },
+        {
+          "key": "breakdown",
+          "label": "60일 저점 이탈",
+          "mandatory": true,
+          "passed": false,
+          "detail": "60일 저점 대비 +7.7%"
+        },
+        {
+          "key": "not_panic",
+          "label": "투매 구간 아님",
+          "mandatory": true,
+          "passed": true,
+          "detail": "RSI 42 · 이격 -7.0%"
+        },
+        {
+          "key": "vol",
+          "label": "ATR20 ≤ 4.6%",
+          "mandatory": false,
+          "passed": false,
+          "detail": "현재 9.0%"
+        },
+        {
+          "key": "momentum",
+          "label": "MACD 역배열",
+          "mandatory": false,
+          "passed": false,
+          "detail": "히스토그램 +1833.02"
+        }
+      ],
+      "products": [
+        {
+          "t": "0197X0.KS",
+          "x": -2,
+          "side": "short"
+        }
+      ],
+      "products_other": [
+        {
+          "t": "0193T0.KS",
+          "x": 2,
+          "side": "long"
+        },
+        {
+          "t": "0195S0.KS",
+          "x": 2,
+          "side": "long"
+        },
+        {
+          "t": "0194T0.KS",
+          "x": 2,
+          "side": "long"
+        },
+        {
+          "t": "0192L0.KS",
+          "x": 2,
+          "side": "long"
+        },
+        {
+          "t": "0197W0.KS",
+          "x": 2,
+          "side": "long"
+        },
+        {
+          "t": "0194R0.KS",
+          "x": 2,
+          "side": "long"
+        },
+        {
+          "t": "0198D0.KS",
+          "x": 2,
+          "side": "long"
+        }
+      ],
+      "price": 1088000.0,
+      "change_pct": 5.324298160696994,
+      "er60": 0.1682824455962262,
+      "r2": 0.779717900717581,
+      "decay_20d": 0.21081382840471743,
+      "gain_20d": 0.38730704706942676,
+      "regime_ok": true,
+      "leverage": -2,
+      "pick_leverage": null,
+      "pick_net": null,
+      "pick": null,
+      "plan": null,
+      "event": null,
+      "signal_u": "000660.KS",
+      "leverage_table": [
+        {
+          "L": -2,
+          "gain": 0.38730704706942676,
+          "decay": 0.21081382840471743,
+          "ok": false,
+          "net": 0.17649321866470932
+        }
+      ],
+      "asof": "2026-11-27",
+      "reason": "미충족: 역배열 + MA200 우하향, 감가 여유 (감가 ≤ 추세이익×35%) 외 3건",
       "error": null
     },
     {
@@ -3963,9 +3963,9 @@
       "products_other": [],
       "price": 165.0,
       "change_pct": 1.2269938650306678,
-      "er60": 0.05424953079889736,
+      "er60": 0.054249530798897355,
       "r2": 0.11166016711149374,
-      "decay_20d": 0.044850613888763435,
+      "decay_20d": 0.04485061388876346,
       "gain_20d": -0.08225078100821218,
       "regime_ok": false,
       "leverage": 2,
@@ -3979,9 +3979,9 @@
         {
           "L": 2,
           "gain": -0.08225078100821218,
-          "decay": 0.044850613888763435,
+          "decay": 0.04485061388876346,
           "ok": false,
-          "net": -0.1271013948969756
+          "net": -0.12710139489697564
         }
       ],
       "asof": "2026-11-25",
@@ -4825,7 +4825,7 @@
       "change_pct": 2.242966050953221,
       "er60": 0.010638458168709657,
       "r2": 0.3334316089588554,
-      "decay_20d": 0.053613992444870646,
+      "decay_20d": 0.05361399244487074,
       "gain_20d": 0.0382184228199839,
       "regime_ok": true,
       "leverage": -1,
@@ -4839,9 +4839,9 @@
         {
           "L": -1,
           "gain": 0.0382184228199839,
-          "decay": 0.053613992444870646,
+          "decay": 0.05361399244487074,
           "ok": false,
-          "net": -0.015395569624886744
+          "net": -0.015395569624886835
         }
       ],
       "asof": "2026-11-25",
@@ -5057,7 +5057,7 @@
       "change_pct": 4.546509785250441,
       "er60": 0.04812326280778142,
       "r2": 0.4157646061340351,
-      "decay_20d": 0.05763289879170622,
+      "decay_20d": 0.05763289879170618,
       "gain_20d": 0.08874192385539985,
       "regime_ok": true,
       "leverage": 2,
@@ -5071,9 +5071,9 @@
         {
           "L": 2,
           "gain": 0.08874192385539985,
-          "decay": 0.05763289879170622,
+          "decay": 0.05763289879170618,
           "ok": false,
-          "net": 0.031109025063693625
+          "net": 0.031109025063693667
         }
       ],
       "asof": "2026-11-25",
