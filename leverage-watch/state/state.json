@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-11-27T16:59:46+00:00",
+  "last_run": "2026-11-28T03:13:31+00:00",
   "tickers": {
     "005930.KS": {
       "status": "flat",
@@ -473,7 +473,7 @@
       "position": null
     },
     "PDD": {
-      "status": "flat",
+      "status": "none",
       "last_alert_date": null,
       "position": null
     },
